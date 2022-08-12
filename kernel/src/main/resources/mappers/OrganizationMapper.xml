@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.financial.kernel.model.mapper.OrganizationMapper">
+    <resultMap id="BaseResultMap" type="cn.gson.financial.kernel.model.entity.Organization">
+        <!--@mbg.generated-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="type" jdbcType="OTHER" property="type"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="linkman" jdbcType="VARCHAR" property="linkman"/>
+        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="account_sets_id" jdbcType="INTEGER" property="accountSetsId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `type`, code, `name`, `linkman`, `telephone`, `status`, parent_id, account_sets_id
+    </sql>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select * from fxy_financial_organization where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectOrganizationVo" resultType="cn.gson.financial.kernel.model.vo.OrganizationVo">
+       select
+        f.id, type, code, name, linkman,telephone,status, parent_id, account_sets_id
+        from fxy_financial_organization f
+    </select>
+</mapper>

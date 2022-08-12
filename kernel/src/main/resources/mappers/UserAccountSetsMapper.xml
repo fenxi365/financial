@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.financial.kernel.model.mapper.UserAccountSetsMapper">
+  <resultMap id="BaseResultMap" type="cn.gson.financial.kernel.model.entity.UserAccountSets">
+    <!--@mbg.generated-->
+    <result column="account_sets_id" jdbcType="INTEGER" property="accountSetsId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="role_type" jdbcType="VARCHAR" property="roleType" />
+  </resultMap>
+  <insert id="batchInsert" parameterType="map">
+    <!--@mbg.generated-->
+    insert into fxy_financial_user_account_sets
+    (account_sets_id, user_id, role_type)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.accountSetsId,jdbcType=INTEGER}, #{item.userId,jdbcType=INTEGER}, #{item.roleType,jdbcType=VARCHAR}
+        )
+    </foreach>
+  </insert>
+</mapper>

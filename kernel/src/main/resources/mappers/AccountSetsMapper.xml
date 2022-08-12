@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.financial.kernel.model.mapper.AccountSetsMapper">
+  <resultMap id="BaseResultMap" type="cn.gson.financial.kernel.model.entity.AccountSets">
+    <!--@mbg.generated-->
+      <!--@Table fxy_financial_account_sets-->
+      <id column="id" jdbcType="INTEGER" property="id"/>
+      <result column="company_name" jdbcType="VARCHAR" property="companyName"/>
+      <result column="enable_date" jdbcType="DATE" property="enableDate"/>
+      <result column="credit_code" jdbcType="VARCHAR" property="creditCode"/>
+      <result column="accounting_standards" jdbcType="SMALLINT" property="accountingStandards"/>
+      <result column="address" jdbcType="VARCHAR" property="address"/>
+      <result column="cashier_module" jdbcType="TINYINT" property="cashierModule"/>
+      <result column="industry" jdbcType="SMALLINT" property="industry"/>
+      <result column="fixed_asset_module" jdbcType="TINYINT" property="fixedAssetModule"/>
+      <result column="vat_type" jdbcType="SMALLINT" property="vatType"/>
+      <result column="voucher_reviewed" jdbcType="TINYINT" property="voucherReviewed"/>
+      <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+      <result column="creator_id" jdbcType="INTEGER" property="creatorId"/>
+      <result column="current_account_date" jdbcType="DATE" property="currentAccountDate"/>
+      <result column="encoding" jdbcType="VARCHAR" property="encoding"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+      id, company_name, enable_date, credit_code, accounting_standards, address, cashier_module,
+      industry, fixed_asset_module, vat_type, voucher_reviewed, create_date, creator_id,
+      current_account_date, `encoding`
+  </sql>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into fxy_financial_account_sets
+      (company_name, enable_date, credit_code, accounting_standards, address, cashier_module,
+      industry, fixed_asset_module, vat_type, voucher_reviewed, create_date, creator_id,
+      current_account_date, `encoding`)
+    values
+    <foreach collection="list" item="item" separator=",">
+        (#{item.companyName,jdbcType=VARCHAR}, #{item.enableDate,jdbcType=DATE}, #{item.creditCode,jdbcType=VARCHAR},
+        #{item.accountingStandards,jdbcType=SMALLINT}, #{item.address,jdbcType=VARCHAR},
+        #{item.cashierModule,jdbcType=TINYINT}, #{item.industry,jdbcType=SMALLINT}, #{item.fixedAssetModule,jdbcType=TINYINT},
+        #{item.vatType,jdbcType=SMALLINT}, #{item.voucherReviewed,jdbcType=TINYINT}, #{item.createDate,jdbcType=TIMESTAMP},
+        #{item.creatorId,jdbcType=INTEGER}, #{item.currentAccountDate,jdbcType=DATE}, #{item.encoding,jdbcType=VARCHAR}
+        )
+    </foreach>
+  </insert>
+
+  <select id="selectMyAccountSets" resultMap="BaseResultMap">
+    select ffas.*
+    from fxy_financial_account_sets ffas
+           left join fxy_financial_user_account_sets ffuas on ffas.id = ffuas.account_sets_id
+    where ffuas.user_id = #{uid,jdbcType=INTEGER}
+    order by ffas.id desc
+  </select>
+</mapper>

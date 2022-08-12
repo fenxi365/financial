@@ -1,0 +1,26 @@
+plugins {
+    id "com.moowork.node" version "1.2.0"
+}
+
+node {
+    version = '11.1.0'
+    yarnVersion = '1.12.3'
+    download = true
+}
+
+task bootRun(dependsOn: 'start') {
+    group = 'application'
+    description = 'Run the client app (for use with gradle bootRun -parallel）'
+}
+
+task start(type: YarnTask, dependsOn: 'yarn') {
+    group = 'application'
+    description = 'Run the client app'
+    args = ['run', 'start']
+}
+
+task build(type: YarnTask, dependsOn: 'yarn') {
+    group = 'build'
+    description = 'Build the client bundle'
+    args = ['run', 'build']
+}

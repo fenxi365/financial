@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.financial.kernel.model.mapper.ReportTemplateItemsMapper">
+    <resultMap id="BaseResultMap" type="cn.gson.financial.kernel.model.entity.ReportTemplateItems">
+        <!--@mbg.generated-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="template_id" jdbcType="INTEGER" property="templateId"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="line_num" jdbcType="INTEGER" property="lineNum"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="sources" jdbcType="INTEGER" property="sources"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="is_bolder" jdbcType="BIT" property="isBolder"/>
+        <result column="is_folding" jdbcType="BIT" property="isFolding"/>
+        <result column="is_classified" jdbcType="BIT" property="isClassified"/>
+        <result column="pos" jdbcType="INTEGER" property="pos"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, template_id, title, parent_id, line_num, `type`, sources, `level`, is_bolder,
+        is_folding, is_classified, pos
+    </sql>
+    <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into fxy_financial_report_template_items
+        (template_id, title, parent_id, line_num, `type`, sources, `level`, is_bolder, is_folding,
+        is_classified, pos)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.templateId,jdbcType=INTEGER}, #{item.title,jdbcType=VARCHAR}, #{item.parentId,jdbcType=INTEGER},
+            #{item.lineNum,jdbcType=INTEGER}, #{item.type,jdbcType=INTEGER}, #{item.sources,jdbcType=INTEGER},
+            #{item.level,jdbcType=INTEGER}, #{item.isBolder,jdbcType=BIT}, #{item.isFolding,jdbcType=BIT},
+            #{item.isClassified,jdbcType=BIT}, #{item.pos,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+</mapper>

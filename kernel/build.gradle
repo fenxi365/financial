@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group 'cn.gson'
+version '0.1'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("com.aliyun:aliyun-java-sdk-dysmsapi:1.1.0")
+    implementation("com.aliyun:aliyun-java-sdk-dm:3.3.1")
+    implementation("com.aliyun.oss:aliyun-sdk-oss:3.4.0")
+    implementation("com.belerweb:pinyin4j:2.5.1")
+    compile 'com.baomidou:mybatis-plus-boot-starter:3.1.2'
+    compile('com.alibaba:fastjson:1.2.51')
+}

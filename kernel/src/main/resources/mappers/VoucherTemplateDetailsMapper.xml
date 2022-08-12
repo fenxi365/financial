@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.financial.kernel.model.mapper.VoucherTemplateDetailsMapper">
+  <resultMap id="BaseResultMap" type="cn.gson.financial.kernel.model.entity.VoucherTemplateDetails">
+    <!--@mbg.generated-->
+      <!--@Table fxy_financial_voucher_template_details-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="voucher_template_id" jdbcType="INTEGER" property="voucherTemplateId" />
+    <result column="summary" jdbcType="VARCHAR" property="summary" />
+    <result column="subject_id" jdbcType="INTEGER" property="subjectId" />
+      <result column="subject_name" jdbcType="VARCHAR" property="subjectName"/>
+    <result column="debit_amount" jdbcType="DOUBLE" property="debitAmount" />
+    <result column="credit_amount" jdbcType="DOUBLE" property="creditAmount" />
+      <result column="account_sets_id" jdbcType="INTEGER" property="accountSetsId"/>
+      <result column="subject_code" jdbcType="VARCHAR" property="subjectCode"/>
+      <result column="auxiliary_title" jdbcType="VARCHAR" property="auxiliaryTitle"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+      id, voucher_template_id, summary, subject_id, subject_name, debit_amount, credit_amount,
+      account_sets_id, subject_code, auxiliary_title
+  </sql>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into fxy_financial_voucher_template_details
+      (voucher_template_id, summary, subject_id, subject_name, debit_amount, credit_amount,
+      account_sets_id, subject_code, auxiliary_title)
+    values
+    <foreach collection="list" item="item" separator=",">
+        (#{item.voucherTemplateId,jdbcType=INTEGER}, #{item.summary,jdbcType=VARCHAR}, #{item.subjectId,jdbcType=INTEGER},
+        #{item.subjectName,jdbcType=VARCHAR}, #{item.debitAmount,jdbcType=DOUBLE}, #{item.creditAmount,jdbcType=DOUBLE},
+        #{item.accountSetsId,jdbcType=INTEGER}, #{item.subjectCode,jdbcType=VARCHAR}, #{item.auxiliaryTitle,jdbcType=VARCHAR}
+        )
+    </foreach>
+  </insert>
+</mapper>

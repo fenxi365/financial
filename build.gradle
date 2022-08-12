@@ -1,0 +1,69 @@
+group 'cn.gson.financial'
+version '0.1'
+
+buildscript {
+    ext {
+        springBootVersion = '2.1.8.RELEASE'
+    }
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+
+configure(subprojects.findAll { !it.name.contains('front-end') }) {
+    apply plugin: 'java'
+    version '1.0'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    }
+
+    dependencies {
+        compileOnly('org.projectlombok:lombok:1.18.6')
+        implementation("org.springframework.boot:spring-boot-starter-aop:${springBootVersion}")
+        compileOnly("org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}")
+        implementation('org.apache.commons:commons-lang3:3.8.1')
+        implementation('org.apache.commons:commons-io:1.3.2')
+        implementation('commons-codec:commons-codec:1.12')
+        annotationProcessor 'org.projectlombok:lombok:1.18.6'
+    }
+}
+
+
+task independentBuild(dependsOn: ['front-end:build', 'bs-server:bootJar']) {
+    group = 'build'
+    description = '独立编译输出'
+
+    def modules = ['bs-server']
+
+    doLast {
+        delete("${project.projectDir}/build")
+        copy {
+            from fileTree("${project.projectDir}/front-end/dist")
+            into("${project.projectDir}/build/front-end")
+        }
+
+        modules.each { target ->
+            copy {
+                from fileTree("${project.projectDir}/${target}/build/libs")
+                into("${project.projectDir}/build/${target}")
+            }
+        }
+    }
+}

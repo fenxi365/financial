@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.financial.kernel.model.mapper.ReportTemplateItemsFormulaMapper">
+    <resultMap id="BaseResultMap" type="cn.gson.financial.kernel.model.entity.ReportTemplateItemsFormula">
+        <!--@mbg.generated-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="template_id" jdbcType="INTEGER" property="templateId"/>
+        <result column="template_items_id" jdbcType="INTEGER" property="templateItemsId"/>
+        <result column="account_sets_id" jdbcType="INTEGER" property="accountSetsId"/>
+        <result column="calculation" jdbcType="OTHER" property="calculation"/>
+        <result column="access_rules" jdbcType="INTEGER" property="accessRules"/>
+        <result column="from_tag" jdbcType="VARCHAR" property="fromTag"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, template_id, template_items_id, account_sets_id, calculation, access_rules, from_tag
+    </sql>
+    <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into fxy_financial_report_template_items_formula
+        (template_id, template_items_id, account_sets_id, calculation, access_rules, from_tag
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.templateId,jdbcType=INTEGER}, #{item.templateItemsId,jdbcType=INTEGER}, #{item.accountSetsId,jdbcType=INTEGER},
+            #{item.calculation,jdbcType=OTHER}, #{item.accessRules,jdbcType=INTEGER}, #{item.fromTag,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+</mapper>

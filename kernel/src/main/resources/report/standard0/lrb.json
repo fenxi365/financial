@@ -1,0 +1,1020 @@
+{
+	"name": "利润表",
+	"type": 0,
+	"items": [
+		{
+			"isFolding": true,
+			"sources": 0,
+			"level": 1,
+			"pos": 1,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5351",
+					"templateItemsId": 194,
+					"id": 93,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "5001"
+				},
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5352",
+					"templateItemsId": 194,
+					"id": 94,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "5051"
+				}
+			],
+			"isClassified": false,
+			"lineNum": 1,
+			"isBolder": true,
+			"pid": 552,
+			"id": 194,
+			"templateId": 96,
+			"title": "一、营业外收入"
+		},
+		{
+			"isFolding": true,
+			"sources": 0,
+			"level": 2,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5359",
+					"templateItemsId": 195,
+					"id": 95,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "5401"
+				},
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5360",
+					"templateItemsId": 195,
+					"id": 96,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "5402"
+				}
+			],
+			"isBolder": false,
+			"pid": 553,
+			"templateId": 96,
+			"title": "减：营业成本",
+			"parentId": 194,
+			"pos": 2,
+			"isClassified": false,
+			"lineNum": 2,
+			"id": 195
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 3,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5361",
+					"templateItemsId": 196,
+					"id": 98,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "5403"
+				}
+			],
+			"isBolder": false,
+			"pid": 554,
+			"templateId": 96,
+			"title": "税金及附加",
+			"type": 0,
+			"parentId": 195,
+			"pos": 3,
+			"isClassified": false,
+			"lineNum": 3,
+			"id": 196
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5302",
+					"templateItemsId": 270,
+					"id": 285,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "222103"
+				}
+			],
+			"isBolder": false,
+			"pid": 555,
+			"templateId": 96,
+			"title": "其中:消费税",
+			"type": 0,
+			"parentId": 196,
+			"pos": 4,
+			"isClassified": false,
+			"lineNum": 4,
+			"id": 270
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5303",
+					"templateItemsId": 271,
+					"id": 286,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "222104"
+				}
+			],
+			"isBolder": false,
+			"pid": 556,
+			"templateId": 96,
+			"title": "营业税",
+			"type": 0,
+			"parentId": 196,
+			"pos": 5,
+			"isClassified": false,
+			"lineNum": 5,
+			"id": 271
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5307",
+					"templateItemsId": 272,
+					"id": 287,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "222108"
+				}
+			],
+			"isBolder": false,
+			"pid": 557,
+			"templateId": 96,
+			"title": "城市维护建设税",
+			"type": 0,
+			"parentId": 196,
+			"pos": 6,
+			"isClassified": false,
+			"lineNum": 6,
+			"id": 272
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5304",
+					"templateItemsId": 273,
+					"id": 288,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "222105"
+				}
+			],
+			"isBolder": false,
+			"pid": 558,
+			"templateId": 96,
+			"title": "资源税",
+			"type": 0,
+			"parentId": 196,
+			"pos": 7,
+			"isClassified": false,
+			"lineNum": 7,
+			"id": 273
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5306",
+					"templateItemsId": 274,
+					"id": 289,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "222107"
+				}
+			],
+			"isBolder": false,
+			"pid": 559,
+			"templateId": 96,
+			"title": "土地增值税",
+			"type": 0,
+			"parentId": 196,
+			"pos": 8,
+			"isClassified": false,
+			"lineNum": 8,
+			"id": 274
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5309",
+					"templateItemsId": 275,
+					"id": 290,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "222110"
+				},
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5308",
+					"templateItemsId": 275,
+					"id": 291,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "222109"
+				},
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5310",
+					"templateItemsId": 275,
+					"id": 292,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "222111"
+				},
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5316",
+					"templateItemsId": 275,
+					"id": 293,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "222117"
+				}
+			],
+			"isBolder": false,
+			"pid": 560,
+			"templateId": 96,
+			"title": "城镇土地使用税、房产税、车船税、印花税",
+			"type": 0,
+			"parentId": 196,
+			"pos": 9,
+			"isClassified": false,
+			"lineNum": 9,
+			"id": 275
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5312",
+					"templateItemsId": 276,
+					"id": 294,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "222113"
+				},
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5314",
+					"templateItemsId": 276,
+					"id": 295,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "222115"
+				},
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5315",
+					"templateItemsId": 276,
+					"id": 296,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "222116"
+				}
+			],
+			"isBolder": false,
+			"pid": 561,
+			"templateId": 96,
+			"title": "教育费附加、矿产资源补偿费、排污费",
+			"type": 0,
+			"parentId": 196,
+			"pos": 10,
+			"isClassified": false,
+			"lineNum": 10,
+			"id": 276
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 3,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5362",
+					"templateItemsId": 197,
+					"id": 97,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "5601"
+				}
+			],
+			"isBolder": false,
+			"pid": 562,
+			"templateId": 96,
+			"title": "销售费用",
+			"type": 0,
+			"parentId": 195,
+			"pos": 11,
+			"isClassified": false,
+			"lineNum": 11,
+			"id": 197
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5372",
+					"templateItemsId": 277,
+					"id": 297,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "560110"
+				}
+			],
+			"isBolder": false,
+			"pid": 563,
+			"templateId": 96,
+			"title": "其中：商品维修费",
+			"type": 0,
+			"parentId": 197,
+			"pos": 12,
+			"isClassified": false,
+			"lineNum": 12,
+			"id": 277
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5377",
+					"templateItemsId": 278,
+					"id": 298,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "560115"
+				},
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5378",
+					"templateItemsId": 278,
+					"id": 299,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "560116"
+				}
+			],
+			"isBolder": false,
+			"pid": 564,
+			"templateId": 96,
+			"title": "广告费和业务宣传费",
+			"type": 0,
+			"parentId": 197,
+			"pos": 13,
+			"isClassified": false,
+			"lineNum": 13,
+			"id": 278
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 3,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5379",
+					"templateItemsId": 198,
+					"id": 100,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "5602"
+				}
+			],
+			"isBolder": false,
+			"pid": 565,
+			"templateId": 96,
+			"title": "管理费用",
+			"type": 0,
+			"parentId": 195,
+			"pos": 14,
+			"isClassified": false,
+			"lineNum": 14,
+			"id": 198
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5388",
+					"templateItemsId": 279,
+					"id": 300,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "560209"
+				}
+			],
+			"isBolder": false,
+			"pid": 566,
+			"templateId": 96,
+			"title": "其中：开办费",
+			"type": 0,
+			"parentId": 198,
+			"pos": 15,
+			"isClassified": false,
+			"lineNum": 15,
+			"id": 279
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5381",
+					"templateItemsId": 280,
+					"id": 301,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "560202"
+				}
+			],
+			"isBolder": false,
+			"pid": 567,
+			"templateId": 96,
+			"title": "业务招待费",
+			"type": 0,
+			"parentId": 198,
+			"pos": 16,
+			"isClassified": false,
+			"lineNum": 16,
+			"id": 280
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5389",
+					"templateItemsId": 281,
+					"id": 302,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "560210"
+				}
+			],
+			"isBolder": false,
+			"pid": 568,
+			"templateId": 96,
+			"title": "研究费用",
+			"type": 0,
+			"parentId": 198,
+			"pos": 17,
+			"isClassified": false,
+			"lineNum": 17,
+			"id": 281
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 3,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5392",
+					"templateItemsId": 199,
+					"id": 102,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "5603"
+				}
+			],
+			"isBolder": false,
+			"pid": 569,
+			"templateId": 96,
+			"title": "财务费用",
+			"type": 0,
+			"parentId": 195,
+			"pos": 18,
+			"isClassified": false,
+			"lineNum": 18,
+			"id": 199
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 4,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5393",
+					"templateItemsId": 282,
+					"id": 303,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "560301"
+				}
+			],
+			"isBolder": false,
+			"pid": 570,
+			"templateId": 96,
+			"title": "其中：利息费用（收入以'-'号填列）",
+			"type": 0,
+			"parentId": 199,
+			"pos": 19,
+			"isClassified": false,
+			"lineNum": 19,
+			"id": 282
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 3,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5353",
+					"templateItemsId": 202,
+					"id": 304,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "5111"
+				}
+			],
+			"isBolder": false,
+			"pid": 571,
+			"templateId": 96,
+			"title": "投资收益（损失以“-”号填列）",
+			"type": 0,
+			"parentId": 195,
+			"pos": 20,
+			"isClassified": false,
+			"lineNum": 20,
+			"id": 202
+		},
+		{
+			"isFolding": true,
+			"sources": 1,
+			"level": 1,
+			"pos": 21,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "194",
+					"templateItemsId": 204,
+					"id": 86,
+					"templateId": 96,
+					"accountSetsId": 37
+				},
+				{
+					"calculation": "-",
+					"accessRules": 0,
+					"fromTag": "195",
+					"templateItemsId": 204,
+					"id": 87,
+					"templateId": 96,
+					"accountSetsId": 37
+				},
+				{
+					"calculation": "-",
+					"accessRules": 0,
+					"fromTag": "196",
+					"templateItemsId": 204,
+					"id": 88,
+					"templateId": 96,
+					"accountSetsId": 37
+				},
+				{
+					"calculation": "-",
+					"accessRules": 0,
+					"fromTag": "197",
+					"templateItemsId": 204,
+					"id": 89,
+					"templateId": 96,
+					"accountSetsId": 37
+				},
+				{
+					"calculation": "-",
+					"accessRules": 0,
+					"fromTag": "198",
+					"templateItemsId": 204,
+					"id": 90,
+					"templateId": 96,
+					"accountSetsId": 37
+				},
+				{
+					"calculation": "-",
+					"accessRules": 0,
+					"fromTag": "199",
+					"templateItemsId": 204,
+					"id": 91,
+					"templateId": 96,
+					"accountSetsId": 37
+				},
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "202",
+					"templateItemsId": 204,
+					"id": 92,
+					"templateId": 96,
+					"accountSetsId": 37
+				}
+			],
+			"isClassified": false,
+			"lineNum": 21,
+			"isBolder": true,
+			"pid": 572,
+			"id": 204,
+			"templateId": 96,
+			"title": "二、营业利润（亏损失以'-'填列）"
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 2,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5354",
+					"templateItemsId": 205,
+					"id": 105,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "5301"
+				}
+			],
+			"isBolder": false,
+			"pid": 573,
+			"templateId": 96,
+			"title": "加：营业外收入",
+			"type": 0,
+			"parentId": 204,
+			"pos": 22,
+			"isClassified": false,
+			"lineNum": 22,
+			"id": 205
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 3,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5356",
+					"templateItemsId": 283,
+					"id": 306,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "530102"
+				}
+			],
+			"isBolder": false,
+			"pid": 574,
+			"templateId": 96,
+			"title": "其中：政府补助",
+			"type": 0,
+			"parentId": 205,
+			"pos": 23,
+			"isClassified": false,
+			"lineNum": 23,
+			"id": 283
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 2,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5397",
+					"templateItemsId": 206,
+					"id": 104,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "5711"
+				}
+			],
+			"isBolder": false,
+			"pid": 575,
+			"templateId": 96,
+			"title": "减：营业外支出",
+			"type": 0,
+			"parentId": 204,
+			"pos": 24,
+			"isClassified": false,
+			"lineNum": 24,
+			"id": 206
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 3,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5402",
+					"templateItemsId": 284,
+					"id": 308,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "571105"
+				}
+			],
+			"isBolder": false,
+			"pid": 576,
+			"templateId": 96,
+			"title": "其中：坏账损失",
+			"type": 0,
+			"parentId": 206,
+			"pos": 25,
+			"isClassified": false,
+			"lineNum": 25,
+			"id": 284
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 3,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5404",
+					"templateItemsId": 285,
+					"id": 309,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "571107"
+				}
+			],
+			"isBolder": false,
+			"pid": 577,
+			"templateId": 96,
+			"title": "无法收回的长期债券投资损失",
+			"type": 0,
+			"parentId": 206,
+			"pos": 26,
+			"isClassified": false,
+			"lineNum": 26,
+			"id": 285
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 3,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5405",
+					"templateItemsId": 286,
+					"id": 310,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "571108"
+				}
+			],
+			"isBolder": false,
+			"pid": 578,
+			"templateId": 96,
+			"title": "无法收回的长期股权投资损失",
+			"type": 0,
+			"parentId": 206,
+			"pos": 27,
+			"isClassified": false,
+			"lineNum": 27,
+			"id": 286
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 3,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5406",
+					"templateItemsId": 287,
+					"id": 311,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "571109"
+				}
+			],
+			"isBolder": false,
+			"pid": 579,
+			"templateId": 96,
+			"title": "自然灾害等不可抗力因素造成的损失",
+			"type": 0,
+			"parentId": 206,
+			"pos": 28,
+			"isClassified": false,
+			"lineNum": 28,
+			"id": 287
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 3,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5407",
+					"templateItemsId": 288,
+					"id": 312,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "571110"
+				}
+			],
+			"isBolder": false,
+			"pid": 580,
+			"templateId": 96,
+			"title": "税收滞纳金",
+			"type": 0,
+			"parentId": 206,
+			"pos": 29,
+			"isClassified": false,
+			"lineNum": 29,
+			"id": 288
+		},
+		{
+			"isFolding": true,
+			"sources": 1,
+			"level": 1,
+			"pos": 30,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "205",
+					"templateItemsId": 208,
+					"id": 106,
+					"templateId": 96,
+					"accountSetsId": 37
+				},
+				{
+					"calculation": "-",
+					"accessRules": 0,
+					"fromTag": "206",
+					"templateItemsId": 208,
+					"id": 107,
+					"templateId": 96,
+					"accountSetsId": 37
+				},
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "204",
+					"templateItemsId": 208,
+					"id": 108,
+					"templateId": 96,
+					"accountSetsId": 37
+				}
+			],
+			"isClassified": false,
+			"lineNum": 30,
+			"isBolder": true,
+			"pid": 581,
+			"id": 208,
+			"templateId": 96,
+			"title": "三、利润总额（亏损失以“-”号填列）"
+		},
+		{
+			"isFolding": false,
+			"sources": 0,
+			"level": 2,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "5409",
+					"templateItemsId": 209,
+					"id": 109,
+					"templateId": 96,
+					"accountSetsId": 37,
+					"subjectCode": "5801"
+				}
+			],
+			"isBolder": false,
+			"pid": 582,
+			"templateId": 96,
+			"title": " 减：所得税费用",
+			"type": 0,
+			"parentId": 208,
+			"pos": 31,
+			"isClassified": false,
+			"lineNum": 31,
+			"id": 209
+		},
+		{
+			"isFolding": true,
+			"sources": 1,
+			"level": 1,
+			"pos": 32,
+			"formulas": [
+				{
+					"calculation": "+",
+					"accessRules": 0,
+					"fromTag": "208",
+					"templateItemsId": 210,
+					"id": 313,
+					"templateId": 96,
+					"accountSetsId": 37
+				},
+				{
+					"calculation": "-",
+					"accessRules": 0,
+					"fromTag": "209",
+					"templateItemsId": 210,
+					"id": 314,
+					"templateId": 96,
+					"accountSetsId": 37
+				}
+			],
+			"isClassified": false,
+			"lineNum": 32,
+			"isBolder": true,
+			"pid": 583,
+			"id": 210,
+			"templateId": 96,
+			"title": "四、净利润（亏损失以“-”号填列）"
+		}
+	],
+	"templateKey": "lrb"
+}

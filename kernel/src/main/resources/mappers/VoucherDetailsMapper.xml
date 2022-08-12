@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.financial.kernel.model.mapper.VoucherDetailsMapper">
+    <resultMap id="BaseResultMap" type="cn.gson.financial.kernel.model.entity.VoucherDetails">
+        <!--@mbg.generated-->
+        <!--@Table fxy_financial_voucher_details-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="voucher_id" jdbcType="INTEGER" property="voucherId"/>
+        <result column="summary" jdbcType="VARCHAR" property="summary"/>
+        <result column="subject_id" jdbcType="INTEGER" property="subjectId"/>
+        <result column="subject_name" jdbcType="VARCHAR" property="subjectName"/>
+        <result column="subject_code" jdbcType="VARCHAR" property="subjectCode"/>
+        <result column="debit_amount" jdbcType="DOUBLE" property="debitAmount"/>
+        <result column="credit_amount" jdbcType="DOUBLE" property="creditAmount"/>
+        <result column="auxiliary_title" jdbcType="VARCHAR" property="auxiliaryTitle"/>
+        <result column="num" jdbcType="DOUBLE" property="num"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="account_sets_id" jdbcType="INTEGER" property="accountSetsId"/>
+        <result column="cumulative_debit" jdbcType="DOUBLE" property="cumulativeDebit"/>
+        <result column="cumulative_credit" jdbcType="DOUBLE" property="cumulativeCredit"/>
+        <result column="cumulative_debit_num" jdbcType="DOUBLE" property="cumulativeDebitNum"/>
+        <result column="cumulative_credit_num" jdbcType="DOUBLE" property="cumulativeCreditNum"/>
+        <result column="carry_forward" jdbcType="BIT" property="carryForward"/>
+        <result column="org_id" jdbcType="INTEGER" property="orgId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, voucher_id, summary, subject_id, subject_name, subject_code, debit_amount, credit_amount,
+        auxiliary_title, num, price, account_sets_id, cumulative_debit, cumulative_credit,
+        cumulative_debit_num, cumulative_credit_num, carry_forward,org_id
+    </sql>
+    <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into fxy_financial_voucher_details
+        (voucher_id, summary, subject_id, subject_name, subject_code, debit_amount, credit_amount,
+        auxiliary_title, num, price, account_sets_id, cumulative_debit, cumulative_credit,
+        cumulative_debit_num, cumulative_credit_num, carry_forward, org_id)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.voucherId,jdbcType=INTEGER}, #{item.summary,jdbcType=VARCHAR}, #{item.subjectId,jdbcType=INTEGER},
+            #{item.subjectName,jdbcType=VARCHAR}, #{item.subjectCode,jdbcType=VARCHAR}, #{item.debitAmount,jdbcType=DOUBLE},
+            #{item.creditAmount,jdbcType=DOUBLE}, #{item.auxiliaryTitle,jdbcType=VARCHAR},
+            #{item.num,jdbcType=DOUBLE}, #{item.price,jdbcType=DOUBLE}, #{item.accountSetsId,jdbcType=INTEGER},
+            #{item.cumulativeDebit,jdbcType=DOUBLE}, #{item.cumulativeCredit,jdbcType=DOUBLE},
+            #{item.cumulativeDebitNum,jdbcType=DOUBLE}, #{item.cumulativeCreditNum,jdbcType=DOUBLE},
+            #{item.carryForward,jdbcType=BIT},#{item.orgId,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+    <resultMap id="FullResultMap" type="cn.gson.financial.kernel.model.entity.VoucherDetails">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="voucher_id" jdbcType="INTEGER" property="voucherId"/>
+        <result column="summary" jdbcType="VARCHAR" property="summary"/>
+        <result column="subject_id" jdbcType="INTEGER" property="subjectId"/>
+        <result column="subject_name" jdbcType="VARCHAR" property="subjectName"/>
+        <result column="subject_code" jdbcType="VARCHAR" property="subjectCode"/>
+        <result column="debit_amount" jdbcType="DOUBLE" property="debitAmount"/>
+        <result column="credit_amount" jdbcType="DOUBLE" property="creditAmount"/>
+        <result column="auxiliary_title" jdbcType="VARCHAR" property="auxiliaryTitle"/>
+        <result column="num" jdbcType="DOUBLE" property="num"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="account_sets_id" jdbcType="INTEGER" property="accountSetsId"/>
+        <result column="cumulative_debit" jdbcType="DOUBLE" property="cumulativeDebit"/>
+        <result column="cumulative_credit" jdbcType="DOUBLE" property="cumulativeCredit"/>
+        <result column="cumulative_debit_num" jdbcType="DOUBLE" property="cumulativeDebitNum"/>
+        <result column="cumulative_credit_num" jdbcType="DOUBLE" property="cumulativeCreditNum"/>
+        <result column="org_id" jdbcType="INTEGER" property="orgId"/>
+        <association column="subject_id" javaType="cn.gson.financial.kernel.model.entity.Subject" property="subject" select="cn.gson.financial.kernel.model.mapper.SubjectMapper.selectById"/>
+    </resultMap>
+
+    <select id="selectCarryForwardMoney" resultMap="BaseResultMap">
+        select
+        ffvd.voucher_id,
+        ffs.balance_direction,
+        sum(ffvd.debit_amount) debit_amount,
+        sum(ffvd.credit_amount) credit_amount
+        from fxy_financial_voucher_details ffvd
+        left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
+        left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
+        where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffv.org_id = #{orgId,jdbcType=INTEGER}
+        and ffv.voucher_year=#{years,jdbcType=INTEGER}
+        and ffv.voucher_month=#{month,jdbcType=INTEGER}
+        and ffvd.subject_code like #{code,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectFinalCheckData" resultMap="BaseResultMap">
+        select sum(ffvd.credit_amount) credit_amount,sum(ffvd.debit_amount) debit_amount
+        from fxy_financial_voucher_details ffvd
+        left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
+        where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffv.org_id = #{orgId,jdbcType=INTEGER} and ffv.voucher_year = #{year,jdbcType=INTEGER} and ffv.voucher_month = #{month,jdbcType=INTEGER}
+    </select>
+
+    <select id="assetStatistics" resultMap="BaseResultMap">
+        select ffs.type subject_name,sum(if(ffs.balance_direction='借',ffvd.credit_amount,ffvd.debit_amount)) credit_amount,sum(if(ffs.balance_direction='贷',ffvd.credit_amount,ffvd.debit_amount)) debit_amount
+        from fxy_financial_voucher_details ffvd
+        left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
+        left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
+        where
+        ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffv.org_id = #{orgId,jdbcType=INTEGER} and ffv.voucher_date <![CDATA[<=]]> #{voucherDate,jdbcType=TIMESTAMP} and (ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER} or ffvd.voucher_id is null)
+        and ffs.type in ('资产','负债','权益') group by ffs.type
+    </select>
+
+    <select id="selectTopSummary" resultType="java.lang.String">
+        select t.summary from (select trim(summary) summary,count(1) num from fxy_financial_voucher_details where account_sets_id = #{accountSetsId,jdbcType=INTEGER} and org_id = #{orgId,jdbcType=INTEGER} group by trim(summary)) t order by t.num desc limit 10
+    </select>
+
+    <select id="selectBalanceData" resultType="cn.gson.financial.kernel.model.vo.VoucherDetailVo">
+        select sum(ffvd.credit_amount) credit_amount,sum(ffvd.debit_amount) debit_amount,ffs.balance_direction
+        from fxy_financial_voucher_details ffvd
+        left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
+        left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
+        <if test="categoryId != null">
+            left join fxy_financial_voucher_details_auxiliary ffvda on ffvda.voucher_details_id = ffvd.id
+        </if>
+        where
+        ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffvd.subject_id = #{subjectId,jdbcType=INTEGER}
+        <if test="categoryId != null">
+            and ffvda.accounting_category_id = #{categoryId,jdbcType=INTEGER}
+            and ffvda.accounting_category_details_id = #{categoryDetailsId,jdbcType=INTEGER}
+        </if>
+        <if test="orgId != null">
+            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectListInitialCheckData" resultType="java.util.Map">
+        select sum(ffvd.debit_amount) debit_amount,sum(ffvd.credit_amount) credit_amount
+        from fxy_financial_voucher_details ffvd
+        where ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffvd.org_id = #{orgId,jdbcType=INTEGER} and ffvd.voucher_id is null
+        and ( ffvd.debit_amount is not null or ffvd.credit_amount is not null)
+        group by ffvd.account_sets_id
+    </select>
+
+    <select id="selectBalanceList" resultMap="BaseResultMap">
+        select ffvd.*
+        from fxy_financial_voucher_details ffvd
+        left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
+        where ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffvd.org_id = #{orgId,jdbcType=INTEGER} and ffvd.voucher_id is null and ffs.type = #{type,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectBassetsAndLiabilities" resultType="java.util.Map">
+        select IF(ffs.type = '资产', '资产', '权益') as type, ffs.balance_direction, sum(ffvd.debit_amount) debit_amount, sum(ffvd.credit_amount) credit_amount
+        from fxy_financial_voucher_details ffvd
+        left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
+        where ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffvd.org_id = #{orgId,jdbcType=INTEGER}
+        and ffvd.voucher_id is null
+        and (ffvd.debit_amount is not null or ffvd.credit_amount is not null)
+        and ffs.type in ('资产', '负债', '权益')
+        group by IF(ffs.type = '资产', '资产', '权益'), ffs.balance_direction
+    </select>
+
+    <select id="selectAuxiliaryList" resultMap="FullResultMap">
+        select ffvd.*
+        from fxy_financial_voucher_details ffvd
+        left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
+        where ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffvd.org_id = #{orgId,jdbcType=INTEGER} and ffvd.voucher_id is null
+        and length(ffvd.auxiliary_title) &gt; 0 and ffs.type = #{type,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectAggregateAmount" resultMap="BaseResultMap">
+        select ffvd.subject_code,sum(ffvd.debit_amount) debit_amount,sum(ffvd.credit_amount) credit_amount,sum(num) num from fxy_financial_voucher_details ffvd
+        left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
+        where
+        ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
+        and ffv.voucher_year = #{year}
+        and ffv.voucher_month = #{month}
+        and ffvd.subject_code in
+        <foreach close=")" collection="codeList" index="index" item="id" open="(" separator=",">
+            #{id,jdbcType=INTEGER}
+        </foreach>
+        group by ffvd.subject_code
+    </select>
+</mapper>

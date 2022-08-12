@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.financial.kernel.model.mapper.SubjectMapper">
+    <resultMap id="BaseResultMap" type="cn.gson.financial.kernel.model.entity.Subject">
+        <!--@mbg.generated-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="type" jdbcType="OTHER" property="type"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="mnemonic_code" jdbcType="VARCHAR" property="mnemonicCode"/>
+        <result column="balance_direction" jdbcType="OTHER" property="balanceDirection"/>
+        <result column="status" jdbcType="BIT" property="status"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="level" jdbcType="SMALLINT" property="level"/>
+        <result column="system_default" jdbcType="BIT" property="systemDefault"/>
+        <result column="account_sets_id" jdbcType="INTEGER" property="accountSetsId"/>
+        <result column="balance" jdbcType="DOUBLE" property="balance"/>
+        <result column="unit" jdbcType="VARCHAR" property="unit"/>
+        <result column="auxiliary_accounting" jdbcType="VARCHAR" property="auxiliaryAccounting"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `type`, code, `name`, mnemonic_code, balance_direction, `status`, parent_id,
+        `level`, system_default, account_sets_id, balance, unit, auxiliary_accounting
+    </sql>
+    <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into fxy_financial_subject
+        (`type`, code, `name`, mnemonic_code, balance_direction, `status`, parent_id, `level`,
+        system_default, account_sets_id, balance, unit, auxiliary_accounting)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.type,jdbcType=OTHER}, #{item.code,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR},
+            #{item.mnemonicCode,jdbcType=VARCHAR}, #{item.balanceDirection,jdbcType=OTHER},
+            #{item.status,jdbcType=BIT}, #{item.parentId,jdbcType=INTEGER}, #{item.level,jdbcType=SMALLINT},
+            #{item.systemDefault,jdbcType=BIT}, #{item.accountSetsId,jdbcType=INTEGER}, #{item.balance,jdbcType=DOUBLE},
+            #{item.unit,jdbcType=VARCHAR}, #{item.auxiliaryAccounting,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <select id="selectNoChildrenSubject" resultMap="BaseResultMap">
+        SELECT ffs.*, (select count(1) from fxy_financial_subject ffs1 WHERE ffs1.parent_id = ffs.id) count
+        from fxy_financial_subject ffs
+        ${ew.customSqlSegment}
+        HAVING count = 0
+        ORDER BY code asc
+    </select>
+
+    <select id="selectAccountBookList" resultMap="BaseResultMap">
+        select distinct ffs.id,ffs.name,ffs.code,ffs.level,ffs.parent_id,ffs.balance_direction,ffs.unit
+        from fxy_financial_voucher_details ffvd
+        inner join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
+        left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
+        where ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
+        <if test="accountDate != null">
+            and date_format(ffv.voucher_date,'%Y%m') = date_format(#{accountDate,jdbcType=TIMESTAMP},'%Y%m')
+        </if>
+        <if test="showNumPrice">
+            and length(ffs.unit) > 0
+        </if>
+        <if test="orgId != null">
+            and ffv.org_id = #{orgId,jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select * from fxy_financial_subject where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectSubjectVo" resultType="cn.gson.financial.kernel.model.vo.SubjectVo">
+        select
+        ffs.id, type, code, name, mnemonic_code, balance_direction, status, parent_id, level, system_default, account_sets_id, balance, unit, auxiliary_accounting, id, type, code, name, mnemonic_code, balance_direction, status, parent_id, level, system_default, account_sets_id, balance, unit, auxiliary_accounting
+        ,(select count(1) from fxy_financial_subject ffs2 where ffs2.parent_id = ffs.id) is_leaf
+        from fxy_financial_subject ffs ${ew.customSqlSegment}
+    </select>
+
+    <select id="selectLeaf" resultType="java.lang.Integer">
+        SELECT temp.id
+        FROM (SELECT (SELECT count(1) FROM fxy_financial_subject ffs2 where ffs2.parent_id = ffs.id) count, ffs.id FROM fxy_financial_subject ffs where ffs.account_sets_id = #{accountSetsId,jdbcType=INTEGER}) temp
+        WHERE temp.count = 0
+    </select>
+    <select id="selectBalanceSubjectList" resultMap="BaseResultMap">
+        select distinct ffs.id,ffs.name,ffs.code,ffs.level,ffs.parent_id,ffs.balance_direction,ffs.unit
+        from fxy_financial_voucher_details ffvd
+        left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
+        left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
+        where ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffv.voucher_date <![CDATA[<=]]> #{accountDate,jdbcType=TIMESTAMP}
+        or (ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffvd.voucher_id is null and (ffvd.credit_amount is not null or ffvd.debit_amount is not null))
+        <if test="showNumPrice">
+            and length(ffs.unit) > 0
+        </if>
+    </select>
+</mapper>

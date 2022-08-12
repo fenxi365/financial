@@ -1,0 +1,54 @@
+.font-size(@var, @size) {
+  .font@{var} {
+    font-size: @size !important;
+  }
+}
+
+.font-size(12, 12px);
+.font-size(13, 13px);
+.font-size(14, 14px);
+.font-size(15, 15px);
+.font-size(16, 16px);
+.font-size(18, 18px);
+.font-size(20, 20px);
+.font-size(22, 22px);
+.font-size(28, 28px);
+
+.font-bold {
+  font-weight: bold;
+}
+
+.box-size(@var, @size) {
+  .@{var} {
+      @{var}: @size !important;
+
+    &-top {
+        @{var}-top: @size !important;
+    }
+
+    &-bottom {
+        @{var}-bottom: @size !important;
+    }
+
+    &-left {
+        @{var}-left: @size !important;
+    }
+
+    &-right {
+        @{var}-right: @size !important;
+    }
+
+    &-top-bottom {
+        @{var}-bottom: @size !important;
+        @{var}-top: @size !important;
+    }
+
+    &-right-left {
+        @{var}-right: @size !important;
+        @{var}-left: @size !important;
+    }
+  }
+}
+
+.box-size(margin,@margin);
+.box-size(padding,@padding);

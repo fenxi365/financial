@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.financial.kernel.model.mapper.AccountingCategoryDetailsMapper">
+    <resultMap id="BaseResultMap" type="cn.gson.financial.kernel.model.entity.AccountingCategoryDetails">
+        <!--@mbg.generated-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="enable" jdbcType="BIT" property="enable"/>
+        <result column="accounting_category_id" jdbcType="INTEGER" property="accountingCategoryId"/>
+        <result column="cus_column_0" jdbcType="VARCHAR" property="cusColumn0"/>
+        <result column="cus_column_1" jdbcType="VARCHAR" property="cusColumn1"/>
+        <result column="cus_column_2" jdbcType="VARCHAR" property="cusColumn2"/>
+        <result column="cus_column_3" jdbcType="VARCHAR" property="cusColumn3"/>
+        <result column="cus_column_4" jdbcType="VARCHAR" property="cusColumn4"/>
+        <result column="cus_column_5" jdbcType="VARCHAR" property="cusColumn5"/>
+        <result column="cus_column_6" jdbcType="VARCHAR" property="cusColumn6"/>
+        <result column="cus_column_7" jdbcType="VARCHAR" property="cusColumn7"/>
+        <result column="cus_column_8" jdbcType="VARCHAR" property="cusColumn8"/>
+        <result column="cus_column_9" jdbcType="VARCHAR" property="cusColumn9"/>
+        <result column="cus_column_10" jdbcType="VARCHAR" property="cusColumn10"/>
+        <result column="cus_column_11" jdbcType="VARCHAR" property="cusColumn11"/>
+        <result column="cus_column_12" jdbcType="VARCHAR" property="cusColumn12"/>
+        <result column="cus_column_13" jdbcType="VARCHAR" property="cusColumn13"/>
+        <result column="cus_column_14" jdbcType="VARCHAR" property="cusColumn14"/>
+        <result column="cus_column_15" jdbcType="VARCHAR" property="cusColumn15"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, code, `name`, remark, `enable`, accounting_category_id, cus_column_0, cus_column_1,
+        cus_column_2, cus_column_3, cus_column_4, cus_column_5, cus_column_6, cus_column_7,
+        cus_column_8, cus_column_9, cus_column_10, cus_column_11, cus_column_12, cus_column_13,
+        cus_column_14, cus_column_15
+    </sql>
+    <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into fxy_financial_accounting_category_details
+        (code, `name`, remark, `enable`, accounting_category_id, cus_column_0, cus_column_1,
+        cus_column_2, cus_column_3, cus_column_4, cus_column_5, cus_column_6, cus_column_7,
+        cus_column_8, cus_column_9, cus_column_10, cus_column_11, cus_column_12, cus_column_13,
+        cus_column_14, cus_column_15)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.code,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR},
+            #{item.enable,jdbcType=BIT}, #{item.accountingCategoryId,jdbcType=INTEGER}, #{item.cusColumn0,jdbcType=VARCHAR},
+            #{item.cusColumn1,jdbcType=VARCHAR}, #{item.cusColumn2,jdbcType=VARCHAR}, #{item.cusColumn3,jdbcType=VARCHAR},
+            #{item.cusColumn4,jdbcType=VARCHAR}, #{item.cusColumn5,jdbcType=VARCHAR}, #{item.cusColumn6,jdbcType=VARCHAR},
+            #{item.cusColumn7,jdbcType=VARCHAR}, #{item.cusColumn8,jdbcType=VARCHAR}, #{item.cusColumn9,jdbcType=VARCHAR},
+            #{item.cusColumn10,jdbcType=VARCHAR}, #{item.cusColumn11,jdbcType=VARCHAR}, #{item.cusColumn12,jdbcType=VARCHAR},
+            #{item.cusColumn13,jdbcType=VARCHAR}, #{item.cusColumn14,jdbcType=VARCHAR}, #{item.cusColumn15,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select * from fxy_financial_accounting_category_details where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectByCodeSet" resultMap="BaseResultMap">
+        select *
+        from fxy_financial_accounting_category_details ffacd
+        left join fxy_financial_accounting_category ffac on ffac.id = ffacd.accounting_category_id
+        where ffac.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffac.name = #{name,jdbcType=VARCHAR} and ffacd.code in
+        <foreach collection="codeSet" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

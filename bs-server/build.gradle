@@ -1,0 +1,34 @@
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group 'cn.gson.financial'
+version '0.1'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':kernel')
+    runtimeOnly('mysql:mysql-connector-java')
+    implementation('com.itextpdf:itextpdf:5.5.13.1')
+    implementation('org.apache.poi:poi:4.1.0')
+    implementation('org.apache.poi:poi-ooxml:4.1.0')
+    implementation 'cn.dev33:sa-token-spring-boot-starter:1.29.0'
+    implementation 'cn.dev33:sa-token-dao-redis:1.29.0'
+    implementation 'cn.hutool:hutool-all:5.7.19'
+    implementation 'org.apache.commons:commons-pool2'
+    implementation('org.apache.poi:poi-ooxml-schemas:4.1.0')
+    implementation('com.belerweb:pinyin4j:2.5.1')
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+bootJar {
+    delete("${project.projectDir}/build/libs")
+    archivesBaseName = 'financial'
+
+    launchScript()
+}

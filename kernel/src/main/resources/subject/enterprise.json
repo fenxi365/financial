@@ -1,0 +1,2339 @@
+[
+	{
+		"code": "1001",
+		"type": "资产",
+		"name": "库存现金",
+		"balance_direction": "借",
+		"mnemonic_code": "kcxj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1002",
+		"type": "资产",
+		"name": "银行存款",
+		"balance_direction": "借",
+		"mnemonic_code": "yhck",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1003",
+		"type": "资产",
+		"name": "存放中央银行款项",
+		"balance_direction": "借",
+		"mnemonic_code": "cfzyyhkx",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1011",
+		"type": "资产",
+		"name": "存放同业",
+		"balance_direction": "借",
+		"mnemonic_code": "cfty",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1012",
+		"type": "资产",
+		"name": "其他货币资金",
+		"balance_direction": "借",
+		"mnemonic_code": "qthbzj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1021",
+		"type": "资产",
+		"name": "结算备付金",
+		"balance_direction": "借",
+		"mnemonic_code": "jsbfj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1031",
+		"type": "资产",
+		"name": "存出保证金",
+		"balance_direction": "借",
+		"mnemonic_code": "ccbzj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1101",
+		"type": "资产",
+		"name": "交易性金融资产",
+		"balance_direction": "借",
+		"mnemonic_code": "jyxjrzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1111",
+		"type": "资产",
+		"name": "买入返售金融资产",
+		"balance_direction": "借",
+		"mnemonic_code": "mrfsjrzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1121",
+		"type": "资产",
+		"name": "应收票据",
+		"balance_direction": "借",
+		"mnemonic_code": "yspj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1122",
+		"type": "资产",
+		"name": "应收账款",
+		"balance_direction": "借",
+		"mnemonic_code": "yszk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1123",
+		"type": "资产",
+		"name": "预付账款",
+		"balance_direction": "借",
+		"mnemonic_code": "yfzk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1131",
+		"type": "资产",
+		"name": "应收股利",
+		"balance_direction": "借",
+		"mnemonic_code": "ysgl",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1132",
+		"type": "资产",
+		"name": "应收利息",
+		"balance_direction": "借",
+		"mnemonic_code": "yslx",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1201",
+		"type": "资产",
+		"name": "应收代位追偿款",
+		"balance_direction": "借",
+		"mnemonic_code": "ysdwzck",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1211",
+		"type": "资产",
+		"name": "应收分保账款",
+		"balance_direction": "借",
+		"mnemonic_code": "ysfbzk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1212",
+		"type": "资产",
+		"name": "应收分保合同准备金",
+		"balance_direction": "借",
+		"mnemonic_code": "ysfbhtzbj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1221",
+		"type": "资产",
+		"name": "其他应收款",
+		"balance_direction": "借",
+		"mnemonic_code": "qtysk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1231",
+		"type": "资产",
+		"name": "坏账准备",
+		"balance_direction": "贷",
+		"mnemonic_code": "hzzb",
+		"level": 1,
+		"system_default": 1,
+		"children": [
+			{
+				"code": "123101",
+				"type": "资产",
+				"name": "计提应收账款准备",
+				"balance_direction": "贷",
+				"mnemonic_code": "hzzb_jtyszkzb",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "123102",
+				"type": "资产",
+				"name": "计提其他应收款准备",
+				"balance_direction": "贷",
+				"mnemonic_code": "hzzb_jtqtyskzb",
+				"level": 2,
+				"system_default": 1
+			}
+		]
+	},
+	{
+		"code": "1301",
+		"type": "资产",
+		"name": "贴现资产",
+		"balance_direction": "借",
+		"mnemonic_code": "txzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1302",
+		"type": "资产",
+		"name": "拆出资金",
+		"balance_direction": "借",
+		"mnemonic_code": "cczj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1303",
+		"type": "资产",
+		"name": "贷款",
+		"balance_direction": "借",
+		"mnemonic_code": "dk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1304",
+		"type": "资产",
+		"name": "贷款损失准备",
+		"balance_direction": "贷",
+		"mnemonic_code": "dksszb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1311",
+		"type": "资产",
+		"name": "代理兑付证券",
+		"balance_direction": "借",
+		"mnemonic_code": "dldfzq",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1321",
+		"type": "资产",
+		"name": "代理业务资产",
+		"balance_direction": "借",
+		"mnemonic_code": "dlywzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1401",
+		"type": "资产",
+		"name": "材料采购",
+		"balance_direction": "借",
+		"mnemonic_code": "clcg",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1402",
+		"type": "资产",
+		"name": "在途物资",
+		"balance_direction": "借",
+		"mnemonic_code": "ztwz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1403",
+		"type": "资产",
+		"name": "原材料",
+		"balance_direction": "借",
+		"mnemonic_code": "ycl",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1404",
+		"type": "资产",
+		"name": "材料成本差异",
+		"balance_direction": "借",
+		"mnemonic_code": "clcbcy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1405",
+		"type": "资产",
+		"name": "库存商品",
+		"balance_direction": "借",
+		"mnemonic_code": "kcsp",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1406",
+		"type": "资产",
+		"name": "发出商品",
+		"balance_direction": "借",
+		"mnemonic_code": "fcsp",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1407",
+		"type": "资产",
+		"name": "商品进销差价",
+		"balance_direction": "贷",
+		"mnemonic_code": "spjxcj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1408",
+		"type": "资产",
+		"name": "委托加工物资",
+		"balance_direction": "借",
+		"mnemonic_code": "wtjgwz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1411",
+		"type": "资产",
+		"name": "周转材料",
+		"balance_direction": "借",
+		"mnemonic_code": "zzcl",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1421",
+		"type": "资产",
+		"name": "消耗性生物资产",
+		"balance_direction": "借",
+		"mnemonic_code": "xhxswzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1431",
+		"type": "资产",
+		"name": "贵金属",
+		"balance_direction": "借",
+		"mnemonic_code": "gjz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1441",
+		"type": "资产",
+		"name": "抵债资产",
+		"balance_direction": "借",
+		"mnemonic_code": "dzzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1451",
+		"type": "资产",
+		"name": "损余物资",
+		"balance_direction": "借",
+		"mnemonic_code": "sywz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1461",
+		"type": "资产",
+		"name": "融资租赁资产",
+		"balance_direction": "借",
+		"mnemonic_code": "rzzlzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1471",
+		"type": "资产",
+		"name": "存货跌价准备",
+		"balance_direction": "贷",
+		"mnemonic_code": "chdjzb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1501",
+		"type": "资产",
+		"name": "持有至到期投资",
+		"balance_direction": "借",
+		"mnemonic_code": "cyzdqtz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1502",
+		"type": "资产",
+		"name": "持有至到期投资减值准备",
+		"balance_direction": "贷",
+		"mnemonic_code": "cyzdqtzjzzb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1503",
+		"type": "资产",
+		"name": "可供出售金融资产",
+		"balance_direction": "借",
+		"mnemonic_code": "kgcsjrzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1511",
+		"type": "资产",
+		"name": "长期股权投资",
+		"balance_direction": "借",
+		"mnemonic_code": "cqgqtz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1512",
+		"type": "资产",
+		"name": "长期股权投资减值准备",
+		"balance_direction": "贷",
+		"mnemonic_code": "cqgqtzjzzb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1521",
+		"type": "资产",
+		"name": "投资性房地产",
+		"balance_direction": "借",
+		"mnemonic_code": "tzxfdc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1531",
+		"type": "资产",
+		"name": "长期应收款",
+		"balance_direction": "借",
+		"mnemonic_code": "cqysk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1532",
+		"type": "资产",
+		"name": "未实现融资收益",
+		"balance_direction": "贷",
+		"mnemonic_code": "wsxrzsy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1541",
+		"type": "资产",
+		"name": "存出资本保证金",
+		"balance_direction": "借",
+		"mnemonic_code": "cczbbzj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1601",
+		"type": "资产",
+		"name": "固定资产",
+		"balance_direction": "借",
+		"mnemonic_code": "gdzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1602",
+		"type": "资产",
+		"name": "累计折旧",
+		"balance_direction": "贷",
+		"mnemonic_code": "ljzj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1603",
+		"type": "资产",
+		"name": "固定资产减值准备",
+		"balance_direction": "贷",
+		"mnemonic_code": "gdzcjzzb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1604",
+		"type": "资产",
+		"name": "在建工程",
+		"balance_direction": "借",
+		"mnemonic_code": "zjgc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1605",
+		"type": "资产",
+		"name": "工程物资",
+		"balance_direction": "借",
+		"mnemonic_code": "gcwz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1606",
+		"type": "资产",
+		"name": "固定资产清理",
+		"balance_direction": "借",
+		"mnemonic_code": "gdzcql",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1611",
+		"type": "资产",
+		"name": "未担保余值",
+		"balance_direction": "借",
+		"mnemonic_code": "wdbyz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1621",
+		"type": "资产",
+		"name": "生产性生物资产",
+		"balance_direction": "借",
+		"mnemonic_code": "scxswzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1622",
+		"type": "资产",
+		"name": "生产性生物资产累计折旧",
+		"balance_direction": "贷",
+		"mnemonic_code": "scxswzcljzj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1623",
+		"type": "资产",
+		"name": "公益性生物资产",
+		"balance_direction": "借",
+		"mnemonic_code": "gyxswzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1631",
+		"type": "资产",
+		"name": "油气资产",
+		"balance_direction": "借",
+		"mnemonic_code": "yqzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1632",
+		"type": "资产",
+		"name": "累计折耗",
+		"balance_direction": "贷",
+		"mnemonic_code": "ljzh",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1701",
+		"type": "资产",
+		"name": "无形资产",
+		"balance_direction": "借",
+		"mnemonic_code": "wxzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1702",
+		"type": "资产",
+		"name": "累计摊销",
+		"balance_direction": "贷",
+		"mnemonic_code": "ljtx",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1703",
+		"type": "资产",
+		"name": "无形资产减值准备",
+		"balance_direction": "贷",
+		"mnemonic_code": "wxzcjzzb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1711",
+		"type": "资产",
+		"name": "商誉",
+		"balance_direction": "借",
+		"mnemonic_code": "sy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1801",
+		"type": "资产",
+		"name": "长期待摊费用",
+		"balance_direction": "借",
+		"mnemonic_code": "cqdtfy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1811",
+		"type": "资产",
+		"name": "递延所得税资产",
+		"balance_direction": "借",
+		"mnemonic_code": "dysdszc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1821",
+		"type": "资产",
+		"name": "独立账户资产",
+		"balance_direction": "借",
+		"mnemonic_code": "dlzhzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "1901",
+		"type": "资产",
+		"name": "待处理财产损溢",
+		"balance_direction": "借",
+		"mnemonic_code": "dclccsy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2001",
+		"type": "负债",
+		"name": "短期借款",
+		"balance_direction": "贷",
+		"mnemonic_code": "dqjk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2002",
+		"type": "负债",
+		"name": "存入保证金",
+		"balance_direction": "贷",
+		"mnemonic_code": "crbzj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2003",
+		"type": "负债",
+		"name": "拆入资金",
+		"balance_direction": "贷",
+		"mnemonic_code": "crzj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2004",
+		"type": "负债",
+		"name": "向中央银行借款",
+		"balance_direction": "贷",
+		"mnemonic_code": "xzyyhjk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2011",
+		"type": "负债",
+		"name": "吸收存款",
+		"balance_direction": "贷",
+		"mnemonic_code": "xsck",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2012",
+		"type": "负债",
+		"name": "同业存放",
+		"balance_direction": "贷",
+		"mnemonic_code": "tycf",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2021",
+		"type": "负债",
+		"name": "贴现负债",
+		"balance_direction": "贷",
+		"mnemonic_code": "txfz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2101",
+		"type": "负债",
+		"name": "交易性金融负债",
+		"balance_direction": "贷",
+		"mnemonic_code": "jyxjrfz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2111",
+		"type": "负债",
+		"name": "卖出回购金融资产款",
+		"balance_direction": "贷",
+		"mnemonic_code": "mchgjrzck",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2201",
+		"type": "负债",
+		"name": "应付票据",
+		"balance_direction": "贷",
+		"mnemonic_code": "yfpj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2202",
+		"type": "负债",
+		"name": "应付账款",
+		"balance_direction": "贷",
+		"mnemonic_code": "yfzk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2203",
+		"type": "负债",
+		"name": "预收账款",
+		"balance_direction": "贷",
+		"mnemonic_code": "yszk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2211",
+		"type": "负债",
+		"name": "应付职工薪酬",
+		"balance_direction": "贷",
+		"mnemonic_code": "yfzgxc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2221",
+		"type": "负债",
+		"name": "应交税费",
+		"balance_direction": "贷",
+		"mnemonic_code": "yjsf",
+		"level": 1,
+		"system_default": 1,
+		"children": [
+			{
+				"code": "222101",
+				"type": "负债",
+				"name": "应交增值税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yjzzs",
+				"level": 2,
+				"system_default": 1,
+				"children": [
+					{
+						"code": "22210101",
+						"type": "负债",
+						"name": "进项税额",
+						"balance_direction": "借",
+						"mnemonic_code": "yjsf_yjzzs_jxse",
+						"level": 3,
+						"system_default": 1
+					},
+					{
+						"code": "22210102",
+						"type": "负债",
+						"name": "已交税金",
+						"balance_direction": "借",
+						"mnemonic_code": "yjsf_yjzzs_yjsj",
+						"level": 3,
+						"system_default": 1
+					},
+					{
+						"code": "22210103",
+						"type": "负债",
+						"name": "转出未交增值税",
+						"balance_direction": "借",
+						"mnemonic_code": "yjsf_yjzzs_zcwjzzs",
+						"level": 3,
+						"system_default": 1
+					},
+					{
+						"code": "22210104",
+						"type": "负债",
+						"name": "减免税款",
+						"balance_direction": "借",
+						"mnemonic_code": "yjsf_yjzzs_jmsk",
+						"level": 3,
+						"system_default": 1
+					},
+					{
+						"code": "22210105",
+						"type": "负债",
+						"name": "销项税额",
+						"balance_direction": "贷",
+						"mnemonic_code": "yjsf_yjzzs_xxse",
+						"level": 3,
+						"system_default": 1
+					},
+					{
+						"code": "22210106",
+						"type": "负债",
+						"name": "出口退税",
+						"balance_direction": "贷",
+						"mnemonic_code": "yjsf_yjzzs_ckts",
+						"level": 3,
+						"system_default": 1
+					},
+					{
+						"code": "22210107",
+						"type": "负债",
+						"name": "进项税额转出",
+						"balance_direction": "贷",
+						"mnemonic_code": "yjsf_yjzzs_jxsezc",
+						"level": 3,
+						"system_default": 1
+					},
+					{
+						"code": "22210108",
+						"type": "负债",
+						"name": "出口抵减内销产品应纳税额",
+						"balance_direction": "借",
+						"mnemonic_code": "yjsf_yjzzs_ckdjnxcpynse",
+						"level": 3,
+						"system_default": 1
+					},
+					{
+						"code": "22210109",
+						"type": "负债",
+						"name": "转出多交增值税",
+						"balance_direction": "贷",
+						"mnemonic_code": "yjsf_yjzzs_zcdjzzs",
+						"level": 3,
+						"system_default": 1
+					},
+					{
+						"code": "22210110",
+						"type": "负债",
+						"name": "销项税额抵减",
+						"balance_direction": "借",
+						"mnemonic_code": "yjsf_yjzzs_xxsedj",
+						"level": 3,
+						"system_default": 1
+					}
+				]
+			},
+			{
+				"code": "222102",
+				"type": "负债",
+				"name": "未交增值税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_wjzzs",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222103",
+				"type": "负债",
+				"name": "应交消费税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yjxfs",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222104",
+				"type": "负债",
+				"name": "应交营业税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yjyys",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222105",
+				"type": "负债",
+				"name": "应交资源税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yjzys",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222106",
+				"type": "负债",
+				"name": "应交所得税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yjsds",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222107",
+				"type": "负债",
+				"name": "应交土地增值税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yjtdzzs",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222108",
+				"type": "负债",
+				"name": "应交城市维护建设税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yjcswhjss",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222109",
+				"type": "负债",
+				"name": "应交房产税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yjfcs",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222110",
+				"type": "负债",
+				"name": "应交城镇土地使用税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yjcztdsys",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222111",
+				"type": "负债",
+				"name": "应交车船使用税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yjccsys",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222112",
+				"type": "负债",
+				"name": "应交个人所得税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yjgrsds",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222113",
+				"type": "负债",
+				"name": "教育费附加",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_jyffj",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222114",
+				"type": "负债",
+				"name": "地方教育费附加",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_dfjyffj",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222115",
+				"type": "负债",
+				"name": "矿产资源补偿费",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_kczybcf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222116",
+				"type": "负债",
+				"name": "排污费",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_pwf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222117",
+				"type": "负债",
+				"name": "印花税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yhs",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222118",
+				"type": "负债",
+				"name": "预交增值税",
+				"balance_direction": "借",
+				"mnemonic_code": "yjsf_yjzzs",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222119",
+				"type": "负债",
+				"name": "待抵扣进项税额",
+				"balance_direction": "借",
+				"mnemonic_code": "yjsf_ddkjxse",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222120",
+				"type": "负债",
+				"name": "待认证进项税额",
+				"balance_direction": "借",
+				"mnemonic_code": "yjsf_drzjxse",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222121",
+				"type": "负债",
+				"name": "待转销项税额",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_dzxxse",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222122",
+				"type": "负债",
+				"name": "增值税留抵税额",
+				"balance_direction": "借",
+				"mnemonic_code": "yjsf_zzsldse",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222123",
+				"type": "负债",
+				"name": "简易计税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_jyjs",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222124",
+				"type": "负债",
+				"name": "转让金融商品应交增值税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_zrjrspyjzzs",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222125",
+				"type": "负债",
+				"name": "代扣代交增值税",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_dkdjzzs",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "222126",
+				"type": "负债",
+				"name": "应交增值税（小规模纳税人专用）",
+				"balance_direction": "贷",
+				"mnemonic_code": "yjsf_yjzzs（xgmnsrzy）",
+				"level": 2,
+				"system_default": 1
+			}
+		]
+	},
+	{
+		"code": "2231",
+		"type": "负债",
+		"name": "应付利息",
+		"balance_direction": "贷",
+		"mnemonic_code": "yflx",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2232",
+		"type": "负债",
+		"name": "应付股利",
+		"balance_direction": "贷",
+		"mnemonic_code": "yfgl",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2241",
+		"type": "负债",
+		"name": "其他应付款",
+		"balance_direction": "贷",
+		"mnemonic_code": "qtyfk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2251",
+		"type": "负债",
+		"name": "应付保单红利",
+		"balance_direction": "贷",
+		"mnemonic_code": "yfbdhl",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2261",
+		"type": "负债",
+		"name": "应付分保账款",
+		"balance_direction": "贷",
+		"mnemonic_code": "yffbzk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2311",
+		"type": "负债",
+		"name": "代理买卖证券款",
+		"balance_direction": "贷",
+		"mnemonic_code": "dlmmzqk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2312",
+		"type": "负债",
+		"name": "代理承销证券款",
+		"balance_direction": "贷",
+		"mnemonic_code": "dlcxzqk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2313",
+		"type": "负债",
+		"name": "代理兑付证券款",
+		"balance_direction": "贷",
+		"mnemonic_code": "dldfzqk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2314",
+		"type": "负债",
+		"name": "代理业务负债",
+		"balance_direction": "贷",
+		"mnemonic_code": "dlywfz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2401",
+		"type": "负债",
+		"name": "递延收益",
+		"balance_direction": "贷",
+		"mnemonic_code": "dysy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2501",
+		"type": "负债",
+		"name": "长期借款",
+		"balance_direction": "贷",
+		"mnemonic_code": "cqjk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2502",
+		"type": "负债",
+		"name": "应付债券",
+		"balance_direction": "贷",
+		"mnemonic_code": "yfzq",
+		"level": 1,
+		"system_default": 1,
+		"children": [
+			{
+				"code": "250201",
+				"type": "负债",
+				"name": "优先股",
+				"balance_direction": "贷",
+				"mnemonic_code": "yfzq_yxg",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "250202",
+				"type": "负债",
+				"name": "永续股",
+				"balance_direction": "贷",
+				"mnemonic_code": "yfzq_yxg",
+				"level": 2,
+				"system_default": 1
+			}
+		]
+	},
+	{
+		"code": "2601",
+		"type": "负债",
+		"name": "未到期责任准备金",
+		"balance_direction": "贷",
+		"mnemonic_code": "wdqzrzbj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2602",
+		"type": "负债",
+		"name": "保险责任准备金",
+		"balance_direction": "贷",
+		"mnemonic_code": "bxzrzbj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2611",
+		"type": "负债",
+		"name": "保户储金",
+		"balance_direction": "贷",
+		"mnemonic_code": "bhcj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2621",
+		"type": "负债",
+		"name": "独立账户负债",
+		"balance_direction": "贷",
+		"mnemonic_code": "dlzhfz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2701",
+		"type": "负债",
+		"name": "长期应付款",
+		"balance_direction": "贷",
+		"mnemonic_code": "cqyfk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2702",
+		"type": "负债",
+		"name": "未确认融资费用",
+		"balance_direction": "借",
+		"mnemonic_code": "wqrrzfy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2711",
+		"type": "负债",
+		"name": "专项应付款",
+		"balance_direction": "贷",
+		"mnemonic_code": "zxyfk",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2801",
+		"type": "负债",
+		"name": "预计负债",
+		"balance_direction": "贷",
+		"mnemonic_code": "yjfz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "2901",
+		"type": "负债",
+		"name": "递延所得税负债",
+		"balance_direction": "贷",
+		"mnemonic_code": "dysdsfz",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "3001",
+		"type": "共同",
+		"name": "清算资金往来",
+		"balance_direction": "借",
+		"mnemonic_code": "qszjwl",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "3002",
+		"type": "共同",
+		"name": "货币兑换",
+		"balance_direction": "借",
+		"mnemonic_code": "hbdh",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "3101",
+		"type": "共同",
+		"name": "衍生工具",
+		"balance_direction": "借",
+		"mnemonic_code": "ysgj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "3201",
+		"type": "共同",
+		"name": "套期工具",
+		"balance_direction": "借",
+		"mnemonic_code": "tqgj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "3202",
+		"type": "共同",
+		"name": "被套期项目",
+		"balance_direction": "借",
+		"mnemonic_code": "btqxm",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "4001",
+		"type": "权益",
+		"name": "实收资本",
+		"balance_direction": "贷",
+		"mnemonic_code": "sszb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "4002",
+		"type": "权益",
+		"name": "资本公积",
+		"balance_direction": "贷",
+		"mnemonic_code": "zbgj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "4003",
+		"type": "权益",
+		"name": "其他权益工具",
+		"balance_direction": "贷",
+		"mnemonic_code": "qtqygj",
+		"level": 1,
+		"system_default": 1,
+		"children": [
+			{
+				"code": "400301",
+				"type": "权益",
+				"name": "优先股",
+				"balance_direction": "贷",
+				"mnemonic_code": "qtqygj_yxg",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "400302",
+				"type": "权益",
+				"name": "永续债",
+				"balance_direction": "贷",
+				"mnemonic_code": "qtqygj_yxz",
+				"level": 2,
+				"system_default": 1
+			}
+		]
+	},
+	{
+		"code": "4004",
+		"type": "权益",
+		"name": "其他综合收益",
+		"balance_direction": "贷",
+		"mnemonic_code": "qtzhsy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "4101",
+		"type": "权益",
+		"name": "盈余公积",
+		"balance_direction": "贷",
+		"mnemonic_code": "yygj",
+		"level": 1,
+		"system_default": 1,
+		"children": [
+			{
+				"code": "410101",
+				"type": "权益",
+				"name": "法定盈余公积",
+				"balance_direction": "贷",
+				"mnemonic_code": "yygj_fdyygj",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "410102",
+				"type": "权益",
+				"name": "任意盈余公积",
+				"balance_direction": "贷",
+				"mnemonic_code": "yygj_ryyygj",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "410103",
+				"type": "权益",
+				"name": "法定公益金",
+				"balance_direction": "贷",
+				"mnemonic_code": "yygj_fdgyj",
+				"level": 2,
+				"system_default": 1
+			}
+		]
+	},
+	{
+		"code": "4102",
+		"type": "权益",
+		"name": "一般风险准备",
+		"balance_direction": "贷",
+		"mnemonic_code": "ybfxzb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "4103",
+		"type": "权益",
+		"name": "本年利润",
+		"balance_direction": "贷",
+		"mnemonic_code": "bnlr",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "4104",
+		"type": "权益",
+		"name": "利润分配",
+		"balance_direction": "贷",
+		"mnemonic_code": "lrfp",
+		"level": 1,
+		"system_default": 1,
+		"children": [
+			{
+				"code": "410401",
+				"type": "权益",
+				"name": "其他转入",
+				"balance_direction": "贷",
+				"mnemonic_code": "lrfp_qtzr",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "410402",
+				"type": "权益",
+				"name": "提取法定盈余公积",
+				"balance_direction": "贷",
+				"mnemonic_code": "lrfp_tqfdyygj",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "410403",
+				"type": "权益",
+				"name": "提取法定公益金",
+				"balance_direction": "贷",
+				"mnemonic_code": "lrfp_tqfdgyj",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "410404",
+				"type": "权益",
+				"name": "提取任意盈余公积",
+				"balance_direction": "贷",
+				"mnemonic_code": "lrfp_tqryyygj",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "410405",
+				"type": "权益",
+				"name": "应付利润",
+				"balance_direction": "贷",
+				"mnemonic_code": "lrfp_yflr",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "410406",
+				"type": "权益",
+				"name": "未分配利润",
+				"balance_direction": "贷",
+				"mnemonic_code": "lrfp_wfplr",
+				"level": 2,
+				"system_default": 1
+			}
+		]
+	},
+	{
+		"code": "4105",
+		"type": "权益",
+		"name": "专项储备",
+		"balance_direction": "贷",
+		"mnemonic_code": "zxcb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "4201",
+		"type": "权益",
+		"name": "库存股",
+		"balance_direction": "借",
+		"mnemonic_code": "kcg",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "5001",
+		"type": "成本",
+		"name": "生产成本",
+		"balance_direction": "借",
+		"mnemonic_code": "sccb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "5101",
+		"type": "成本",
+		"name": "制造费用",
+		"balance_direction": "借",
+		"mnemonic_code": "zzfy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "5201",
+		"type": "成本",
+		"name": "劳务成本",
+		"balance_direction": "借",
+		"mnemonic_code": "lwcb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "5301",
+		"type": "成本",
+		"name": "研发支出",
+		"balance_direction": "借",
+		"mnemonic_code": "yfzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "5401",
+		"type": "成本",
+		"name": "工程施工",
+		"balance_direction": "借",
+		"mnemonic_code": "gcsg",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "5402",
+		"type": "成本",
+		"name": "工程结算",
+		"balance_direction": "贷",
+		"mnemonic_code": "gcjs",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "5403",
+		"type": "成本",
+		"name": "机械作业",
+		"balance_direction": "借",
+		"mnemonic_code": "jxzy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6001",
+		"type": "损益",
+		"name": "主营业务收入",
+		"balance_direction": "贷",
+		"mnemonic_code": "zyywsr",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6011",
+		"type": "损益",
+		"name": "利息收入",
+		"balance_direction": "贷",
+		"mnemonic_code": "lxsr",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6021",
+		"type": "损益",
+		"name": "手续费及佣金收入",
+		"balance_direction": "贷",
+		"mnemonic_code": "sxfjyjsr",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6031",
+		"type": "损益",
+		"name": "保费收入",
+		"balance_direction": "贷",
+		"mnemonic_code": "bfsr",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6041",
+		"type": "损益",
+		"name": "租赁收入",
+		"balance_direction": "贷",
+		"mnemonic_code": "zlsr",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6051",
+		"type": "损益",
+		"name": "其他业务收入",
+		"balance_direction": "贷",
+		"mnemonic_code": "qtywsr",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6061",
+		"type": "损益",
+		"name": "汇兑损益",
+		"balance_direction": "贷",
+		"mnemonic_code": "hdsy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6101",
+		"type": "损益",
+		"name": "公允价值变动损益",
+		"balance_direction": "贷",
+		"mnemonic_code": "gyjzbdsy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6111",
+		"type": "损益",
+		"name": "投资收益",
+		"balance_direction": "贷",
+		"mnemonic_code": "tzsy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6201",
+		"type": "损益",
+		"name": "摊回保险责任准备金",
+		"balance_direction": "贷",
+		"mnemonic_code": "thbxzrzbj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6202",
+		"type": "损益",
+		"name": "摊回赔付支出",
+		"balance_direction": "贷",
+		"mnemonic_code": "thpfzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6203",
+		"type": "损益",
+		"name": "摊回分保费用",
+		"balance_direction": "贷",
+		"mnemonic_code": "thfbfy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6301",
+		"type": "损益",
+		"name": "营业外收入",
+		"balance_direction": "贷",
+		"mnemonic_code": "yywsr",
+		"level": 1,
+		"system_default": 1,
+		"children": [
+			{
+				"code": "630101",
+				"type": "损益",
+				"name": "非流动资产处置净收益",
+				"balance_direction": "贷",
+				"mnemonic_code": "yywsr_fldzcczjsy",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "630102",
+				"type": "损益",
+				"name": "政府补助",
+				"balance_direction": "贷",
+				"mnemonic_code": "yywsr_zfbz",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "630103",
+				"type": "损益",
+				"name": "捐赠收益",
+				"balance_direction": "贷",
+				"mnemonic_code": "yywsr_jzsy",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "630104",
+				"type": "损益",
+				"name": "盘盈收益",
+				"balance_direction": "贷",
+				"mnemonic_code": "yywsr_pysy",
+				"level": 2,
+				"system_default": 1
+			}
+		]
+	},
+	{
+		"code": "6401",
+		"type": "损益",
+		"name": "主营业务成本",
+		"balance_direction": "借",
+		"mnemonic_code": "zyywcb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6402",
+		"type": "损益",
+		"name": "其他业务成本",
+		"balance_direction": "借",
+		"mnemonic_code": "qtywcb",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6403",
+		"type": "损益",
+		"name": "税金及附加",
+		"balance_direction": "借",
+		"mnemonic_code": "sjjfj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6411",
+		"type": "损益",
+		"name": "利息支出",
+		"balance_direction": "借",
+		"mnemonic_code": "lxzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6421",
+		"type": "损益",
+		"name": "手续费及佣金支出",
+		"balance_direction": "借",
+		"mnemonic_code": "sxfjyjzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6501",
+		"type": "损益",
+		"name": "提取未到期责任准备金",
+		"balance_direction": "借",
+		"mnemonic_code": "tqwdqzrzbj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6502",
+		"type": "损益",
+		"name": "提取保险责任准备金",
+		"balance_direction": "借",
+		"mnemonic_code": "tqbxzrzbj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6511",
+		"type": "损益",
+		"name": "赔付支出",
+		"balance_direction": "借",
+		"mnemonic_code": "pfzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6521",
+		"type": "损益",
+		"name": "保单红利支出",
+		"balance_direction": "借",
+		"mnemonic_code": "bdhlzc",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6531",
+		"type": "损益",
+		"name": "退保金",
+		"balance_direction": "借",
+		"mnemonic_code": "tbj",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6541",
+		"type": "损益",
+		"name": "分出保费",
+		"balance_direction": "借",
+		"mnemonic_code": "fcbf",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6542",
+		"type": "损益",
+		"name": "分保费用",
+		"balance_direction": "借",
+		"mnemonic_code": "fbfy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6601",
+		"type": "损益",
+		"name": "销售费用",
+		"balance_direction": "借",
+		"mnemonic_code": "xsfy",
+		"level": 1,
+		"system_default": 1,
+		"children": [
+			{
+				"code": "660101",
+				"type": "损益",
+				"name": "销售人员职工薪酬",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_xsryzgxc",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660102",
+				"type": "损益",
+				"name": "业务招待费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_ywzdf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660103",
+				"type": "损益",
+				"name": "修理费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_xlf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660104",
+				"type": "损益",
+				"name": "办公费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_bgf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660105",
+				"type": "损益",
+				"name": "水电费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_sdf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660106",
+				"type": "损益",
+				"name": "差旅费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_clf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660107",
+				"type": "损益",
+				"name": "折旧费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_zjf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660108",
+				"type": "损益",
+				"name": "摊销费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_txf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660109",
+				"type": "损益",
+				"name": "展览费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_zlf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660110",
+				"type": "损益",
+				"name": "商品维修费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_spwxf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660111",
+				"type": "损益",
+				"name": "运输费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_ysf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660112",
+				"type": "损益",
+				"name": "装卸费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_zxf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660113",
+				"type": "损益",
+				"name": "包装费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_bzf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660114",
+				"type": "损益",
+				"name": "保险费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_bxf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660115",
+				"type": "损益",
+				"name": "广告费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_ggf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660116",
+				"type": "损益",
+				"name": "业务宣传费",
+				"balance_direction": "借",
+				"mnemonic_code": "xsfy_ywxcf",
+				"level": 2,
+				"system_default": 1
+			}
+		]
+	},
+	{
+		"code": "6602",
+		"type": "损益",
+		"name": "管理费用",
+		"balance_direction": "借",
+		"mnemonic_code": "glfy",
+		"level": 1,
+		"system_default": 1,
+		"children": [
+			{
+				"code": "660201",
+				"type": "损益",
+				"name": "管理人员职工薪酬",
+				"balance_direction": "借",
+				"mnemonic_code": "glfy_glryzgxc",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660202",
+				"type": "损益",
+				"name": "业务招待费",
+				"balance_direction": "借",
+				"mnemonic_code": "glfy_ywzdf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660203",
+				"type": "损益",
+				"name": "修理费",
+				"balance_direction": "借",
+				"mnemonic_code": "glfy_xlf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660204",
+				"type": "损益",
+				"name": "办公费",
+				"balance_direction": "借",
+				"mnemonic_code": "glfy_bgf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660205",
+				"type": "损益",
+				"name": "水电费",
+				"balance_direction": "借",
+				"mnemonic_code": "glfy_sdf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660206",
+				"type": "损益",
+				"name": "差旅费",
+				"balance_direction": "借",
+				"mnemonic_code": "glfy_clf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660207",
+				"type": "损益",
+				"name": "折旧费",
+				"balance_direction": "借",
+				"mnemonic_code": "glfy_zjf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660208",
+				"type": "损益",
+				"name": "摊销费",
+				"balance_direction": "借",
+				"mnemonic_code": "glfy_txf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660209",
+				"type": "损益",
+				"name": "开办费",
+				"balance_direction": "借",
+				"mnemonic_code": "glfy_kbf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660210",
+				"type": "损益",
+				"name": "研究费用",
+				"balance_direction": "借",
+				"mnemonic_code": "glfy_yjfy",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660211",
+				"type": "损益",
+				"name": "咨询费",
+				"balance_direction": "借",
+				"mnemonic_code": "glfy_zxf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660212",
+				"type": "损益",
+				"name": "长期待摊费用摊销",
+				"balance_direction": "借",
+				"mnemonic_code": "glfy_cqdtfytx",
+				"level": 2,
+				"system_default": 1
+			}
+		]
+	},
+	{
+		"code": "6603",
+		"type": "损益",
+		"name": "财务费用",
+		"balance_direction": "借",
+		"mnemonic_code": "cwfy",
+		"level": 1,
+		"system_default": 1,
+		"children": [
+			{
+				"code": "660301",
+				"type": "损益",
+				"name": "利息费用",
+				"balance_direction": "借",
+				"mnemonic_code": "cwfy_lxfy",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660302",
+				"type": "损益",
+				"name": "手续费",
+				"balance_direction": "借",
+				"mnemonic_code": "cwfy_sxf",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660303",
+				"type": "损益",
+				"name": "汇兑损益",
+				"balance_direction": "借",
+				"mnemonic_code": "cwfy_hdsy",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "660304",
+				"type": "损益",
+				"name": "现金折扣",
+				"balance_direction": "借",
+				"mnemonic_code": "cwfy_xjzk",
+				"level": 2,
+				"system_default": 1
+			}
+		]
+	},
+	{
+		"code": "6604",
+		"type": "损益",
+		"name": "勘探费用",
+		"balance_direction": "借",
+		"mnemonic_code": "ktfy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6701",
+		"type": "损益",
+		"name": "资产减值损失",
+		"balance_direction": "借",
+		"mnemonic_code": "zcjzss",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6711",
+		"type": "损益",
+		"name": "营业外支出",
+		"balance_direction": "借",
+		"mnemonic_code": "yywzc",
+		"level": 1,
+		"system_default": 1,
+		"children": [
+			{
+				"code": "671101",
+				"type": "损益",
+				"name": "非流动资产处置净损失",
+				"balance_direction": "借",
+				"mnemonic_code": "yywzc_fldzcczjss",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "671102",
+				"type": "损益",
+				"name": "赞助支出",
+				"balance_direction": "借",
+				"mnemonic_code": "yywzc_zzzc",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "671103",
+				"type": "损益",
+				"name": "捐赠支出",
+				"balance_direction": "借",
+				"mnemonic_code": "yywzc_jzzc",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "671104",
+				"type": "损益",
+				"name": "盘亏损失",
+				"balance_direction": "借",
+				"mnemonic_code": "yywzc_pkss",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "671105",
+				"type": "损益",
+				"name": "坏账损失",
+				"balance_direction": "借",
+				"mnemonic_code": "yywzc_hzss",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "671106",
+				"type": "损益",
+				"name": "存货毁损报废损失",
+				"balance_direction": "借",
+				"mnemonic_code": "yywzc_chhsbfss",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "671107",
+				"type": "损益",
+				"name": "无法收回的长期债券投资损失",
+				"balance_direction": "借",
+				"mnemonic_code": "yywzc_wfshdcqzqtzss",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "671108",
+				"type": "损益",
+				"name": "无法收回的长期股权投资损失",
+				"balance_direction": "借",
+				"mnemonic_code": "yywzc_wfshdcqgqtzss",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "671109",
+				"type": "损益",
+				"name": "自然灾害等不可抗力因素造成的损失",
+				"balance_direction": "借",
+				"mnemonic_code": "yywzc_zrzhdbkklyszcdss",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "671110",
+				"type": "损益",
+				"name": "税收滞纳金",
+				"balance_direction": "借",
+				"mnemonic_code": "yywzc_ssznj",
+				"level": 2,
+				"system_default": 1
+			},
+			{
+				"code": "671111",
+				"type": "损益",
+				"name": "罚款支出",
+				"balance_direction": "借",
+				"mnemonic_code": "yywzc_fkzc",
+				"level": 2,
+				"system_default": 1
+			}
+		]
+	},
+	{
+		"code": "6801",
+		"type": "损益",
+		"name": "所得税费用",
+		"balance_direction": "借",
+		"mnemonic_code": "sdsfy",
+		"level": 1,
+		"system_default": 1
+	},
+	{
+		"code": "6901",
+		"type": "损益",
+		"name": "以前年度损益调整",
+		"balance_direction": "借",
+		"mnemonic_code": "yqndsydz",
+		"level": 1,
+		"system_default": 1
+	}
+]

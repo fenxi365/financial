@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.financial.kernel.model.mapper.SubjectMaterielMapper">
+
+    <select id="selectSubjectMaterielVo" resultType="cn.gson.financial.kernel.model.vo.SubjectMaterielVo">
+        select fs.code, fs.type, fs.name, fs.id as subjectId, fsm.materiel_id as materielId
+        from fxy_financial_subject fs
+        left join fxy_financial_subject_materiel fsm on fs.id = fsm.subject_id
+        where fs.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
+        order by fs.code asc
+    </select>
+</mapper>

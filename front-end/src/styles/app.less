@@ -1,0 +1,226 @@
+@import (less) "./common.less";
+@import (less) "~heyui/themes/common.less";
+@import (less) "./overwrite.less";
+@import (less) "./fonts/style.less";
+
+body {
+  background: #f3f6f8;
+  color: rgb(47, 47, 47);
+  font-weight: 400;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+p {
+  margin: 8px 0;
+}
+
+pre {
+  white-space: pre-wrap;
+}
+
+@frame-box-shadow: rgba(0, 21, 41, .08);
+
+#app {
+  .app-frame {
+    min-height: 100vh;
+  }
+
+  .h-layout-sider {
+    z-index: 2;
+    box-shadow: 0 1px 1px @frame-box-shadow;
+  }
+
+  .h-layout-header {
+    overflow: hidden;
+    box-shadow: 0 1px 1px 0 @frame-box-shadow;
+  }
+
+  .h-layout-sider-collapsed {
+    .app-logo {
+      padding-left: 5px;
+    }
+
+    .h-layout-header-fixed {
+      .sys-tabs-vue {
+        left: @layout-sider-collapse-width;
+      }
+    }
+  }
+
+  .h-layout-header-fixed {
+    .sys-tabs-vue {
+      position: fixed;
+      top: @layout-header-height;
+      right: 0;
+      z-index: 2;
+      left: @layout-sider-width;
+    }
+
+    .sys-tabs-vue + .h-layout-content {
+      margin-top: 45px;
+    }
+  }
+
+  .h-layout-sider-fixed .h-layout-header-fixed {
+    .h-layout-content {
+      overflow: auto;
+      height: calc(~"100vh - @{layout-header-height}");
+    }
+
+    .sys-tabs-vue + .h-layout-content {
+      height: calc(~"100vh - @{layout-header-height} - @{sys-tabs-height}");
+    }
+  }
+
+  .h-layout-sider-theme-dark .app-logo a {
+    color: #FFF;
+  }
+
+}
+
+@media (max-width: 900px) {
+  #app {
+    .app-header-info {
+      .h-autocomplete, .app-header-icon-item {
+        display: none;
+      }
+    }
+
+    .h-layout {
+      padding-left: 0;
+
+      .app-menu-mask {
+        position: fixed;
+        left: @layout-sider-width;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+
+      &.h-layout-sider-collapsed {
+        > .h-layout-sider {
+          transform: translateX(-@layout-sider-collapse-width);
+          overflow: hidden;
+        }
+
+        .app-menu-mask {
+          display: none;
+        }
+      }
+    }
+
+    .h-layout-content {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .h-layout-header-fixed .h-layout-header {
+      left: 0 !important;
+    }
+
+    .sys-tabs-vue {
+      left: 0 !important;
+    }
+  }
+}
+
+
+.frame-page,
+.frame-flex-page {
+  margin: 20px;
+  .clearfix;
+
+  &.frame-flex-page {
+    display: flex;
+    padding: 10px 0;
+  }
+
+  .frame-left {
+    width: 224px;
+    border-right: @border;
+    margin-right: -1px;
+  }
+
+  .frame-main {
+    flex: 1;
+    border-left: @border;
+    padding: 8px 40px;
+
+    .subframe-title {
+      font-size: 20px;
+      color: rgba(0, 0, 0, 85);
+      line-height: 28px;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+  }
+}
+
+.actions {
+  text-align: center;
+
+  span, a {
+    color: @primary-color;
+    cursor: pointer;
+    margin-right: 10px;
+
+    &:hover {
+      text-decoration: underline;
+      color: darken(@primary-color, 20%);
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.cus-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  td {
+    padding: 0 8px;
+    border: 1px solid #e2e2e2;
+    font-size: 12px;
+    height: 32px;
+
+    &.tip {
+      background-color: #FFEEEF;
+    }
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f8fbf8;
+  }
+
+  tbody tr:hover {
+    background-color: #F0F6FF;
+  }
+
+  .header {
+    td {
+      background-color: #F5F5F5;
+      text-align: center;
+      font-weight: bold;
+      height: 35px;
+    }
+  }
+}
+
+.small-td td {
+  height: 32px !important;
+}
+
+/*在谷歌下移除input[number]的上下箭头*/
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+
+/*在firefox下移除input[number]的上下箭头*/
+input[type="number"] {
+  -moz-appearance: textfield;
+}

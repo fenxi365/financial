@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.financial.kernel.model.mapper.VoucherTemplateMapper">
+    <resultMap id="BaseResultMap" type="cn.gson.financial.kernel.model.entity.VoucherTemplate">
+        <!--@mbg.generated-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="is_default" jdbcType="BIT" property="isDefault"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="account_sets_id" jdbcType="INTEGER" property="accountSetsId"/>
+        <result column="debit_amount" jdbcType="DOUBLE" property="debitAmount"/>
+        <result column="credit_amount" jdbcType="DOUBLE" property="creditAmount"/>
+        <collection property="details" column="id" select="selectVoucherTemplateDetails"></collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, `name`, is_default, `type`, account_sets_id, debit_amount, credit_amount
+    </sql>
+    <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into fxy_financial_voucher_template
+        (`name`, is_default, `type`, account_sets_id, debit_amount, credit_amount)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name,jdbcType=VARCHAR}, #{item.isDefault,jdbcType=BIT}, #{item.type,jdbcType=TINYINT},
+            #{item.accountSetsId,jdbcType=INTEGER}, #{item.debitAmount,jdbcType=DOUBLE}, #{item.creditAmount,jdbcType=DOUBLE}
+            )
+        </foreach>
+    </insert>
+
+    <select id="selectVoucherTemplate" resultMap="BaseResultMap">
+        select *
+        from fxy_financial_voucher_template ${ew.customSqlSegment}
+        order by id desc
+    </select>
+
+    <select id="selectVoucherTemplateDetails" resultMap="cn.gson.financial.kernel.model.mapper.VoucherTemplateDetailsMapper.BaseResultMap">
+        select *
+        from fxy_financial_voucher_template_details
+        where voucher_template_id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gson.financial.kernel.model.mapper.CurrencyMapper">
+  <resultMap id="BaseResultMap" type="cn.gson.financial.kernel.model.entity.Currency">
+    <!--@mbg.generated-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="exchange_rate" jdbcType="DOUBLE" property="exchangeRate" />
+    <result column="local_currency" jdbcType="BIT" property="localCurrency" />
+    <result column="account_sets_id" jdbcType="INTEGER" property="accountSetsId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, code, `name`, exchange_rate, local_currency, account_sets_id
+  </sql>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into fxy_financial_currency
+    (code, `name`, exchange_rate, local_currency, account_sets_id)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.code,jdbcType=VARCHAR}, #{item.name,jdbcType=VARCHAR}, #{item.exchangeRate,jdbcType=DOUBLE}, 
+        #{item.localCurrency,jdbcType=BIT}, #{item.accountSetsId,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+</mapper>

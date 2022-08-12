@@ -1,0 +1,5 @@
+rootProject.name = 'financial'
+include 'kernel'
+include 'bs-server'
+include 'front-end'
+
