@@ -94,7 +94,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 oqw.eq("type", 0);
                 userVo.setOrg(organizationService.getBaseMapper().selectOne(oqw));
                 userAccountSets.setOrgId(userVo.getOrgId());
-                userAccountSetsService.save(userAccountSets);
+                userAccountSetsService.update(userAccountSets, qw);
             } else {
                 userVo.setOrg(organizationService.getById(userAccountSets.getOrgId()));
             }
@@ -126,7 +126,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Transactional
-    public void  updateUserAccountSetsOrgId(Integer accountSetsId,Integer userId,Integer orgId){
+    public void updateUserAccountSetsOrgId(Integer accountSetsId, Integer userId, Integer orgId) {
         LambdaQueryWrapper<UserAccountSets> qw = Wrappers.lambdaQuery();
         qw.eq(UserAccountSets::getAccountSetsId, accountSetsId);
         qw.eq(UserAccountSets::getUserId, userId);
