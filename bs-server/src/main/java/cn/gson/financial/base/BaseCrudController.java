@@ -36,8 +36,8 @@ public abstract class BaseCrudController<T extends IService, E> extends BaseCont
     private Class<E> entityClass;
 
     @ModelAttribute
-    public void common(HttpServletRequest request) {
-        super.common(request);
+    public void common(HttpServletRequest request, HttpSession session) {
+        super.common(request, session);
         this.entityClass = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
 
@@ -137,7 +137,7 @@ public abstract class BaseCrudController<T extends IService, E> extends BaseCont
     protected void setQwAccountSetsId(QueryWrapper qw) {
         try {
             entityClass.getDeclaredField("accountSetsId");
-            qw.eq("account_sets_id", currentUser.get().getAccountSetsId());
+            qw.eq("account_sets_id", currentUser.getAccountSetsId());
         } catch (Exception ex) {
             // 没有这个字段就不做处理了
         }
@@ -152,7 +152,7 @@ public abstract class BaseCrudController<T extends IService, E> extends BaseCont
         try {
             Field field = entityClass.getDeclaredField("accountSetsId");
             field.setAccessible(true);
-            field.set(entity, currentUser.get().getAccountSetsId());
+            field.set(entity, currentUser.getAccountSetsId());
         } catch (Exception ex) {
             // 没有这个字段就不做处理了
         }

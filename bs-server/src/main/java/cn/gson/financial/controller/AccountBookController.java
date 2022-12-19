@@ -4,14 +4,17 @@ import cn.gson.financial.base.BaseController;
 import cn.gson.financial.kernel.controller.JsonResult;
 import cn.gson.financial.kernel.model.entity.Subject;
 import cn.gson.financial.kernel.model.vo.SubjectVo;
+import cn.gson.financial.kernel.model.vo.UserVo;
 import cn.gson.financial.kernel.service.SubjectService;
 import cn.gson.financial.kernel.service.VoucherService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -37,9 +40,15 @@ public class AccountBookController extends BaseController {
     @Autowired
     private VoucherService voucherService;
 
+    @ModelAttribute
+    public void common(HttpServletRequest request) {
+        this.currentUser = (UserVo) request.getSession().getAttribute("user");
+        this.accountSetsId = this.currentUser.getAccountSetsId();
+    }
+
     @RequestMapping("list")
-    public JsonResult accountBookList(Date accountDate,Integer orgId) {
-        List<Subject> data = service.accountBookList(accountDate, this.accountSetsId.get(), false,orgId);
+    public JsonResult accountBookList(Date accountDate) {
+        List<Subject> data = service.accountBookList(accountDate, this.accountSetsId, false);
         List<SubjectVo> collect = data.stream().map(subject -> {
             SubjectVo subjectVo = new SubjectVo();
             BeanUtils.copyProperties(subject, subjectVo);
@@ -55,8 +64,8 @@ public class AccountBookController extends BaseController {
      * @return
      */
     @RequestMapping("subjectBalance")
-    public JsonResult subjectBalance(Date accountDate,Integer orgId, Boolean showNumPrice) {
-        List data = service.subjectBalance(accountDate, this.accountSetsId.get(), showNumPrice,orgId);
+    public JsonResult subjectBalance(Date accountDate, Boolean showNumPrice) {
+        List data = service.subjectBalance(accountDate, this.accountSetsId, showNumPrice);
         return JsonResult.successful(data);
     }
 
@@ -67,8 +76,8 @@ public class AccountBookController extends BaseController {
      * @return
      */
     @RequestMapping("subjectSummary")
-    public JsonResult subjectSummary(Date accountDate,Integer orgId, Boolean showNumPrice) {
-        List data = service.subjectSummary(accountDate, this.accountSetsId.get(), showNumPrice,orgId);
+    public JsonResult subjectSummary(Date accountDate, Boolean showNumPrice) {
+        List data = service.subjectSummary(accountDate, this.accountSetsId, showNumPrice);
         return JsonResult.successful(data);
     }
 
@@ -81,8 +90,8 @@ public class AccountBookController extends BaseController {
      * @return
      */
     @GetMapping("details")
-    public JsonResult accountBookDetails(Integer subjectId, Date accountDate, String subjectCode, Boolean showNumPrice,Integer orgId) {
-        List data = this.voucherService.accountBookDetails(this.accountSetsId.get(), subjectId, accountDate, subjectCode, showNumPrice,orgId);
+    public JsonResult accountBookDetails(Integer subjectId, Date accountDate, String subjectCode, Boolean showNumPrice) {
+        List data = this.voucherService.accountBookDetails(this.accountSetsId, subjectId, accountDate, subjectCode, showNumPrice);
         return JsonResult.successful(data);
     }
 
@@ -93,8 +102,8 @@ public class AccountBookController extends BaseController {
      * @return
      */
     @GetMapping("generalLedger")
-    public JsonResult generalLedger(Date accountDate, Integer orgId,Boolean showNumPrice) {
-        List<Map<String, Object>> data = this.voucherService.accountGeneralLedger(this.accountSetsId.get(), accountDate, showNumPrice,orgId);
+    public JsonResult generalLedger(Date accountDate, Boolean showNumPrice) {
+        List<Map<String, Object>> data = this.voucherService.accountGeneralLedger(this.accountSetsId, accountDate, showNumPrice);
         return JsonResult.successful(data);
     }
 
@@ -107,8 +116,8 @@ public class AccountBookController extends BaseController {
      * @return
      */
     @GetMapping("auxiliaryDetails")
-    public JsonResult auxiliaryDetails(Integer auxiliaryId, Date accountDate, Integer auxiliaryItemId, Boolean showNumPrice,Integer orgId) {
-        List data = this.voucherService.auxiliaryDetails(this.accountSetsId.get(), auxiliaryId, accountDate, auxiliaryItemId, showNumPrice,orgId);
+    public JsonResult auxiliaryDetails(Integer auxiliaryId, Date accountDate, Integer auxiliaryItemId, Boolean showNumPrice) {
+        List data = this.voucherService.auxiliaryDetails(this.accountSetsId, auxiliaryId, accountDate, auxiliaryItemId, showNumPrice);
         return JsonResult.successful(data);
     }
 
@@ -119,8 +128,8 @@ public class AccountBookController extends BaseController {
      * @return
      */
     @GetMapping("auxiliaryList")
-    public JsonResult auxiliaryList(Integer auxiliaryId, Integer orgId) {
-        List data = this.voucherService.auxiliaryList(this.accountSetsId.get(), auxiliaryId,orgId);
+    public JsonResult auxiliaryList(Integer auxiliaryId) {
+        List data = this.voucherService.auxiliaryList(this.accountSetsId, auxiliaryId);
         return JsonResult.successful(data);
     }
 
@@ -132,8 +141,8 @@ public class AccountBookController extends BaseController {
      * @return
      */
     @GetMapping("auxiliaryBalance")
-    public JsonResult auxiliaryBalance(Date accountDate, Integer auxiliaryId, Boolean showNumPrice, Integer orgId) {
-        List data = this.voucherService.auxiliaryBalance(this.accountSetsId.get(), auxiliaryId, accountDate, showNumPrice,orgId);
+    public JsonResult auxiliaryBalance(Date accountDate, Integer auxiliaryId, Boolean showNumPrice) {
+        List data = this.voucherService.auxiliaryBalance(this.accountSetsId, auxiliaryId, accountDate, showNumPrice);
         return JsonResult.successful(data);
     }
 

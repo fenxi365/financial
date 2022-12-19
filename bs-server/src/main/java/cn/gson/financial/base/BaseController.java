@@ -1,12 +1,10 @@
 package cn.gson.financial.base;
 
-import cn.dev33.satoken.session.SaSession;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.gson.financial.kernel.model.vo.UserVo;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * <p>****************************************************************************</p>
@@ -19,26 +17,20 @@ import javax.servlet.http.HttpServletRequest;
  * </ul>
  * <p>****************************************************************************</p>
  */
-@Slf4j
 public abstract class BaseController {
 
-    protected ThreadLocal<UserVo> currentUser = new ThreadLocal<>();
+    protected UserVo currentUser;
 
-    protected ThreadLocal<Integer> accountSetsId = new ThreadLocal<>();
+    protected Integer accountSetsId;
 
-    protected ThreadLocal<SaSession> session = new ThreadLocal<>();
+    protected HttpSession session;
 
     @ModelAttribute
-    public void common(HttpServletRequest request) {
-        try {
-            this.session.set(StpUtil.getTokenSession());
-            this.currentUser.set(this.session.get().getModel("user", UserVo.class));
-        } catch (Exception e) {
-            log.error("session error:{}", e.getMessage());
+    public void common(HttpServletRequest request, HttpSession session) {
+        this.currentUser = (UserVo) request.getSession().getAttribute("user");
+        if (this.currentUser != null) {
+            this.accountSetsId = this.currentUser.getAccountSetsId();
         }
-
-        if (this.currentUser.get() != null) {
-            this.accountSetsId.set(this.currentUser.get().getAccountSetsId());
-        }
+        this.session = session;
     }
 }

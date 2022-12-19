@@ -2,7 +2,6 @@ package cn.gson.financial.kernel.service.impl;
 
 import cn.gson.financial.kernel.aliyuncs.SmsService;
 import cn.gson.financial.kernel.common.Roles;
-import cn.gson.financial.kernel.enums.DefaultAccountingCategory;
 import cn.gson.financial.kernel.exception.ServiceException;
 import cn.gson.financial.kernel.model.entity.Currency;
 import cn.gson.financial.kernel.model.entity.*;
@@ -76,8 +75,6 @@ public class AccountSetsServiceImpl extends ServiceImpl<AccountSetsMapper, Accou
     private final ReportTemplateItemsMapper reportTemplateItemsMapper;
 
     private final ReportTemplateItemsFormulaMapper reportTemplateItemsFormulaMapper;
-
-    private final OrganizationMapper organizationMapper;
 
     @Value("${aliyun.sms.signature}")
     private String smsSignature;
@@ -282,61 +279,6 @@ public class AccountSetsServiceImpl extends ServiceImpl<AccountSetsMapper, Accou
 
     @Override
     @Transactional
-    public void init(AccountSets entity) {
-        LambdaQueryWrapper<AccountSets> qw = Wrappers.lambdaQuery();
-        qw.eq(AccountSets::getCompanyName, entity.getCompanyName());
-        qw.eq(AccountSets::getCreatorId, entity.getCreatorId());
-
-        if (this.count(qw) > 0) {
-            throw new ServiceException("单位名称已经存在！");
-        }
-
-        boolean rs = super.save(entity);
-        if (rs) {
-
-            //加入关联表
-            UserAccountSets userAccountSets = new UserAccountSets();
-            userAccountSets.setAccountSetsId(entity.getId());
-            userAccountSets.setUserId(entity.getCreatorId());
-            userAccountSets.setRoleType(Roles.Manager.name());
-            userAccountSetsMapper.insert(userAccountSets);
-
-            //初始化数据
-            this.initAccountingCategory(entity);
-            this.initCurrency(entity);
-            this.initVoucherWord(entity);
-            this.initSubject(entity);
-
-            Organization org = new Organization();
-            try {
-                this.initReport(entity, org);
-            } catch (IOException e) {
-                throw new ServiceException("初始化报表失败！", e);
-            }
-            //默认创建总公司机构
-            org.setAccountSetsId(entity.getId());
-            org.setType(0);
-            org.setStatus(true);
-            org.setName(entity.getCompanyName());
-            org.setCode(entity.getId() + String.format("%04d", new Random().nextInt(9999)));
-            org.setEnableDate(entity.getEnableDate());
-            org.setCreatorId(entity.getCreatorId());
-            org.setCurrentAccountDate(entity.getEnableDate());
-            organizationMapper.insert(org);
-            //初始化结转状态
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(entity.getEnableDate());
-            Checkout checkout = new Checkout();
-            checkout.setAccountSetsId(entity.getId());
-            checkout.setCheckYear(calendar.get(Calendar.YEAR));
-            checkout.setCheckMonth(calendar.get(Calendar.MONDAY) + 1);
-            checkout.setOrgId(org.getId());
-            checkoutMapper.insert(checkout);
-        }
-    }
-
-    @Override
-    @Transactional
     public boolean save(AccountSets entity) {
         LambdaQueryWrapper<AccountSets> qw = Wrappers.lambdaQuery();
         qw.eq(AccountSets::getCompanyName, entity.getCompanyName());
@@ -348,8 +290,6 @@ public class AccountSetsServiceImpl extends ServiceImpl<AccountSetsMapper, Accou
 
         boolean rs = super.save(entity);
         if (rs) {
-
-
             //加入关联表
             UserAccountSets userAccountSets = new UserAccountSets();
             userAccountSets.setAccountSetsId(entity.getId());
@@ -368,22 +308,12 @@ public class AccountSetsServiceImpl extends ServiceImpl<AccountSetsMapper, Accou
             this.initCurrency(entity);
             this.initVoucherWord(entity);
             this.initSubject(entity);
-            Organization org = new Organization();
             try {
-                this.initReport(entity, org);
+                this.initReport(entity);
             } catch (IOException e) {
                 throw new ServiceException("初始化报表失败！", e);
             }
-            //默认创建总公司机构
-            org.setAccountSetsId(entity.getId());
-            org.setType(0);
-            org.setStatus(true);
-            org.setName(entity.getCompanyName());
-            org.setCode(entity.getId() + String.format("%04d", new Random().nextInt(9999)));
-            org.setEnableDate(entity.getEnableDate());
-            org.setCreatorId(entity.getCreatorId());
-            org.setCurrentAccountDate(entity.getEnableDate());
-            organizationMapper.insert(org);
+
             //初始化结转状态
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(entity.getEnableDate());
@@ -391,42 +321,26 @@ public class AccountSetsServiceImpl extends ServiceImpl<AccountSetsMapper, Accou
             checkout.setAccountSetsId(entity.getId());
             checkout.setCheckYear(calendar.get(Calendar.YEAR));
             checkout.setCheckMonth(calendar.get(Calendar.MONDAY) + 1);
-            checkout.setOrgId(org.getId());
             checkoutMapper.insert(checkout);
         }
         return rs;
     }
 
-
     @Override
     public boolean update(AccountSets entity, Wrapper<AccountSets> updateWrapper) {
         AccountSets old = this.getById(entity.getId());
-
-        //如果修改了初始账套日期，需要同步更新 // 需要更新组织的账套、组织启用日期
+        //如果修改了初始账套日期，需要同步更新
         if (!DateFormatUtils.format(old.getEnableDate(), "yyyyMM").equals(DateFormatUtils.format(entity.getEnableDate(), "yyyyMM"))) {
-            //获取总公司
-            LambdaQueryWrapper<Organization> oqw = Wrappers.lambdaQuery();
-            oqw.eq(Organization::getAccountSetsId, entity.getId());
-            oqw.eq(Organization::getType, 0);
-            Organization organization = this.organizationMapper.selectOne(oqw);
-            if (organization != null) {
-                organization.setEnableDate(entity.getEnableDate());
-                organization.setCurrentAccountDate(entity.getEnableDate());
-                this.organizationMapper.updateById(organization);
+            LambdaQueryWrapper<Checkout> cqw = Wrappers.lambdaQuery();
+            cqw.eq(Checkout::getAccountSetsId, entity.getId());
+            cqw.eq(Checkout::getCheckYear, DateFormatUtils.format(old.getEnableDate(), "yyyy"));
+            cqw.eq(Checkout::getCheckMonth, DateFormatUtils.format(old.getEnableDate(), "M"));
 
-                LambdaQueryWrapper<Checkout> cqw = Wrappers.lambdaQuery();
-                cqw.eq(Checkout::getAccountSetsId, entity.getId());
-                cqw.eq(Checkout::getCheckYear, DateFormatUtils.format(old.getEnableDate(), "yyyy"));
-                cqw.eq(Checkout::getCheckMonth, DateFormatUtils.format(old.getEnableDate(), "M"));
-                cqw.eq(Checkout::getOrgId, organization.getId());
-
-                Checkout checkout = this.checkoutMapper.selectOne(cqw);
-                checkout.setCheckYear(Integer.parseInt(DateFormatUtils.format(entity.getEnableDate(), "yyyy")));
-                checkout.setCheckMonth(Integer.parseInt(DateFormatUtils.format(entity.getEnableDate(), "M")));
-                this.checkoutMapper.updateById(checkout);
-                entity.setCurrentAccountDate(entity.getEnableDate());
-            }
-
+            Checkout checkout = this.checkoutMapper.selectOne(cqw);
+            checkout.setCheckYear(Integer.parseInt(DateFormatUtils.format(entity.getEnableDate(), "yyyy")));
+            checkout.setCheckMonth(Integer.parseInt(DateFormatUtils.format(entity.getEnableDate(), "M")));
+            this.checkoutMapper.updateById(checkout);
+            entity.setCurrentAccountDate(entity.getEnableDate());
         }
         return super.update(entity, updateWrapper);
     }
@@ -466,14 +380,16 @@ public class AccountSetsServiceImpl extends ServiceImpl<AccountSetsMapper, Accou
      * @param entity
      */
     private void initAccountingCategory(AccountSets entity) {
-        List<AccountingCategory> categoryList = new ArrayList<>(DefaultAccountingCategory.values().length);
-        for (DefaultAccountingCategory category : DefaultAccountingCategory.values()) {
+        String[] categories = new String[]{"客户", "供应商", "职员", "部门", "项目", "存货", "现金流"};
+        String[] categoriesCols = new String[]{"助记码,客户类别,经营地址,联系人,手机,税号", "助记码,供应商类别,经营地址,联系人,手机,税号", "助记码,性别,部门编码,部门名称,职务,岗位,手机,出生日期,入职日期,离职日期", "助记码,负责人,手机,成立日期,撤销日期", "助记码,负责部门,负责人,手机,开始日期,验收日期", "助记码,规格型号,存货类别,计量单位,启用日期,停用日期", "现金流类别,助记码"};
+        List<AccountingCategory> categoryList = new ArrayList<>(categories.length);
+        for (int i = 0; i < categories.length; i++) {
             AccountingCategory ac = new AccountingCategory();
             ac.setCanEdit(false);
             ac.setSystemDefault(true);
             ac.setAccountSetsId(entity.getId());
-            ac.setName(category.name());
-            ac.setCustomColumns(StringUtils.join(category.fields, ","));
+            ac.setName(categories[i]);
+            ac.setCustomColumns(categoriesCols[i]);
 
             categoryList.add(ac);
         }
@@ -560,7 +476,7 @@ public class AccountSetsServiceImpl extends ServiceImpl<AccountSetsMapper, Accou
      *
      * @param entity
      */
-    private void initReport(AccountSets entity, Organization org) throws IOException {
+    private void initReport(AccountSets entity) throws IOException {
         String[] fileNames = {"lrb.json", "xjllb.json", "zcfzb.json"};
         for (String fileName : fileNames) {
             JSONObject lrb = JSONObject.parseObject(IOUtils.toString(AccountSetsServiceImpl.class.getResourceAsStream("/report/standard" + entity.getAccountingStandards() + "/" + fileName)));
@@ -569,17 +485,8 @@ public class AccountSetsServiceImpl extends ServiceImpl<AccountSetsMapper, Accou
             rt.setAccountSetsId(entity.getId());
             rt.setTemplateKey(lrb.getString("templateKey"));
             rt.setType(lrb.getInteger("type"));
-            rt.setIsDefault(true);
             //新增报表
             reportTemplateMapper.insert(rt);
-            //关联机构
-            if (rt.getType() == 0) {
-                org.setProfitTemplateId(rt.getId());
-            } else if (rt.getType() == 1) {
-                org.setDebtTemplateId(rt.getId());
-            } else if (rt.getType() == 2) {
-                org.setCashTemplateId(rt.getId());
-            }
 
             JSONArray items = lrb.getJSONArray("items");
             if (items != null && !items.isEmpty()) {

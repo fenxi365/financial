@@ -51,7 +51,7 @@ public class AccountingCategoryController extends BaseCrudController<AccountingC
     @GetMapping("template")
     public void downTemplate(@RequestParam Integer categoryId, HttpServletResponse response) throws IOException {
         LambdaQueryWrapper<AccountingCategory> qw = Wrappers.lambdaQuery();
-        qw.eq(AccountingCategory::getAccountSetsId, this.accountSetsId.get());
+        qw.eq(AccountingCategory::getAccountSetsId, this.accountSetsId);
         qw.eq(AccountingCategory::getId, categoryId);
         AccountingCategory category = this.service.getOne(qw);
         String[] columns = (category.getName() + "编码," + category.getName() + "名称," + category.getCustomColumns() + ",备注").split(",");
@@ -74,7 +74,7 @@ public class AccountingCategoryController extends BaseCrudController<AccountingC
     @GetMapping("download")
     public void downloadData(@RequestParam Integer categoryId, HttpServletResponse response) throws IOException {
         LambdaQueryWrapper<AccountingCategory> qw = Wrappers.lambdaQuery();
-        qw.eq(AccountingCategory::getAccountSetsId, this.accountSetsId.get());
+        qw.eq(AccountingCategory::getAccountSetsId, this.accountSetsId);
         qw.eq(AccountingCategory::getId, categoryId);
         AccountingCategory category = this.service.getOne(qw);
         String[] columns = (category.getName() + "编码," + category.getName() + "名称," + category.getCustomColumns() + ",备注").split(",");
@@ -125,7 +125,7 @@ public class AccountingCategoryController extends BaseCrudController<AccountingC
     @PostMapping("import")
     public JsonResult importData(@RequestParam Integer categoryId, @RequestParam("file") MultipartFile multipartFile) throws IOException {
         LambdaQueryWrapper<AccountingCategory> qw = Wrappers.lambdaQuery();
-        qw.eq(AccountingCategory::getAccountSetsId, this.accountSetsId.get());
+        qw.eq(AccountingCategory::getAccountSetsId, this.accountSetsId);
         qw.eq(AccountingCategory::getId, categoryId);
         AccountingCategory category = this.service.getOne(qw);
         if (category == null) {

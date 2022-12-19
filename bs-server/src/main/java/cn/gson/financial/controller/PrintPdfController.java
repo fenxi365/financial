@@ -69,7 +69,7 @@ public class PrintPdfController extends BaseController {
     private DecimalFormat decf = new DecimalFormat("#,##0.00");
 
     @GetMapping("voucher")
-    public ResponseEntity<byte[]> print(Integer[] id, Integer year, Integer month, Integer orgId) throws IOException, DocumentException {
+    public ResponseEntity<byte[]> print(Integer[] id, Integer year, Integer month) throws IOException, DocumentException {
 
         String folder = System.getProperty("java.io.tmpdir");
         String tempPath = folder + UUID.randomUUID();
@@ -82,20 +82,17 @@ public class PrintPdfController extends BaseController {
             qw.in(Voucher::getId, Arrays.asList(id));
         }
 
-        qw.eq(Voucher::getAccountSetsId, this.accountSetsId.get());
-        if (orgId != null){
-            qw.eq(Voucher::getOrgId, orgId);
-        }
+        qw.eq(Voucher::getAccountSetsId, this.accountSetsId);
         List<Voucher> vouchers = voucherService.list(qw);
         Rectangle rect = new Rectangle(PageSize.A4);
         Document doc = new Document(rect);
         PdfWriter writer = PdfWriter.getInstance(doc, new FileOutputStream(tempPath));
         writer.setPdfVersion(PdfWriter.PDF_VERSION_1_2);
         doc.addTitle("记账凭证");
-        doc.addAuthor(this.currentUser.get().getAccountSets().getCompanyName());
+        doc.addAuthor(this.currentUser.getAccountSets().getCompanyName());
         doc.addSubject("wmails@126.com");
         doc.addKeywords("记账凭证");
-        doc.addCreator(this.currentUser.get().getRealName());
+        doc.addCreator(this.currentUser.getRealName());
         doc.open();
         AtomicReference<Integer> totalItem = new AtomicReference<>(1);
         for (Voucher data : vouchers) {

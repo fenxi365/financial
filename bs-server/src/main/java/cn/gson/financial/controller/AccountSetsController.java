@@ -5,7 +5,6 @@ import cn.gson.financial.kernel.controller.JsonResult;
 import cn.gson.financial.kernel.model.entity.AccountSets;
 import cn.gson.financial.kernel.model.entity.UserAccountSets;
 import cn.gson.financial.kernel.model.entity.Voucher;
-import cn.gson.financial.kernel.model.vo.UserVo;
 import cn.gson.financial.kernel.service.AccountSetsService;
 import cn.gson.financial.kernel.service.UserAccountSetsService;
 import cn.gson.financial.kernel.service.UserService;
@@ -17,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,12 +45,11 @@ public class AccountSetsController extends BaseCrudController<AccountSetsService
 
     private UserService userService;
 
-
     @Override
     public JsonResult list(Map<String, String> params) {
         // 1.从中间表查出当前用户的所有账套
         LambdaQueryWrapper<UserAccountSets> uasQw = Wrappers.lambdaQuery();
-        uasQw.eq(UserAccountSets::getUserId, this.currentUser.get().getId());
+        uasQw.eq(UserAccountSets::getUserId, this.currentUser.getId());
         List<UserAccountSets> list = userAccountSetsService.list(uasQw);
 
         if (list.size() > 0) {
@@ -70,18 +69,11 @@ public class AccountSetsController extends BaseCrudController<AccountSetsService
     public JsonResult save(@RequestBody AccountSets entity) {
         try {
             entity.setCurrentAccountDate(entity.getEnableDate());
-            entity.setCreatorId(this.currentUser.get().getId());
-            service.init(entity);
+            entity.setCreatorId(this.currentUser.getId());
+            service.save(entity);
 
-            if (this.accountSetsId.get() == null) {
-                //更新 Session 中的用户信息
-                UserVo userVo = new UserVo();
-                userVo.setId(this.currentUser.get().getId());
-                userVo.setAccountSetsId(entity.getId());
-                this.userService.updateById(userVo);
-                userVo = this.userService.getUserVo(this.currentUser.get().getId());
-                session.get().set("user", userVo);
-            }
+            //更新 Session 中的用户信息
+            session.setAttribute("user", this.userService.getUserVo(this.currentUser.getId()));
 
             return JsonResult.successful(entity);
         } catch (Exception e) {
@@ -92,47 +84,49 @@ public class AccountSetsController extends BaseCrudController<AccountSetsService
 
     @Override
     public JsonResult update(@RequestBody AccountSets entity) {
-        QueryWrapper qw = Wrappers.query();
-        qw.eq("id", entity.getId());
-        service.update(entity, qw);
-        return JsonResult.successful();
+        JsonResult result = super.update(entity);
+        if (result.isSuccess() && entity.getId().equals(this.accountSetsId)) {
+            //更新 Session 中的用户信息
+            session.setAttribute("user", this.userService.getUserVo(this.currentUser.getId()));
+        }
+        return result;
     }
 
 
     @GetMapping("addUser")
     public JsonResult addUser(String mobile, String role) {
-        this.service.addUser(this.accountSetsId.get(), mobile, role);
+        this.service.addUser(this.accountSetsId, mobile, role);
         return JsonResult.successful();
     }
 
     @GetMapping("updateUserRole")
     public JsonResult updateUserRole(Integer id, String role) {
-        this.service.updateUserRole(this.accountSetsId.get(), id, role);
+        this.service.updateUserRole(this.accountSetsId, id, role);
         return JsonResult.successful();
     }
 
     @GetMapping("addNewUser")
-    public JsonResult addNewUser(String mobile, String role, String code) {
-        String scode = (String) session.get().get(mobile);
+    public JsonResult addNewUser(String mobile, String role, String code, HttpSession session) {
+        String scode = (String) session.getAttribute(mobile);
         if (scode == null || !scode.equals(code)) {
             return JsonResult.failure("验证码错误!");
         }
-        session.get().delete(mobile);
-        this.service.addNewUser(this.accountSetsId.get(), mobile, role);
+        session.removeAttribute(mobile);
+        this.service.addNewUser(this.accountSetsId, mobile, role);
         return JsonResult.successful();
     }
 
     @GetMapping("removeUser/{uid}")
     public JsonResult removeUser(@PathVariable Integer uid) {
-        this.service.removeUser(this.accountSetsId.get(), uid);
+        this.service.removeUser(this.accountSetsId, uid);
         return JsonResult.successful();
     }
 
     @PostMapping("identification")
     public JsonResult identification(@RequestParam String code) {
-        if (code.equals(this.session.get().get(this.currentUser.get().getMobile()))) {
-            this.session.get().set(this.currentUser.get().getMobile() + "_checked", true);
-            this.session.get().delete(this.currentUser.get().getMobile());
+        if (code.equals(this.session.getAttribute(this.currentUser.getMobile()))) {
+            this.session.setAttribute(this.currentUser.getMobile() + "_checked", true);
+            this.session.removeAttribute(this.currentUser.getMobile());
             return JsonResult.successful();
         }
         return JsonResult.failure("验证码校验失败！");
@@ -148,23 +142,23 @@ public class AccountSetsController extends BaseCrudController<AccountSetsService
     @PostMapping("updateEncode")
     public JsonResult updateEncode(@RequestParam String encoding, @RequestParam String newEncoding) {
         if (!encoding.equals(newEncoding)) {
-            this.service.updateEncode(this.accountSetsId.get(), encoding, newEncoding);
-            session.get().set("user", this.userService.getUserVo(this.currentUser.get().getId()));
+            this.service.updateEncode(this.accountSetsId, encoding, newEncoding);
+            session.setAttribute("user", this.userService.getUserVo(this.currentUser.getId()));
         }
         return JsonResult.successful();
     }
 
     @PostMapping("handOver")
     public JsonResult handOver(@RequestParam String code, @RequestParam String mobile) {
-        if (this.session.get().get(this.currentUser.get().getMobile() + "_checked") == null) {
+        if (this.session.getAttribute(this.currentUser.getMobile() + "_checked") == null) {
             return JsonResult.failure("亲，移交用户信息未确认！");
         }
 
-        if (code.equals(this.session.get().get(mobile))) {
-            this.service.handOver(this.accountSetsId.get(), this.currentUser.get().getId(), mobile);
-            this.session.get().delete(mobile);
+        if (code.equals(this.session.getAttribute(mobile))) {
+            this.service.handOver(this.accountSetsId, this.currentUser.getId(), mobile);
+            this.session.removeAttribute(mobile);
             //更新 Session 中的用户信息
-            session.get().set("user", this.userService.getUserVo(this.currentUser.get().getId()));
+            session.setAttribute("user", this.userService.getUserVo(this.currentUser.getId()));
             return JsonResult.successful();
         }
 
@@ -204,14 +198,14 @@ public class AccountSetsController extends BaseCrudController<AccountSetsService
      */
     @DeleteMapping("/{id:\\d+}/{smsCode}")
     public JsonResult delete(@PathVariable Long id, @PathVariable String smsCode) {
-        if (!smsCode.equals(this.session.get().get(this.currentUser.get().getMobile()))) {
+        if (!smsCode.equals(this.session.getAttribute(this.currentUser.getMobile()))) {
             return JsonResult.failure("验证码错误！");
         }
-        session.get().delete(this.currentUser.get().getMobile());
+        session.removeAttribute(this.currentUser.getMobile());
         JsonResult rs = super.delete(id);
         if (rs.isSuccess()) {
             //更新 Session 中的用户信息
-            session.get().set("user", this.userService.getUserVo(this.currentUser.get().getId()));
+            session.setAttribute("user", this.userService.getUserVo(this.currentUser.getId()));
         }
         return rs;
     }

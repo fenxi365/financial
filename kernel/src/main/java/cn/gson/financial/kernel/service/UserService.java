@@ -27,10 +27,6 @@ public interface UserService extends IService<User> {
     UserVo getUserVo(Integer userId);
 
     List<UserVo> listByAccountSetId(Integer accountSetsId);
-
-
-    void updateUserAccountSetsOrgId(Integer accountSetsId, Integer userId, Integer orgId);
-
 }
 
 

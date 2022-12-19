@@ -49,7 +49,7 @@
     <select id="selectAccountBookList" resultMap="BaseResultMap">
         select distinct ffs.id,ffs.name,ffs.code,ffs.level,ffs.parent_id,ffs.balance_direction,ffs.unit
         from fxy_financial_voucher_details ffvd
-        inner join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
+        left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
         left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
         where ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         <if test="accountDate != null">
@@ -57,9 +57,6 @@
         </if>
         <if test="showNumPrice">
             and length(ffs.unit) > 0
-        </if>
-        <if test="orgId != null">
-            and ffv.org_id = #{orgId,jdbcType=INTEGER}
         </if>
     </select>
 

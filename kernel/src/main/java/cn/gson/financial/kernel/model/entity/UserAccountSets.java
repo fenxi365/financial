@@ -22,10 +22,6 @@ public class UserAccountSets implements Serializable {
     @TableField(value = "role_type")
     private String roleType;
 
-    //当前用户选择机构
-    private Integer orgId;
-
-
     private static final long serialVersionUID = 1L;
 
     public static final String COL_ACCOUNT_SETS_ID = "account_sets_id";

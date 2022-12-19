@@ -36,23 +36,13 @@ public class ReportTemplate implements Serializable {
     private String templateKey;
 
     /**
-     * 报表类型： {0: "利润表", 1: "资产报表",2:"现金流量表",3:"自定义报表"}
+     * 报表类型：0普通报表，1资产报表
      */
     @TableField(value = "type")
     private Integer type;
 
-
-    @TableField(value = "is_default")
-    private Boolean isDefault = true;
-
     @TableField(exist = false)
     private List<ReportTemplateItems> items;
-
-    @TableField(exist = false)
-    private Integer copyId;
-
-    @TableField(exist = false)
-    private Boolean copy = false;
 
     private static final long serialVersionUID = 1L;
 
@@ -65,6 +55,4 @@ public class ReportTemplate implements Serializable {
     public static final String COL_TEMPLATE_KEY = "template_key";
 
     public static final String COL_TYPE = "type";
-
-    public static final String COL_IS_DEFAULT = "is_default";
 }

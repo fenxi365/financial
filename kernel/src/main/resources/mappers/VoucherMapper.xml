@@ -51,9 +51,6 @@
         from fxy_financial_voucher ffv
         where account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         and word = #{word,jdbcType=VARCHAR}
-        <if test="orgId != null">
-            and ffv.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
         and voucher_year = #{year}
         and voucher_month = #{month}
     </select>
@@ -90,9 +87,6 @@
         left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
         left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
         where ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
-        <if test="orgId != null">
-            and ffv.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
         and ffvd.subject_id in
         <foreach close=")" collection="subjectIds" index="index" item="id" open="(" separator=",">
             #{id,jdbcType=INTEGER}
@@ -114,9 +108,6 @@
         left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
         left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
         where ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
-        <if test="orgId != null">
-            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
         and ffvd.subject_id in
         <foreach close=")" collection="subjectIds" index="index" item="id" open="(" separator=",">
             #{id,jdbcType=INTEGER}
@@ -136,9 +127,6 @@
         left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
         left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
         where ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
-        <if test="orgId != null">
-            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
         and ffvd.subject_id in
         <foreach close=")" collection="subjectIds" index="index" item="id" open="(" separator=",">
             #{id,jdbcType=INTEGER}
@@ -161,9 +149,6 @@
         left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
         where ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         AND ffv.voucher_date <![CDATA[< ]]>#{accountDate,jdbcType=TIMESTAMP}
-        <if test="orgId != null">
-            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
         and ffvd.subject_id in
         <foreach close=")" collection="subjectIds" index="index" item="id" open="(" separator=",">
             #{id,jdbcType=INTEGER}
@@ -235,7 +220,7 @@
     <select id="selectBrokenData" resultType="java.util.Map">
         select word, count(1) total, max(code) code
         from fxy_financial_voucher ffv
-        where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffv.org_id = #{orgId,jdbcType=INTEGER}
+        where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         and voucher_year = #{year,jdbcType=INTEGER}
         and voucher_month = #{month,jdbcType=INTEGER}
         group by word;
@@ -257,9 +242,6 @@
             where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffvd.carry_forward = 0
             and ffvd.subject_code like '${code}%'
             and date_format(ffv.voucher_date, '%Y%m') = date_format(#{accountDate}, '%Y%m')
-            <if test="orgId != null">
-                and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-            </if>
             union
             select
             '${code}' subject_code,
@@ -275,9 +257,6 @@
             where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffvd.carry_forward = 0
             and ffvd.subject_code like '${code}%'
             and date_format(ffv.voucher_date, '%Y') = date_format(#{accountDate}, '%Y') and ffv.voucher_date <![CDATA[<=]]> #{accountDate,jdbcType=TIMESTAMP}
-            <if test="orgId != null">
-                and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-            </if>
         </foreach>
     </select>
 
@@ -289,9 +268,6 @@
         where ffvd.subject_id in (select id from fxy_financial_subject ffs where ffs.code like '3103%')
         and ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         and ffv.voucher_year = #{voucherYear,jdbcType=INTEGER}
-        <if test="orgId != null">
-            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
         group by ffv.voucher_month
         union
         select '主营业务收入' type,ffv.voucher_year,ffv.voucher_month, sum(ffvd.debit_amount) debit_amount, sum(ffvd.credit_amount) credit_amount
@@ -300,9 +276,6 @@
         where ffvd.subject_id in (select id from fxy_financial_subject ffs where ffs.code like '5001%')
         and ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         and ffv.voucher_year = #{voucherYear,jdbcType=INTEGER}
-        <if test="orgId != null">
-            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
         group by ffv.voucher_month
     </select>
 
@@ -314,9 +287,6 @@
         and ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         and ffv.voucher_year = #{voucherYear,jdbcType=INTEGER}
         and ffv.voucher_month = #{voucherMonth,jdbcType=INTEGER}
-        <if test="orgId != null">
-            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
         union
         select '管理费用' type,ffv.voucher_year,ffv.voucher_month, sum(ffvd.debit_amount) debit_amount, sum(ffvd.credit_amount) credit_amount
         from fxy_financial_voucher_details ffvd
@@ -325,9 +295,6 @@
         and ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         and ffv.voucher_year = #{voucherYear,jdbcType=INTEGER}
         and ffv.voucher_month = #{voucherMonth,jdbcType=INTEGER}
-        <if test="orgId != null">
-            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
         union
         select '财务费用' type,ffv.voucher_year,ffv.voucher_month, sum(ffvd.debit_amount) debit_amount, sum(ffvd.credit_amount) credit_amount
         from fxy_financial_voucher_details ffvd
@@ -336,9 +303,6 @@
         and ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         and ffv.voucher_year = #{voucherYear,jdbcType=INTEGER}
         and ffv.voucher_month = #{voucherMonth,jdbcType=INTEGER}
-        <if test="orgId != null">
-            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
     </select>
 
     <select id="selectHomeCashReport" resultType="java.util.Map">
@@ -349,9 +313,6 @@
         and ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         and ffv.voucher_year = #{voucherYear,jdbcType=INTEGER}
         and ffv.voucher_month = #{voucherMonth,jdbcType=INTEGER}
-        <if test="orgId != null">
-            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
         union
         select '银行存款' type,ffv.voucher_year,ffv.voucher_month, sum(ffvd.debit_amount) debit_amount, sum(ffvd.credit_amount) credit_amount
         from fxy_financial_voucher_details ffvd
@@ -360,9 +321,6 @@
         and ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         and ffv.voucher_year = #{voucherYear,jdbcType=INTEGER}
         and ffv.voucher_month = #{voucherMonth,jdbcType=INTEGER}
-        <if test="orgId != null">
-            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
         union
         select '其他货币资金' type,ffv.voucher_year,ffv.voucher_month, sum(ffvd.debit_amount) debit_amount, sum(ffvd.credit_amount) credit_amount
         from fxy_financial_voucher_details ffvd
@@ -371,9 +329,6 @@
         and ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         and ffv.voucher_year = #{voucherYear,jdbcType=INTEGER}
         and ffv.voucher_month = #{voucherMonth,jdbcType=INTEGER}
-        <if test="orgId != null">
-            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
     </select>
 
     <select id="selectBeforeId" resultType="java.lang.Integer">
@@ -383,9 +338,6 @@
         <if test="currentId != null">
             and
             ffv.id <![CDATA[<]]> #{currentId,jdbcType=INTEGER}
-        </if>
-        <if test="orgId != null">
-            and ffv.org_id = #{orgId,jdbcType=INTEGER}
         </if>
         order by id desc
         limit 1
@@ -398,9 +350,6 @@
         <if test="currentId != null">
             and
             ffv.id <![CDATA[>]]> #{currentId,jdbcType=INTEGER}
-        </if>
-        <if test="orgId != null">
-            and   ffv.org_id = #{orgId,jdbcType=INTEGER}
         </if>
         order by id asc
         limit 1
@@ -427,9 +376,6 @@
             where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
             and ffvd.subject_code like '${code}%'
             and ffv.voucher_date <![CDATA[<= ]]> #{accountDate}
-            <if test="orgId != null">
-                and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-            </if>
             union
             select
             '${code}' subject_code,
@@ -445,9 +391,6 @@
             where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
             and ffvd.subject_code like '${code}%'
             and ffv.voucher_date <![CDATA[< ]]> concat(date_format(#{accountDate}, '%Y'),'-01-01')
-            <if test="orgId != null">
-                and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-            </if>
         </foreach>
     </select>
     <select id="selectReportInitBalance" resultType="cn.gson.financial.kernel.model.vo.VoucherDetailVo">
@@ -459,66 +402,15 @@
             sum(IFNULL(IF(ffs.balance_direction = '借', ffvd.debit_amount, ffvd.credit_amount),0)) + sum(ifnull(ffvd.cumulative_debit,0)) - sum(ifnull(ffvd.cumulative_credit,0)) debit_amount,
             sum(ifnull(ffvd.cumulative_credit_num,0)) num
             from fxy_financial_voucher_details ffvd
-            left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
             left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
             where
             ffvd.voucher_id is null
             and ffvd.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
             and ffvd.subject_code like '${code}%'
-            <if test="orgId != null">
-                and ffvd.org_id = #{orgId,jdbcType=INTEGER}
-            </if>
         </foreach>
     </select>
 
     <select id="selectMaxVoucherDate" resultType="java.util.Date">
-        select max(ffv.voucher_date) date from fxy_financial_voucher ffv where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffv.org_id = #{orgId,jdbcType=INTEGER}  limit 1
+        select max(ffv.voucher_date) date from fxy_financial_voucher ffv where account_sets_id = #{accountSetsId,jdbcType=INTEGER} limit 1
     </select>
-
-    <select id="selectYearReportStatistical" resultType="cn.gson.financial.kernel.model.vo.VoucherDetailVo">
-        <foreach close="" collection="codes" index="index" item="code" open="" separator="union">
-            select
-            '${code}' subject_code,
-            ffs.balance_direction,
-            DATE_FORMAT(ffv.voucher_date,'%Y%m') as summary,
-            sum(ffvd.debit_amount) debit_amount,
-            sum(ffvd.credit_amount) credit_amount,
-            sum(ffvd.num) num,
-            avg(ffvd.price) price
-            from fxy_financial_voucher_details ffvd
-            left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
-            left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
-            where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffvd.carry_forward = 0
-            and ffvd.subject_code like '${code}%'
-            and date_format(ffv.voucher_date, '%Y') =#{year}
-            <if test="orgId != null">
-                and ffv.org_id = #{orgId,jdbcType=INTEGER}
-            </if>
-            GROUP BY DATE_FORMAT(ffv.voucher_date,'%Y%m')
-            union
-            select
-            '${code}' subject_code,
-            ffs.balance_direction,
-            '本年' as summary,
-            sum(ffvd.debit_amount) debit_amount,
-            sum(ffvd.credit_amount) credit_amount,
-            sum(ffvd.num) num,
-            avg(ffvd.price) price
-            from fxy_financial_voucher_details ffvd
-            left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
-            left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
-            where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffvd.carry_forward = 0
-            and ffvd.subject_code like '${code}%'
-            and date_format(ffv.voucher_date, '%Y') =#{year}
-            <if test="orgId != null">
-                and ffv.org_id = #{orgId,jdbcType=INTEGER}
-            </if>
-            GROUP BY DATE_FORMAT(ffv.voucher_date,'%Y')
-        </foreach>
-    </select>
-
-    <select id="exportVoucher" resultMap="BaseResultMap">
-        select * from fxy_financial_voucher ${ew.customSqlSegment}
-    </select>
-
 </mapper>

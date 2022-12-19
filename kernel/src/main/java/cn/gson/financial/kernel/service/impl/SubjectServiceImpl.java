@@ -88,8 +88,8 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
      * @return
      */
     @Override
-    public List<Subject> accountBookList(Date accountDate, Integer accountSetsId, boolean showNumPrice, Integer orgId) {
-        List<Subject> subjectList = baseMapper.selectAccountBookList(accountDate != null ? DateUtil.getMonthEnd(accountDate) : null, accountSetsId, showNumPrice, orgId);
+    public List<Subject> accountBookList(Date accountDate, Integer accountSetsId, boolean showNumPrice) {
+        List<Subject> subjectList = baseMapper.selectAccountBookList(accountDate != null ? DateUtil.getMonthEnd(accountDate) : null, accountSetsId, showNumPrice);
 
         Map<Integer, Subject> temp = new HashMap<>();
         subjectList.forEach(subject -> this.recursiveParent(temp, subject));
@@ -105,7 +105,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
      */
     @Override
     public List<Subject> balanceSubjectList(Date accountDate, Integer accountSetsId, boolean showNumPrice) {
-        List<Subject> subjectList = this.accountBookList(DateUtil.getMonthEnd(accountDate), accountSetsId, showNumPrice, null);
+        List<Subject> subjectList = this.accountBookList(DateUtil.getMonthEnd(accountDate), accountSetsId, showNumPrice);
 
         Map<Integer, Subject> temp = new HashMap<>();
         subjectList.forEach(subject -> this.recursiveParent(temp, subject));
@@ -157,10 +157,10 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
      * @return
      */
     @Override
-    public List<BalanceVo> subjectBalance(Date accountDate, Integer accountSetsId, boolean showNumPrice,Integer orgId) {
+    public List<BalanceVo> subjectBalance(Date accountDate, Integer accountSetsId, boolean showNumPrice) {
         //当前查询账套
         AccountSets accountSets = accountSetsMapper.selectById(accountSetsId);
-        List<Subject> subjects = this.accountBookList(null, accountSetsId, showNumPrice, orgId);
+        List<Subject> subjects = this.accountBookList(null, accountSetsId, showNumPrice);
         //转换为余额对象
         Map<Integer, BalanceVo> sbvMap = subjects.stream().collect(Collectors.toMap(Subject::getId, subject -> {
             BalanceVo sbv = new BalanceVo();
@@ -329,8 +329,8 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
      * @return
      */
     @Override
-    public List subjectSummary(Date accountDate, Integer accountSetsId, boolean showNumPrice,Integer orgId) {
-        List<Subject> subjects = this.accountBookList(accountDate, accountSetsId, showNumPrice, orgId);
+    public List subjectSummary(Date accountDate, Integer accountSetsId, boolean showNumPrice) {
+        List<Subject> subjects = this.accountBookList(accountDate, accountSetsId, showNumPrice);
         //转换为余额对象
         Map<Integer, BalanceVo> sbvMap = subjects.stream().collect(Collectors.toMap(Subject::getId, subject -> {
             BalanceVo sbv = new BalanceVo();
@@ -459,13 +459,10 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
      * @return
      */
     @Override
-    public Double balance(Integer accountSetsId, Integer subjectId, Integer categoryId, Integer categoryDetailsId, Integer orgId) {
+    public Double balance(Integer accountSetsId, Integer subjectId, Integer categoryId, Integer categoryDetailsId) {
         LambdaQueryWrapper<VoucherDetails> ibqw = Wrappers.lambdaQuery();
         ibqw.eq(VoucherDetails::getSubjectId, subjectId);
         ibqw.eq(VoucherDetails::getAccountSetsId, accountSetsId);
-        if(orgId != null){
-            ibqw.eq(VoucherDetails::getOrgId, orgId);
-        }
         ibqw.isNull(VoucherDetails::getVoucherId);
 
         List<VoucherDetails> ibs = this.voucherDetailsMapper.selectList(ibqw);
@@ -481,7 +478,7 @@ public class SubjectServiceImpl extends ServiceImpl<SubjectMapper, Subject> impl
         }
 
 
-        List<VoucherDetailVo> vds = voucherDetailsMapper.selectBalanceData(accountSetsId, subjectId, categoryId, categoryDetailsId, orgId);
+        List<VoucherDetailVo> vds = voucherDetailsMapper.selectBalanceData(accountSetsId, subjectId, categoryId, categoryDetailsId);
         double balance = 0d;
         if (!vds.isEmpty()) {
             VoucherDetailVo vo = vds.get(0);

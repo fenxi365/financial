@@ -27,6 +27,6 @@ public class UserController extends BaseCrudController<UserService, User> {
 
     @Override
     public JsonResult list(@RequestParam Map<String, String> params) {
-        return JsonResult.successful(service.listByAccountSetId(this.accountSetsId.get()));
+        return JsonResult.successful(service.listByAccountSetId(this.accountSetsId));
     }
 }

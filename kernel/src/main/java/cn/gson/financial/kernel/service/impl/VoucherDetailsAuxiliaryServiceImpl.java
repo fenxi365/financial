@@ -26,9 +26,4 @@ public class VoucherDetailsAuxiliaryServiceImpl extends ServiceImpl<VoucherDetai
     public int batchInsert(List<VoucherDetailsAuxiliary> list) {
         return baseMapper.batchInsert(list);
     }
-
-    @Override
-    public List<VoucherDetailsAuxiliary> selectByDetailsId(Integer voucherDetailsId) {
-        return baseMapper.selectByDetailsId(voucherDetailsId);
-    }
 }

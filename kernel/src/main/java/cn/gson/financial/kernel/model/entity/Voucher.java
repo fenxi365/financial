@@ -106,11 +106,6 @@ public class Voucher implements Serializable {
     @TableField(value = "carry_forward")
     private Boolean carryForward;
 
-
-
-    @TableField(value = "org_id")
-    private Integer orgId;
-
     @TableField(exist = false)
     private List<VoucherDetails> details = new ArrayList<>(0);
 

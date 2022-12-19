@@ -34,7 +34,7 @@ public interface SubjectService extends IService<Subject> {
      * @param accountSetsId
      * @return
      */
-    List<Subject> accountBookList(Date accountDate, Integer accountSetsId, boolean showNumPrice,Integer orgId);
+    List<Subject> accountBookList(Date accountDate, Integer accountSetsId, boolean showNumPrice);
 
     /**
      * 科目余额
@@ -43,7 +43,7 @@ public interface SubjectService extends IService<Subject> {
      * @param accountSetsId
      * @return
      */
-    List<BalanceVo> subjectBalance(Date accountDate, Integer accountSetsId, boolean showNumPrice,Integer orgId);
+    List<BalanceVo> subjectBalance(Date accountDate, Integer accountSetsId, boolean showNumPrice);
 
     /**
      * 科目汇总
@@ -52,7 +52,7 @@ public interface SubjectService extends IService<Subject> {
      * @param accountSetsId
      * @return
      */
-    List subjectSummary(Date accountDate, Integer accountSetsId, boolean showNumPrice,Integer orgId);
+    List subjectSummary(Date accountDate, Integer accountSetsId, boolean showNumPrice);
 
     /**
      * vo
@@ -79,7 +79,7 @@ public interface SubjectService extends IService<Subject> {
      * @param categoryDetailsId
      * @return
      */
-    Double balance(Integer accountSetsId, Integer subjectId, Integer categoryId, Integer categoryDetailsId, Integer orgId);
+    Double balance(Integer accountSetsId, Integer subjectId, Integer categoryId, Integer categoryDetailsId);
 
     /**
      * 过滤出所有没有子节点的科目

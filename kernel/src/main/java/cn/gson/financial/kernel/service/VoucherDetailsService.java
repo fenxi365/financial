@@ -28,7 +28,7 @@ public interface VoucherDetailsService extends IService<VoucherDetails> {
      * @param type
      * @return
      */
-    List<VoucherDetails> balanceList(Integer accountSetsId, String type, Integer orgId);
+    List<VoucherDetails> balanceList(Integer accountSetsId, String type);
 
     /**
      * 期初试算平衡
@@ -36,11 +36,11 @@ public interface VoucherDetailsService extends IService<VoucherDetails> {
      * @param accountSetsId
      * @return
      */
-    Map<String, Map<String, Double>> trialBalance(Integer accountSetsId,Integer orgId);
+    Map<String, Map<String, Double>> trialBalance(Integer accountSetsId);
 
-    void saveAuxiliary(Integer accountSetsId, Integer orgId, HashMap<String, Object> entity);
+    void saveAuxiliary(Integer accountSetsId, HashMap<String, Object> entity);
 
-    List<VoucherDetails> auxiliaryList(Integer accountSetsId, String type, Integer orgId);
+    List<VoucherDetails> auxiliaryList(Integer accountSetsId, String type);
 
     /**
      * 科目会计期间的累计金额

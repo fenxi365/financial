@@ -78,10 +78,6 @@ public class VoucherDetails implements Serializable {
     @TableField(value = "account_sets_id")
     private Integer accountSetsId;
 
-
-    @TableField(value = "org_id")
-    private Integer orgId;
-
     /**
      * 期初累计借方
      */

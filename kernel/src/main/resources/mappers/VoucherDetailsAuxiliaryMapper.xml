@@ -26,22 +26,16 @@
     </insert>
 
     <select id="selectByDetailsId" resultMap="BaseResultMap">
-        select * from fxy_financial_voucher_details_auxiliary ffvda
-        inner join  fxy_financial_accounting_category_details  ffacd on ffvda.accounting_category_details_id = ffacd.id
-        where ffvda.voucher_details_id = #{voucherDetailsId,jdbcType=INTEGER}
+        select * from fxy_financial_voucher_details_auxiliary where voucher_details_id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectByAccountBlock" resultMap="cn.gson.financial.kernel.model.mapper.AccountingCategoryDetailsMapper.BaseResultMap">
         select * from fxy_financial_accounting_category_details ffacd where ffacd.id in (
         select distinct ffvda.accounting_category_details_id
         from fxy_financial_voucher_details_auxiliary ffvda
-        inner join fxy_financial_voucher_details ffvd on ffvda.voucher_details_id = ffvd.id
-        inner join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
-        where ffv.account_sets_id=#{accountSetsId,jdbcType=INTEGER} and ffvda.accounting_category_id = #{auxiliaryId,jdbcType=INTEGER}
-        <if test="orgId != null">
-            and ffv.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
-        )
+        left join fxy_financial_voucher_details ffvd on ffvda.voucher_details_id = ffvd.id
+        left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
+        where ffv.account_sets_id=#{accountSetsId,jdbcType=INTEGER} and ffvda.accounting_category_id = #{auxiliaryId,jdbcType=INTEGER})
     </select>
 
     <select id="selectAccountBookDetails" resultType="cn.gson.financial.kernel.model.vo.VoucherDetailVo">
@@ -54,16 +48,13 @@
         ffvd.credit_amount,
         ffs.balance_direction
         from fxy_financial_voucher_details ffvd
-        inner join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
+        left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
         left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
         left join fxy_financial_voucher_details_auxiliary ffvda on ffvd.id = ffvda.voucher_details_id
         where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER}
         and ffvda.accounting_category_id = #{auxiliaryId,jdbcType=INTEGER}
         and ffvda.accounting_category_details_id = #{auxiliaryItemId,jdbcType=INTEGER,jdbcType=INTEGER}
         and date_format(ffv.voucher_date, '%Y%m') = date_format(#{accountDate}, '%Y%m')
-        <if test="orgId != null">
-            and ffv.org_id = #{orgId,jdbcType=INTEGER}
-        </if>
         order by ffvd.voucher_id
     </select>
 
@@ -76,7 +67,7 @@
         sum(ffvd.credit_amount) credit_amount,
         ffs.balance_direction
         from fxy_financial_voucher_details ffvd
-        inner join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
+        left join fxy_financial_voucher ffv on ffvd.voucher_id = ffv.id
         left join fxy_financial_subject ffs on ffvd.subject_id = ffs.id
         left join fxy_financial_voucher_details_auxiliary ffvda on ffvd.id = ffvda.voucher_details_id
         where ffv.account_sets_id = #{accountSetsId,jdbcType=INTEGER} and ffvd.voucher_id is not null
@@ -92,9 +83,6 @@
         </if>
         <if test="startDate == null and endDate != null">
             and ffv.voucher_date <![CDATA[< ]]> #{endDate,jdbcType=TIMESTAMP}
-        </if>
-        <if test="orgId != null">
-            and ffvd.org_id = #{orgId,jdbcType=INTEGER}
         </if>
         <if test="auxiliaryItemId == null">
             group by ffvda.accounting_category_details_id

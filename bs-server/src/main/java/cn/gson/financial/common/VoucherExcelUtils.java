@@ -7,7 +7,6 @@ import cn.gson.financial.kernel.model.vo.UserVo;
 import cn.gson.financial.kernel.service.AccountingCategoryDetailsService;
 import cn.gson.financial.kernel.service.AccountingCategoryService;
 import cn.gson.financial.kernel.service.SubjectService;
-import cn.gson.financial.kernel.service.VoucherDetailsAuxiliaryService;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -16,23 +15,18 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -53,8 +47,6 @@ public final class VoucherExcelUtils {
     //辅助项目
     private String[] AUXILIARY = {};
 
-    private Map<Integer, AccountingCategory> ACCOUNTINGCATEGORY = new LinkedHashMap<>();
-
     private DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
@@ -66,88 +58,6 @@ public final class VoucherExcelUtils {
     @Autowired
     private AccountingCategoryService accountingCategoryService;
 
-    @Autowired
-    private VoucherDetailsAuxiliaryService voucherDetailsAuxiliaryService;
-
-
-    public void exportExcel(List<Voucher> list, UserVo userVo, HttpServletResponse response) throws IOException {
-        this.loadCategory(userVo);
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("凭证信息");// 工作表对象
-        HSSFRow row = sheet.createRow(0);
-        for (int i = 0; i < COLS.length; i++) {
-            HSSFCell codeCell = row.createCell(i);
-            codeCell.setCellValue(COLS[i]);
-            codeCell.setCellType(CellType.STRING);
-        }
-        AtomicInteger index = new AtomicInteger(1);
-
-        for (int i = 0; i < list.size(); i++) {
-            Voucher voucher = list.get(i);
-            //                  0   1   2   3       4       5       6       7       8       9      10   11
-            // String cols = "日期,凭证号,摘要,科目编码,科目名称,外币代码,借方数量,借方外币,借方本币,贷方数量,贷方外币,贷方本币,
-            // " + 供应商 StringUtils.join(names, ",") + ",制单人,审核人,附件数,备注";
-            voucher.getDetails().forEach(d -> {
-                HSSFRow dtRow = sheet.createRow(index.get());
-                dtRow.createCell(0).setCellValue(DateFormatUtils.format(voucher.getVoucherDate(), "yyyy-MM-dd"));
-                dtRow.createCell(1).setCellValue(voucher.getWord() + "-" + voucher.getCode());
-                dtRow.createCell(2).setCellValue(d.getSummary());
-                dtRow.createCell(3).setCellValue(d.getSubjectCode());
-                dtRow.createCell(4).setCellValue(d.getSubjectName());
-                dtRow.createCell(5).setCellValue("");
-                if (d.getDebitAmount() != null && d.getDebitAmount() > 0 && d.getNum() != null) {
-                    dtRow.createCell(6).setCellValue(d.getNum());
-                } else {
-                    dtRow.createCell(6).setCellValue("");
-                }
-                dtRow.createCell(7).setCellValue("");
-                if (d.getDebitAmount() != null) {
-                    dtRow.createCell(8).setCellValue(d.getDebitAmount()); //借方
-                } else {
-                    dtRow.createCell(8).setCellValue("");
-                }
-                if (d.getCreditAmount() != null && d.getCreditAmount() > 0 && d.getNum() != null) {
-                    dtRow.createCell(9).setCellValue(d.getNum());
-                } else {
-                    dtRow.createCell(9).setCellValue("");
-                }
-                dtRow.createCell(10).setCellValue("");
-                if (d.getCreditAmount() != null) {
-                    dtRow.createCell(11).setCellValue(d.getCreditAmount());
-                } else {
-                    dtRow.createCell(11).setCellValue("");
-                }
-                if (StringUtils.isNotEmpty(d.getAuxiliaryTitle())) {
-                    Map<String, String> auxiliaryMap = new HashMap<>(AUXILIARY.length);
-                    List<VoucherDetailsAuxiliary> voucherDetailsAuxiliaries = voucherDetailsAuxiliaryService.selectByDetailsId(d.getId());
-                    voucherDetailsAuxiliaries.forEach(voucherDetailsAuxiliary -> {
-                        AccountingCategory accountingCategory = ACCOUNTINGCATEGORY.get(voucherDetailsAuxiliary.getAccountingCategoryId());
-                        auxiliaryMap.put(accountingCategory.getName() + "编码", voucherDetailsAuxiliary.getAccountingCategoryDetails().getCode());
-                        auxiliaryMap.put(accountingCategory.getName() + "名称", voucherDetailsAuxiliary.getAccountingCategoryDetails().getName());
-                    });
-                    for (int j = 0; j < AUXILIARY.length; j++) {
-                        dtRow.createCell((12 + j)).setCellValue(auxiliaryMap.get(AUXILIARY[j]));
-                    }
-                } else {
-                    for (int j = 0; j < AUXILIARY.length; j++) {
-                        dtRow.createCell((12 + j)).setCellValue("");
-                    }
-                }
-
-                dtRow.createCell((12 + AUXILIARY.length)).setCellValue(userVo.getNickname());
-                dtRow.createCell((13 + AUXILIARY.length)).setCellValue(voucher.getAuditMemberName());
-                dtRow.createCell((14 + AUXILIARY.length)).setCellValue(voucher.getReceiptNum() > 0 ? voucher.getReceiptNum() + "" : "");
-                dtRow.createCell((15 + AUXILIARY.length)).setCellValue(voucher.getRemark());
-                index.getAndIncrement();
-            });
-        }
-        String fileName = "凭证信息.xls";
-        response.setContentType("application/vnd.ms-excel;");
-        response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes("utf-8"), "ISO8859-1"));
-        workbook.write(response.getOutputStream());
-        workbook.close();
-    }
-
     /**
      * 读取excel数据并转化
      *
@@ -157,7 +67,7 @@ public final class VoucherExcelUtils {
      * @return
      * @throws IOException
      */
-    public List<Voucher> readExcel(String fileName, InputStream is, UserVo userVo,Integer orgId) throws IOException {
+    public List<Voucher> readExcel(String fileName, InputStream is, UserVo userVo) throws IOException {
         this.loadCategory(userVo);
 
         List<Voucher> list = new ArrayList<>();
@@ -257,7 +167,7 @@ public final class VoucherExcelUtils {
                 voucher.setCreateMember(userVo.getId());
                 voucher.setAccountSetsId(userVo.getAccountSetsId());
                 voucher.setCarryForward(false);
-                voucher.setOrgId(orgId);
+
                 maps.forEach(map -> {
                     VoucherDetails details = new VoucherDetails();
                     JSONObject jo = new JSONObject(map);
@@ -267,7 +177,6 @@ public final class VoucherExcelUtils {
                     details.setDebitAmount(jo.getDouble("借方本币"));
                     details.setCreditAmount(jo.getDouble("贷方本币"));
                     details.setAccountSetsId(userVo.getAccountSetsId());
-                    details.setOrgId(orgId);
                     details.setAuxiliary(new ArrayList<>());
                     details.setCarryForward(false);
                     details.setNum(DoubleValueUtil.getNotNullVal(jo.getDouble("借方数量"), jo.getDouble("贷方数量")));
@@ -339,7 +248,6 @@ public final class VoucherExcelUtils {
             names.add(accountingCategory.getName() + "名称");
         }
         this.AUXILIARY = names.toArray(new String[0]);
-        this.ACCOUNTINGCATEGORY = list.stream().collect(Collectors.toMap(accountingCategory -> accountingCategory.getId(), s -> s));
         String cols = "日期,凭证号,摘要,科目编码,科目名称,外币代码,借方数量,借方外币,借方本币,贷方数量,贷方外币,贷方本币," + StringUtils.join(names, ",") + ",制单人,审核人,附件数,备注";
         this.COLS = cols.split(",");
     }

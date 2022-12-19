@@ -4,7 +4,6 @@ import cn.gson.financial.base.BaseController;
 import cn.gson.financial.kernel.common.DoubleValueUtil;
 import cn.gson.financial.kernel.controller.JsonResult;
 import cn.gson.financial.kernel.model.entity.Voucher;
-import cn.gson.financial.kernel.model.vo.UserVo;
 import cn.gson.financial.kernel.service.VoucherService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -36,20 +35,10 @@ public class HomeController extends BaseController {
 
     @GetMapping("/voucher/count")
     public JsonResult info() {
-        //TODO 未机构处理
-//        Calendar cal = Calendar.getInstance();
-//        cal.setTime(this.currentUser.get().getAccountSets().getCurrentAccountDate());
-//        LambdaQueryWrapper<Voucher> qw = Wrappers.lambdaQuery();
-//        qw.eq(Voucher::getAccountSetsId, this.accountSetsId.get());
-//        qw.eq(Voucher::getVoucherYear, cal.get(Calendar.YEAR));
-//        qw.eq(Voucher::getVoucherMonth, cal.get(Calendar.MONTH) + 1);
-//        return JsonResult.successful(voucherService.count(qw));
-        UserVo userVo = this.currentUser.get();
         Calendar cal = Calendar.getInstance();
-        cal.setTime(userVo.getOrg().getCurrentAccountDate());
+        cal.setTime(this.currentUser.getAccountSets().getCurrentAccountDate());
         LambdaQueryWrapper<Voucher> qw = Wrappers.lambdaQuery();
-        qw.eq(Voucher::getAccountSetsId, this.accountSetsId.get());
-        qw.eq(Voucher::getOrgId, userVo.getOrgId());
+        qw.eq(Voucher::getAccountSetsId, this.accountSetsId);
         qw.eq(Voucher::getVoucherYear, cal.get(Calendar.YEAR));
         qw.eq(Voucher::getVoucherMonth, cal.get(Calendar.MONTH) + 1);
         return JsonResult.successful(voucherService.count(qw));
@@ -62,10 +51,9 @@ public class HomeController extends BaseController {
      */
     @GetMapping("/chart/revenueProfit")
     public JsonResult revenueProfitChart() {
-        UserVo userVo = this.currentUser.get();
         Calendar cal = Calendar.getInstance();
-        cal.setTime(userVo.getOrg().getCurrentAccountDate());
-        List<Map<String, Object>> homeReport = voucherService.getHomeReport(accountSetsId.get(), cal.get(Calendar.YEAR),userVo.getOrgId());
+        cal.setTime(this.currentUser.getAccountSets().getCurrentAccountDate());
+        List<Map<String, Object>> homeReport = voucherService.getHomeReport(accountSetsId, cal.get(Calendar.YEAR));
         //根据类型和年进行分组
         Map<String, Map<Object, Double>> collect = homeReport.stream().collect(
                 Collectors.groupingBy(
@@ -86,10 +74,9 @@ public class HomeController extends BaseController {
      */
     @GetMapping("/chart/cost")
     public JsonResult costReport() {
-        UserVo userVo = this.currentUser.get();
         Calendar cal = Calendar.getInstance();
-        cal.setTime(userVo.getOrg().getCurrentAccountDate());
-        List<Map<String, Object>> homeReport = voucherService.getCostReport(accountSetsId.get(), cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1,userVo.getOrgId());
+        cal.setTime(this.currentUser.getAccountSets().getCurrentAccountDate());
+        List<Map<String, Object>> homeReport = voucherService.getCostReport(accountSetsId, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1);
         return JsonResult.successful(getStringListMap(homeReport));
     }
 
@@ -101,10 +88,9 @@ public class HomeController extends BaseController {
      */
     @GetMapping("/chart/cash")
     public JsonResult cashReport() {
-        UserVo userVo = this.currentUser.get();
         Calendar cal = Calendar.getInstance();
-        cal.setTime(userVo.getOrg().getCurrentAccountDate());
-        List<Map<String, Object>> homeReport = voucherService.getCashReport(accountSetsId.get(), cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1,userVo.getOrgId());
+        cal.setTime(this.currentUser.getAccountSets().getCurrentAccountDate());
+        List<Map<String, Object>> homeReport = voucherService.getCashReport(accountSetsId, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1);
         //根据类型和年进行分组
         return JsonResult.successful(getStringListMap(homeReport));
     }

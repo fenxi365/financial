@@ -6,7 +6,10 @@ import cn.gson.financial.kernel.model.entity.ReportTemplateItems;
 import cn.gson.financial.kernel.model.entity.ReportTemplateItemsFormula;
 import cn.gson.financial.kernel.service.ReportTemplateItemsService;
 import lombok.Data;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -28,21 +31,10 @@ public class ReportTemplateItemsController extends BaseCrudController<ReportTemp
 
     @PostMapping("formula")
     public JsonResult saveFormula(@RequestBody FormulaForm formulaForm) {
-        service.saveFormula(formulaForm.getTemplateItemsId(), formulaForm.getFormulas(), this.accountSetsId.get());
+        service.saveFormula(formulaForm.getTemplateItemsId(), formulaForm.getFormulas(), this.accountSetsId);
         return JsonResult.successful();
     }
 
-    @Override
-    public JsonResult save(@RequestBody ReportTemplateItems entity) {
-        super.save(entity);
-        return JsonResult.successful(entity);
-    }
-
-    @GetMapping("/reset/line/{templateId:\\d+}")
-    public JsonResult resetLine(@PathVariable Integer templateId) {
-        service.resetLine(templateId);
-        return JsonResult.successful();
-    }
     @Data
     static class FormulaForm {
         List<ReportTemplateItemsFormula> formulas;

@@ -29,7 +29,7 @@ public interface CheckoutService extends IService<Checkout> {
      * @param accountSetsId
      * @return
      */
-    boolean initialCheck(Integer accountSetsId, Integer orgId);
+    boolean initialCheck(Integer accountSetsId);
 
     /**
      * 期末检查
@@ -39,7 +39,7 @@ public interface CheckoutService extends IService<Checkout> {
      * @param month
      * @return
      */
-    boolean finalCheck(Integer accountSetsId, Integer year, Integer month, Integer orgId);
+    boolean finalCheck(Integer accountSetsId, Integer year, Integer month);
 
     /**
      * 报表检查
@@ -49,7 +49,7 @@ public interface CheckoutService extends IService<Checkout> {
      * @param month
      * @return
      */
-    Map<String, Object> reportCheck(Integer accountSetsId, Integer year, Integer month, Integer orgId);
+    Map<String, Object> reportCheck(Integer accountSetsId, Integer year, Integer month);
 
     /**
      * 断号检查
@@ -59,7 +59,7 @@ public interface CheckoutService extends IService<Checkout> {
      * @param month
      * @return
      */
-    boolean brokenCheck(Integer accountSetsId, Integer year, Integer month, Integer orgId);
+    boolean brokenCheck(Integer accountSetsId, Integer year, Integer month);
 
     /**
      * 结账
@@ -69,7 +69,7 @@ public interface CheckoutService extends IService<Checkout> {
      * @param month
      * @return
      */
-    boolean invoicing(UserVo user, Integer orgId, Integer year, Integer month);
+    boolean invoicing(UserVo user, Integer year, Integer month);
 
     /**
      * 反结账
@@ -79,6 +79,6 @@ public interface CheckoutService extends IService<Checkout> {
      * @param month
      * @return
      */
-    boolean unCheck(UserVo currentUser, Integer orgId, Integer year, Integer month);
+    boolean unCheck(UserVo currentUser, Integer year, Integer month);
 }
 

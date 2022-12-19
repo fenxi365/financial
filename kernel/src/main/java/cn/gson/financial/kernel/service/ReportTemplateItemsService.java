@@ -31,7 +31,6 @@ public interface ReportTemplateItemsService extends IService<ReportTemplateItems
      */
     void saveFormula(Integer templateItemsId, List<ReportTemplateItemsFormula> formulas, Integer accountSetsId);
 
-    void resetLine(Integer templateId);
 }
 
 

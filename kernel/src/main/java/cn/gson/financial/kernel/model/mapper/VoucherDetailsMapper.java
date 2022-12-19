@@ -26,9 +26,9 @@ import java.util.Set;
 public interface VoucherDetailsMapper extends BaseMapper<VoucherDetails> {
     int batchInsert(@Param("list") List<VoucherDetails> list);
 
-    VoucherDetails selectCarryForwardMoney(@Param("accountSetsId") Integer accountSetsId, @Param("years") Integer years, @Param("month") Integer month, @Param("code") String code, @Param("orgId") Integer orgId);
+    VoucherDetails selectCarryForwardMoney(@Param("accountSetsId") Integer accountSetsId, @Param("years") Integer years, @Param("month") Integer month, @Param("code") String code);
 
-    VoucherDetails selectFinalCheckData(@Param("accountSetsId") Integer accountSetsId, @Param("year") Integer year, @Param("month") Integer month, @Param("orgId") Integer orgId);
+    VoucherDetails selectFinalCheckData(@Param("accountSetsId") Integer accountSetsId, @Param("year") Integer year, @Param("month") Integer month);
 
     /**
      * 报表检查 资产-负债=权益
@@ -37,7 +37,7 @@ public interface VoucherDetailsMapper extends BaseMapper<VoucherDetails> {
      * @param voucherDate
      * @return
      */
-    List<VoucherDetails> assetStatistics(@Param("accountSetsId") Integer accountSetsId, @Param("voucherDate") Date voucherDate, @Param("orgId") Integer orgId);
+    List<VoucherDetails> assetStatistics(@Param("accountSetsId") Integer accountSetsId, @Param("voucherDate") Date voucherDate);
 
     /**
      * 最常用备注
@@ -45,7 +45,7 @@ public interface VoucherDetailsMapper extends BaseMapper<VoucherDetails> {
      * @param accountSetsId
      * @return
      */
-    List<String> selectTopSummary(@Param("accountSetsId") Integer accountSetsId, @Param("orgId") Integer orgId);
+    List<String> selectTopSummary(@Param("accountSetsId") Integer accountSetsId);
 
     /**
      * 科目余额计算汇总数据
@@ -56,7 +56,7 @@ public interface VoucherDetailsMapper extends BaseMapper<VoucherDetails> {
      * @param categoryDetailsId
      * @return
      */
-    List<VoucherDetailVo> selectBalanceData(@Param("accountSetsId") Integer accountSetsId, @Param("subjectId") Integer subjectId, @Param("categoryId") Integer categoryId, @Param("categoryDetailsId") Integer categoryDetailsId, @Param("orgId") Integer orgId);
+    List<VoucherDetailVo> selectBalanceData(@Param("accountSetsId") Integer accountSetsId, @Param("subjectId") Integer subjectId, @Param("categoryId") Integer categoryId, @Param("categoryDetailsId") Integer categoryDetailsId);
 
     /**
      * 期初检查
@@ -64,13 +64,13 @@ public interface VoucherDetailsMapper extends BaseMapper<VoucherDetails> {
      * @param accountSetsId
      * @return
      */
-    Map<String, Double> selectListInitialCheckData(@Param("accountSetsId") Integer accountSetsId, @Param("orgId") Integer orgId);
+    Map<String, Double> selectListInitialCheckData(@Param("accountSetsId") Integer accountSetsId);
 
-    List<VoucherDetails> selectBalanceList(@Param("accountSetsId") Integer accountSetsId, @Param("type") String type, @Param("orgId") Integer orgId);
+    List<VoucherDetails> selectBalanceList(@Param("accountSetsId") Integer accountSetsId, @Param("type") String type);
 
-    List<Map> selectBassetsAndLiabilities(@Param("accountSetsId") Integer accountSetsId, @Param("orgId") Integer orgId);
+    List<Map> selectBassetsAndLiabilities(@Param("accountSetsId") Integer accountSetsId);
 
-    List<VoucherDetails> selectAuxiliaryList(@Param("accountSetsId") Integer accountSetsId, @Param("type") String type, @Param("orgId") Integer orgId);
+    List<VoucherDetails> selectAuxiliaryList(@Param("accountSetsId") Integer accountSetsId, @Param("type") String type);
 
     List<VoucherDetails> selectAggregateAmount(@Param("accountSetsId") Integer accountSetsId, @Param("codeList") Set<String> codeList, @Param("year") int year, @Param("month") int month);
 }

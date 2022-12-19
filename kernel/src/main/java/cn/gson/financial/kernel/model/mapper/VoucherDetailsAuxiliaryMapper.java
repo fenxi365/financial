@@ -25,12 +25,10 @@ import java.util.List;
 public interface VoucherDetailsAuxiliaryMapper extends BaseMapper<VoucherDetailsAuxiliary> {
     int batchInsert(@Param("list") List<VoucherDetailsAuxiliary> list);
 
-    List<AccountingCategoryDetails> selectByAccountBlock(@Param("accountSetsId") Integer accountSetsId, @Param("auxiliaryId") Integer auxiliaryId, @Param("orgId") Integer orgId);
+    List<AccountingCategoryDetails> selectByAccountBlock(@Param("accountSetsId") Integer accountSetsId, @Param("auxiliaryId") Integer auxiliaryId);
 
-    List<VoucherDetailVo> selectAccountBookDetails(@Param("accountSetsId") Integer accountSetsId, @Param("auxiliaryId") Integer auxiliaryId, @Param("accountDate") Date accountDate, @Param("auxiliaryItemId") Integer auxiliaryItemId, @Param("orgId") Integer orgId);
+    List<VoucherDetailVo> selectAccountBookDetails(@Param("accountSetsId") Integer accountSetsId, @Param("auxiliaryId") Integer auxiliaryId, @Param("accountDate") Date accountDate, @Param("auxiliaryItemId") Integer auxiliaryItemId);
 
-    List<VoucherDetailVo> selectAccountBookStatistical(@Param("accountSetsId") Integer accountSetsId, @Param("auxiliaryId") Integer auxiliaryId, @Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("auxiliaryItemId") Integer auxiliaryItemId, @Param("orgId") Integer orgId);
-
-    List<VoucherDetailsAuxiliary> selectByDetailsId(@Param("voucherDetailsId") Integer voucherDetailsId);
+    List<VoucherDetailVo> selectAccountBookStatistical(@Param("accountSetsId") Integer accountSetsId, @Param("auxiliaryId") Integer auxiliaryId, @Param("startDate") Date startDate, @Param("endDate") Date endDate, @Param("auxiliaryItemId") Integer auxiliaryItemId);
 
 }

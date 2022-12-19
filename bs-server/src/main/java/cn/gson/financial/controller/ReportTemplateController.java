@@ -3,7 +3,6 @@ package cn.gson.financial.controller;
 import cn.gson.financial.base.BaseCrudController;
 import cn.gson.financial.kernel.controller.JsonResult;
 import cn.gson.financial.kernel.model.entity.ReportTemplate;
-import cn.gson.financial.kernel.model.vo.TemplateGrantOrgVo;
 import cn.gson.financial.kernel.service.ReportTemplateService;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,21 +24,7 @@ import java.util.Date;
 public class ReportTemplateController extends BaseCrudController<ReportTemplateService, ReportTemplate> {
 
     @GetMapping("view/{id:\\d+}")
-    public JsonResult view(@PathVariable Long id, @RequestParam Date accountDate, @RequestParam Integer orgId) {
-        return JsonResult.successful(service.view(this.accountSetsId.get(), id, accountDate, orgId));
-    }
-
-    @GetMapping("year/profit/{id:\\d+}")
-    public JsonResult YearProfitStatement(@PathVariable Long id, @RequestParam String year, @RequestParam Integer orgId) {
-        return JsonResult.successful(service.yearProfitStatement(this.accountSetsId.get(), id, year, orgId));
-    }
-
-    @PostMapping("grant")
-    public JsonResult grantOrg(@RequestBody TemplateGrantOrgVo grantOrgVo) {
-        int i = service.grantOrg(grantOrgVo);
-        if(i>0){
-            return  JsonResult.successful("授权成功!");
-        }
-        return JsonResult.failure("授权失败!");
+    public JsonResult view(@PathVariable Long id, @RequestParam Date accountDate) {
+        return JsonResult.successful(service.view(this.accountSetsId, id, accountDate));
     }
 }

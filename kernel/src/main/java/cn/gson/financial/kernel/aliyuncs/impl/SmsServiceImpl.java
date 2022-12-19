@@ -2,7 +2,6 @@ package cn.gson.financial.kernel.aliyuncs.impl;
 
 import cn.gson.financial.kernel.aliyuncs.SmsService;
 import cn.gson.financial.kernel.exception.ServiceException;
-import com.alibaba.fastjson.JSON;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
@@ -15,8 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,17 +35,14 @@ public class SmsServiceImpl implements SmsService {
 
     private final String endpointName = "cn-hangzhou";
 
-    private final Environment environment;
-
     private IAcsClient acsClient;
 
     private ObjectMapper mapper = new ObjectMapper();
 
     public SmsServiceImpl(@Value("${aliyun.accessKeyId}") String accessKeyId,
-                          @Value("${aliyun.accessKeySecret}") String accessKeySecret, Environment environment) {
+                          @Value("${aliyun.accessKeySecret}") String accessKeySecret) {
         log.info("accessKeyId:{}", accessKeyId);
         log.info("accessKeySecret:{}", accessKeySecret);
-        this.environment = environment;
         //初始化ascClient,暂时不支持多region（请勿修改）
         IClientProfile profile = DefaultProfile.getProfile(regionId, accessKeyId, accessKeySecret);
         try {
@@ -66,11 +60,6 @@ public class SmsServiceImpl implements SmsService {
      */
     @Override
     public void send(SmsBody smsBody) {
-        // 测试环境，不进行实际发送
-        if (!environment.acceptsProfiles(Profiles.of("prod"))) {
-            log.info("smsBody:{}", JSON.toJSONString(smsBody, true));
-            return;
-        }
         try {
             //组装请求对象
             SendSmsRequest request = new SendSmsRequest();

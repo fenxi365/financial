@@ -1,5 +1,5 @@
 INSERT INTO `fxy_financial_user`(`id`, `mobile`, `password`, `union_id`, `open_id`, `nickname`, `avatar_url`, `real_name`, `create_date`)
-VALUES (1, '18676037292', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', NULL, NULL, '夏悸', 'https://yun.ch-cm.com/img/avatar.66caf070.png', 'Gson', '2019-08-01 23:00:42');
+VALUES (1, '13456781004', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', NULL, NULL, '代码哥', 'https://yun.ch-cm.com/img/avatar.66caf070.png', 'Gson', '2019-08-01 23:00:42');
 
 INSERT INTO `fxy_financial_accounting_category`(`id`, `name`, `custom_columns`, `system_default`)
 VALUES (1, '客户', '助记码,客户类别,经营地址,联系人,手机,税号', 1);

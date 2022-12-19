@@ -21,5 +21,4 @@ public interface VoucherDetailsAuxiliaryService extends IService<VoucherDetailsA
 
     int batchInsert(List<VoucherDetailsAuxiliary> list);
 
-    List<VoucherDetailsAuxiliary> selectByDetailsId(Integer  voucherDetailsId);
 }

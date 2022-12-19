@@ -1,7 +1,5 @@
 package cn.gson.financial.interceptor;
 
-import cn.dev33.satoken.session.SaSession;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.gson.financial.annotation.IgnoresLogin;
 import cn.gson.financial.annotation.Permissions;
 import cn.gson.financial.kernel.common.Roles;
@@ -13,6 +11,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * <p>****************************************************************************</p>
@@ -29,14 +28,9 @@ public class PermissionsHandlerInterceptorAdapter extends HandlerInterceptorAdap
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        SaSession session;
-        try {
-            session = StpUtil.getTokenSession();
-        } catch (Exception e) {
-            return true;
-        }
+        HttpSession session = request.getSession();
         HandlerMethod hm = (HandlerMethod) handler;
-        UserVo userVo = session.getModel("user", UserVo.class);
+        UserVo userVo = (UserVo) session.getAttribute("user");
         if (userVo == null || hm.hasMethodAnnotation(IgnoresLogin.class)) {
             return true;
         }

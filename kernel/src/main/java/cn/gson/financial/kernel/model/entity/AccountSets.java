@@ -108,12 +108,6 @@ public class AccountSets implements Serializable {
     @TableField(value = "encoding")
     private String encoding;
 
-    /**
-     * 第三方jxc登录 token
-     */
-    @TableField(value = "token")
-    private String token;
-
     private static final long serialVersionUID = 1L;
 
     public static final String COL_ID = "id";

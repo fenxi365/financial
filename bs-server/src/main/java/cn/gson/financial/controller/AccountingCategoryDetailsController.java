@@ -54,7 +54,7 @@ public class AccountingCategoryDetailsController extends BaseCrudController<Acco
     @DeleteMapping("/clear/{id:\\d+}")
     public JsonResult clear(@PathVariable Integer id) {
         try {
-            service.clear(id, this.accountSetsId.get());
+            service.clear(id, this.accountSetsId);
             return JsonResult.successful();
         } catch (Exception e) {
             log.error("清空失败！", e);

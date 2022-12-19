@@ -56,9 +56,6 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
     private AccountSetsMapper accountSetsMapper;
 
-    private OrganizationMapper organizationMapper;
-
-
     @Override
     public int batchInsert(List<Voucher> list) {
         return baseMapper.batchInsert(list);
@@ -75,24 +72,24 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
     }
 
     @Override
-    public int loadCode(Integer accountSetsId, String word, Date currentAccountDate, Integer orgId) {
+    public int loadCode(Integer accountSetsId, String word, Date currentAccountDate) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentAccountDate);
-        Integer code = baseMapper.selectMaxCode(accountSetsId, word, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONDAY) + 1, orgId);
+        Integer code = baseMapper.selectMaxCode(accountSetsId, word, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONDAY) + 1);
         return code == null ? 1 : code;
     }
 
     @Override
-    public List accountBookDetails(Integer accountSetsId, Integer subjectId, Date accountDate, String subjectCode, Boolean showNumPrice, Integer orgId) {
-        return this.summary(accountSetsId, subjectId, accountDate, subjectCode, showNumPrice, true, orgId);
+    public List accountBookDetails(Integer accountSetsId, Integer subjectId, Date accountDate, String subjectCode, Boolean showNumPrice) {
+        return this.summary(accountSetsId, subjectId, accountDate, subjectCode, showNumPrice, true);
     }
 
     @Override
-    public List accountGeneralLedger(Integer accountSetsId, Date accountDate, Boolean showNumPrice, Integer orgId) {
-        List<Subject> subjectList = subjectService.accountBookList(accountDate, accountSetsId, showNumPrice, orgId);
+    public List accountGeneralLedger(Integer accountSetsId, Date accountDate, Boolean showNumPrice) {
+        List<Subject> subjectList = subjectService.accountBookList(accountDate, accountSetsId, showNumPrice);
         List<Map<String, Object>> data = new ArrayList<>(subjectList.size());
         subjectList.forEach(subject -> {
-            List<VoucherDetailVo> summary = this.summary(accountSetsId, subject.getId(), accountDate, subject.getCode(), showNumPrice, false, orgId);
+            List<VoucherDetailVo> summary = this.summary(accountSetsId, subject.getId(), accountDate, subject.getCode(), showNumPrice, false);
             Map<String, Object> item = new HashMap<>(2);
             item.put("subject", subject);
             item.put("summary", summary);
@@ -111,10 +108,10 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @return
      */
     @Override
-    public Map<String, VoucherDetails> carryForwardMoney(Integer accountSetsId, Integer years, Integer month, String[] code, Integer orgId) {
+    public Map<String, VoucherDetails> carryForwardMoney(Integer accountSetsId, Integer years, Integer month, String[] code) {
         Map<String, VoucherDetails> msv = new HashMap<>(code.length);
         for (String s : code) {
-            VoucherDetails details = this.detailsMapper.selectCarryForwardMoney(accountSetsId, years, month, s + "%", orgId);
+            VoucherDetails details = this.detailsMapper.selectCarryForwardMoney(accountSetsId, years, month, s + "%");
             msv.put(s, details);
         }
         return msv;
@@ -131,14 +128,14 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @return
      */
     @Override
-    public List<VoucherDetailVo> auxiliaryDetails(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Integer auxiliaryItemId, Boolean showNumPrice, Integer orgId) {
+    public List<VoucherDetailVo> auxiliaryDetails(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Integer auxiliaryItemId, Boolean showNumPrice) {
         List<VoucherDetailVo> data = new ArrayList<>();
         //期初
-        VoucherDetailVo startVo = getAuxiliaryStart(accountSetsId, auxiliaryId, accountDate, auxiliaryItemId, orgId);
+        VoucherDetailVo startVo = getAuxiliaryStart(accountSetsId, auxiliaryId, accountDate, auxiliaryItemId);
         data.add(startVo);
 
         //明细
-        List<VoucherDetailVo> detailVos = voucherDetailsAuxiliaryMapper.selectAccountBookDetails(accountSetsId, auxiliaryId, accountDate, auxiliaryItemId, orgId);
+        List<VoucherDetailVo> detailVos = voucherDetailsAuxiliaryMapper.selectAccountBookDetails(accountSetsId, auxiliaryId, accountDate, auxiliaryItemId);
         //计算每次余额
         for (VoucherDetailVo vo : detailVos) {
             double b = 0d;
@@ -156,9 +153,9 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
 
         data.addAll(detailVos);
         //本期统计
-        VoucherDetailVo currentVo = getAuxiliaryCurrent(accountSetsId, auxiliaryId, accountDate, auxiliaryItemId, data.get(0), orgId);
+        VoucherDetailVo currentVo = getAuxiliaryCurrent(accountSetsId, auxiliaryId, accountDate, auxiliaryItemId, data.get(0));
         //年度统计
-        VoucherDetailVo yearVo = getAuxiliaryYear(accountSetsId, auxiliaryId, accountDate, auxiliaryItemId, orgId);
+        VoucherDetailVo yearVo = getAuxiliaryYear(accountSetsId, auxiliaryId, accountDate, auxiliaryItemId);
         data.add(currentVo);
         data.add(yearVo);
         return data;
@@ -173,8 +170,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @param auxiliaryItemId
      * @return
      */
-    private VoucherDetailVo getAuxiliaryStart(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Integer auxiliaryItemId, Integer orgId) {
-        List<VoucherDetailVo> startVos = voucherDetailsAuxiliaryMapper.selectAccountBookStatistical(accountSetsId, auxiliaryId, null, DateUtil.getMonthBegin(accountDate), auxiliaryItemId, orgId);
+    private VoucherDetailVo getAuxiliaryStart(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Integer auxiliaryItemId) {
+        List<VoucherDetailVo> startVos = voucherDetailsAuxiliaryMapper.selectAccountBookStatistical(accountSetsId, auxiliaryId, null, DateUtil.getMonthBegin(accountDate), auxiliaryItemId);
         VoucherDetailVo startVo = new VoucherDetailVo();
         startVo.setSummary("期初余额");
         startVo.setVoucherDate(accountDate);
@@ -209,8 +206,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @param auxiliaryItemId
      * @return
      */
-    private VoucherDetailVo getAuxiliaryCurrent(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Integer auxiliaryItemId, VoucherDetailVo startVo, Integer orgId) {
-        List<VoucherDetailVo> vos = voucherDetailsAuxiliaryMapper.selectAccountBookStatistical(accountSetsId, auxiliaryId, DateUtil.getMonthBegin(accountDate), DateUtil.getMonthEnd(accountDate), auxiliaryItemId, orgId);
+    private VoucherDetailVo getAuxiliaryCurrent(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Integer auxiliaryItemId, VoucherDetailVo startVo) {
+        List<VoucherDetailVo> vos = voucherDetailsAuxiliaryMapper.selectAccountBookStatistical(accountSetsId, auxiliaryId, DateUtil.getMonthBegin(accountDate), DateUtil.getMonthEnd(accountDate), auxiliaryItemId);
         VoucherDetailVo currentVo = new VoucherDetailVo();
         currentVo.setSummary("本期合计");
         currentVo.setVoucherDate(accountDate);
@@ -246,8 +243,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @param auxiliaryItemId
      * @return
      */
-    private VoucherDetailVo getAuxiliaryYear(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Integer auxiliaryItemId, Integer orgId) {
-        List<VoucherDetailVo> startVos = voucherDetailsAuxiliaryMapper.selectAccountBookStatistical(accountSetsId, auxiliaryId, null, DateUtil.getYearBegin(accountDate), auxiliaryItemId, orgId);
+    private VoucherDetailVo getAuxiliaryYear(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Integer auxiliaryItemId) {
+        List<VoucherDetailVo> startVos = voucherDetailsAuxiliaryMapper.selectAccountBookStatistical(accountSetsId, auxiliaryId, null, DateUtil.getYearBegin(accountDate), auxiliaryItemId);
         VoucherDetailVo startVo = new VoucherDetailVo();
         startVo.setBalance(0d);
         if (startVos != null && !startVos.isEmpty() && startVos.get(0) != null) {
@@ -263,7 +260,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
             }
             startVo.setBalance(b);
         }
-        List<VoucherDetailVo> vos = voucherDetailsAuxiliaryMapper.selectAccountBookStatistical(accountSetsId, auxiliaryId, DateUtil.getYearBegin(accountDate), DateUtil.getMonthEnd(accountDate), auxiliaryItemId, orgId);
+        List<VoucherDetailVo> vos = voucherDetailsAuxiliaryMapper.selectAccountBookStatistical(accountSetsId, auxiliaryId, DateUtil.getYearBegin(accountDate), DateUtil.getMonthEnd(accountDate), auxiliaryItemId);
         VoucherDetailVo yearVo = new VoucherDetailVo();
         yearVo.setSummary("本年累计");
         yearVo.setVoucherDate(accountDate);
@@ -300,8 +297,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @return
      */
     @Override
-    public List<AccountingCategoryDetails> auxiliaryList(Integer accountSetsId, Integer auxiliaryId, Integer orgId) {
-        return voucherDetailsAuxiliaryMapper.selectByAccountBlock(accountSetsId, auxiliaryId, orgId);
+    public List<AccountingCategoryDetails> auxiliaryList(Integer accountSetsId, Integer auxiliaryId) {
+        return voucherDetailsAuxiliaryMapper.selectByAccountBlock(accountSetsId, auxiliaryId);
     }
 
     /**
@@ -314,9 +311,9 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @return
      */
     @Override
-    public List<BalanceVo> auxiliaryBalance(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Boolean showNumPrice, Integer orgId) {
+    public List<BalanceVo> auxiliaryBalance(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Boolean showNumPrice) {
         //所有辅助项目
-        List<AccountingCategoryDetails> categoryDetails = voucherDetailsAuxiliaryMapper.selectByAccountBlock(accountSetsId, auxiliaryId, orgId);
+        List<AccountingCategoryDetails> categoryDetails = voucherDetailsAuxiliaryMapper.selectByAccountBlock(accountSetsId, auxiliaryId);
         //转换成待计算的辅助项目
         Map<Integer, BalanceVo> maps = new HashMap<>(categoryDetails.size());
         categoryDetails.forEach(details -> {
@@ -328,7 +325,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
         });
 
         //期初
-        List<VoucherDetailVo> startVos = voucherDetailsAuxiliaryMapper.selectAccountBookStatistical(accountSetsId, auxiliaryId, null, DateUtil.getMonthBegin(accountDate), null, orgId);
+        List<VoucherDetailVo> startVos = voucherDetailsAuxiliaryMapper.selectAccountBookStatistical(accountSetsId, auxiliaryId, null, DateUtil.getMonthBegin(accountDate), null);
         startVos.forEach(startVo -> {
             if (maps.containsKey(startVo.getDetailsId())) {
                 BalanceVo vo = maps.get(startVo.getDetailsId());
@@ -338,7 +335,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
         });
 
         //本期
-        List<VoucherDetailVo> currentVos = voucherDetailsAuxiliaryMapper.selectAccountBookStatistical(accountSetsId, auxiliaryId, DateUtil.getMonthBegin(accountDate), DateUtil.getMonthEnd(accountDate), null, orgId);
+        List<VoucherDetailVo> currentVos = voucherDetailsAuxiliaryMapper.selectAccountBookStatistical(accountSetsId, auxiliaryId, DateUtil.getMonthBegin(accountDate), DateUtil.getMonthEnd(accountDate), null);
         currentVos.forEach(currentVo -> {
             if (maps.containsKey(currentVo.getDetailsId())) {
                 BalanceVo vo = maps.get(currentVo.getDetailsId());
@@ -401,8 +398,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @return
      */
     @Override
-    public List<Map<String, Object>> getHomeReport(Integer accountSetsId, Integer year, Integer orgId) {
-        return baseMapper.selectHomeReport(accountSetsId, year,orgId);
+    public List<Map<String, Object>> getHomeReport(Integer accountSetsId, Integer year) {
+        return baseMapper.selectHomeReport(accountSetsId, year);
     }
 
     /**
@@ -414,8 +411,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @return
      */
     @Override
-    public List<Map<String, Object>> getCostReport(Integer accountSetsId, int year, int month, Integer orgId) {
-        return baseMapper.selectHomeCostReport(accountSetsId, year, month,orgId);
+    public List<Map<String, Object>> getCostReport(Integer accountSetsId, int year, int month) {
+        return baseMapper.selectHomeCostReport(accountSetsId, year, month);
     }
 
     /**
@@ -427,8 +424,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @return
      */
     @Override
-    public List<Map<String, Object>> getCashReport(Integer accountSetsId, int year, int month, Integer orgId) {
-        return baseMapper.selectHomeCashReport(accountSetsId, year, month,orgId);
+    public List<Map<String, Object>> getCashReport(Integer accountSetsId, int year, int month) {
+        return baseMapper.selectHomeCashReport(accountSetsId, year, month);
     }
 
     /**
@@ -440,10 +437,10 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      */
     @Override
     @Transactional
-    public void finishingOffNo(Integer accountSetsId, Integer year, Integer month, Integer orgId) {
-        this.checkCheckOut(accountSetsId, year, month, orgId);
+    public void finishingOffNo(Integer accountSetsId, Integer year, Integer month) {
+        this.checkCheckOut(accountSetsId, year, month);
 
-        List<Map<String, Object>> data = this.baseMapper.selectBrokenData(accountSetsId, year, month, orgId);
+        List<Map<String, Object>> data = this.baseMapper.selectBrokenData(accountSetsId, year, month);
         //过滤出没有连续的凭证字类别
         List<Map<String, Object>> collect = data.stream().filter(map -> !map.get("total").equals(((Integer) map.get("code")).longValue())).collect(Collectors.toList());
         if (!collect.isEmpty()) {
@@ -453,7 +450,6 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
                 LambdaQueryWrapper<Voucher> qw = Wrappers.lambdaQuery();
                 qw.eq(Voucher::getWord, word);
                 qw.eq(Voucher::getAccountSetsId, accountSetsId);
-                qw.eq(Voucher::getOrgId, orgId);
                 qw.eq(Voucher::getVoucherYear, year);
                 qw.eq(Voucher::getVoucherMonth, month);
                 qw.orderByAsc(Voucher::getCreateDate);
@@ -479,12 +475,11 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @param checked
      */
     @Override
-    public void batchDelete(Integer accountSetsId, Integer[] checked, Integer year, Integer month, Integer orgId) {
-        this.checkCheckOut(accountSetsId, year, month, orgId);
+    public void batchDelete(Integer accountSetsId, Integer[] checked, Integer year, Integer month) {
+        this.checkCheckOut(accountSetsId, year, month);
 
         LambdaQueryWrapper<Voucher> qw = Wrappers.lambdaQuery();
         qw.eq(Voucher::getAccountSetsId, accountSetsId);
-        qw.eq(Voucher::getOrgId, orgId);
         qw.eq(Voucher::getVoucherYear, year);
         qw.eq(Voucher::getVoucherMonth, month);
         qw.in(Voucher::getId, Arrays.asList(checked));
@@ -500,8 +495,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @return
      */
     @Override
-    public Integer getBeforeId(Integer accountSetsId, Integer currentId, Integer orgId) {
-        return this.baseMapper.selectBeforeId(accountSetsId, currentId, orgId);
+    public Integer getBeforeId(Integer accountSetsId, Integer currentId) {
+        return this.baseMapper.selectBeforeId(accountSetsId, currentId);
     }
 
     /**
@@ -512,8 +507,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @return
      */
     @Override
-    public Integer getNextId(Integer accountSetsId, Integer currentId, Integer orgId) {
-        return this.baseMapper.selectNextId(accountSetsId, currentId, orgId);
+    public Integer getNextId(Integer accountSetsId, Integer currentId) {
+        return this.baseMapper.selectNextId(accountSetsId, currentId);
     }
 
     /**
@@ -523,8 +518,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @return
      */
     @Override
-    public List<String> getTopSummary(Integer accountSetsId, Integer orgId) {
-        return this.detailsMapper.selectTopSummary(accountSetsId, orgId);
+    public List<String> getTopSummary(Integer accountSetsId) {
+        return this.detailsMapper.selectTopSummary(accountSetsId);
     }
 
     /**
@@ -536,11 +531,10 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @param month
      */
     @Override
-    public void audit(Integer accountSetsId, Integer[] checked, UserVo currentUser, Integer year, Integer month, Integer orgId) {
-        this.checkCheckOut(accountSetsId, year, month, orgId);
+    public void audit(Integer accountSetsId, Integer[] checked, UserVo currentUser, Integer year, Integer month) {
+        this.checkCheckOut(accountSetsId, year, month);
         LambdaQueryWrapper<Voucher> qw = Wrappers.lambdaQuery();
         qw.eq(Voucher::getAccountSetsId, accountSetsId);
-        qw.eq(Voucher::getOrgId, orgId);
         qw.eq(Voucher::getVoucherYear, year);
         qw.eq(Voucher::getVoucherMonth, month);
         qw.in(Voucher::getId, Arrays.asList(checked));
@@ -565,11 +559,10 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @param month
      */
     @Override
-    public void cancelAudit(Integer accountSetsId, Integer[] checked, UserVo currentUser, Integer year, Integer month, Integer orgId) {
-        this.checkCheckOut(accountSetsId, year, month, orgId);
+    public void cancelAudit(Integer accountSetsId, Integer[] checked, UserVo currentUser, Integer year, Integer month) {
+        this.checkCheckOut(accountSetsId, year, month);
         LambdaQueryWrapper<Voucher> qw = Wrappers.lambdaQuery();
         qw.eq(Voucher::getAccountSetsId, accountSetsId);
-        qw.eq(Voucher::getOrgId, orgId);
         qw.eq(Voucher::getVoucherYear, year);
         qw.eq(Voucher::getVoucherMonth, month);
         qw.in(Voucher::getId, Arrays.asList(checked));
@@ -586,47 +579,37 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      */
     @Override
     @Transactional
-    public Date importVoucher(List<Voucher> voucherList, AccountSets accountSets, Integer orgId) {
+    public Date importVoucher(List<Voucher> voucherList, AccountSets accountSets) {
         List<Date> voucherDateList = new ArrayList<>();
         for (Voucher voucher : voucherList) {
-            voucher.setOrgId(orgId);
             this.save(voucher, accountSets, true);
             voucherDateList.add(DateUtil.getMonthEnd(voucher.getVoucherDate()));
         }
+
         List<Date> collect = voucherDateList.stream().distinct().sorted().collect(Collectors.toList());
         collect.forEach(date -> {
             LambdaQueryWrapper<Checkout> cqw = Wrappers.lambdaQuery();
             Calendar instance = Calendar.getInstance();
             instance.setTime(date);
             cqw.eq(Checkout::getAccountSetsId, accountSets.getId());
-            cqw.eq(Checkout::getOrgId, orgId);
             cqw.eq(Checkout::getCheckYear, instance.get(Calendar.YEAR));
             cqw.eq(Checkout::getCheckMonth, instance.get(Calendar.MONTH) + 1);
             if (this.checkoutMapper.selectCount(cqw) == 0) {
                 Checkout checkout = new Checkout();
                 checkout.setAccountSetsId(accountSets.getId());
-                checkout.setOrgId(orgId);
                 checkout.setCheckYear(instance.get(Calendar.YEAR));
                 checkout.setCheckMonth(instance.get(Calendar.MONTH) + 1);
                 this.checkoutMapper.insert(checkout);
             }
         });
-        Organization organization = this.organizationMapper.selectById(orgId);
-        Date date = this.baseMapper.selectMaxVoucherDate(accountSets.getId(), orgId);
-        organization.setCurrentAccountDate(DateUtil.getMonthEndWithTime(date, false));
-        this.organizationMapper.updateById(organization);
+
+        Date date = this.baseMapper.selectMaxVoucherDate(accountSets.getId());
+        accountSets.setCurrentAccountDate(DateUtil.getMonthEndWithTime(date, false));
+        this.accountSetsMapper.updateById(accountSets);
         return date;
     }
 
-    @Override
-    public List<Voucher> exportVoucher(Wrapper<Voucher> queryWrapper) {
-        return baseMapper.exportVoucher(queryWrapper);
-    }
-
     private boolean save(Voucher entity, AccountSets accountSets, boolean imports) {
-        if (entity.getOrgId() == null) {
-            throw new ServiceException("亲,组织机构不能为空，请先创建机构");
-        }
         this.setYearAndMonth(entity);
         this.checkCode(entity);
         boolean rs = super.save(entity);
@@ -638,7 +621,6 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
                 vd.setVoucherId(entity.getId());
                 vd.setAccountSetsId(entity.getAccountSetsId());
                 vd.setCarryForward(entity.getCarryForward());
-                vd.setOrgId(entity.getOrgId());
                 if (vd.getDebitAmount() != null) {
                     debitAmount += vd.getDebitAmount();
                 }
@@ -683,14 +665,12 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
                     cqw.eq(Checkout::getAccountSetsId, entity.getAccountSetsId());
                     cqw.eq(Checkout::getCheckYear, entity.getVoucherYear());
                     cqw.eq(Checkout::getCheckMonth, entity.getVoucherMonth());
-                    cqw.eq(Checkout::getOrgId, entity.getOrgId());
                     if (this.checkoutMapper.selectCount(cqw) == 0) {
                         Checkout checkout = new Checkout();
                         checkout.setAccountSetsId(entity.getAccountSetsId());
                         checkout.setCheckYear(entity.getVoucherYear());
                         checkout.setCheckMonth(entity.getVoucherMonth());
                         checkout.setCheckDate(entity.getVoucherDate());
-                        checkout.setOrgId(entity.getOrgId());
                         this.checkoutMapper.insert(checkout);
 
                         //更新当前账套的当前期间
@@ -715,7 +695,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
     @Transactional
     public boolean update(Voucher entity, Wrapper<Voucher> updateWrapper) {
         this.setYearAndMonth(entity);
-        this.checkCheckOut(entity.getAccountSetsId(), entity.getVoucherYear(), entity.getVoucherMonth(), entity.getOrgId());
+        this.checkCheckOut(entity.getAccountSetsId(), entity.getVoucherYear(), entity.getVoucherMonth());
         this.checkCode(entity);
 
         boolean rs = super.update(entity, updateWrapper);
@@ -730,7 +710,6 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
         if (rs) {
             for (VoucherDetails vd : entity.getDetails()) {
                 vd.setVoucherId(entity.getId());
-                vd.setOrgId(entity.getOrgId());
                 vd.setAccountSetsId(entity.getAccountSetsId());
                 vd.setCarryForward(entity.getCarryForward());
                 if (vd.getDebitAmount() != null) {
@@ -785,7 +764,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
     @Transactional
     public boolean remove(Wrapper<Voucher> wrapper) {
         Voucher voucher = baseMapper.selectOne(wrapper);
-        this.checkCheckOut(voucher.getAccountSetsId(), voucher.getVoucherYear(), voucher.getVoucherMonth(), voucher.getOrgId());
+        this.checkCheckOut(voucher.getAccountSetsId(), voucher.getVoucherYear(), voucher.getVoucherMonth());
 
         LambdaQueryWrapper<VoucherDetails> qw = Wrappers.lambdaQuery();
         qw.eq(VoucherDetails::getVoucherId, voucher.getId());
@@ -801,7 +780,6 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
         qw.eq(Voucher::getVoucherYear, entity.getVoucherYear());
         qw.eq(Voucher::getVoucherMonth, entity.getVoucherMonth());
         qw.eq(Voucher::getAccountSetsId, entity.getAccountSetsId());
-        qw.eq(Voucher::getOrgId, entity.getOrgId());
 
         if (entity.getId() != null) {
             qw.ne(Voucher::getId, entity.getId());
@@ -812,10 +790,9 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
         }
     }
 
-    private void checkCheckOut(Integer accountSetsId, Integer year, Integer month, Integer orgId) {
+    private void checkCheckOut(Integer accountSetsId, Integer year, Integer month) {
         LambdaQueryWrapper<Checkout> cqw = Wrappers.lambdaQuery();
         cqw.eq(Checkout::getAccountSetsId, accountSetsId);
-        cqw.eq(Checkout::getOrgId, orgId);
         cqw.eq(Checkout::getCheckYear, year);
         cqw.eq(Checkout::getCheckMonth, month);
         cqw.eq(Checkout::getStatus, 2);
@@ -831,11 +808,11 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
         entity.setVoucherYear(calendar.get(Calendar.YEAR));
         entity.setVoucherMonth(calendar.get(Calendar.MONDAY) + 1);
 
-        Organization org = this.organizationMapper.selectById(entity.getOrgId());
-        Date d = DateUtil.getMonthEnd(org.getEnableDate());
+        AccountSets accountSets = this.accountSetsMapper.selectById(entity.getAccountSetsId());
+        Date d = DateUtil.getMonthEnd(accountSets.getEnableDate());
         Date d2 = DateUtil.getMonthEnd(entity.getVoucherDate());
         if (d.after(d2)) {
-            throw new ServiceException("亲,日期不能小于机构启用日期：" + DateFormatUtils.format(d, "yyyy-MM-dd"));
+            throw new ServiceException("亲,日期不能小于账套启用日期：" + DateFormatUtils.format(d, "yyyy-MM-dd"));
         }
     }
 
@@ -849,7 +826,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
      * @param details
      * @return
      */
-    private List<VoucherDetailVo> summary(Integer accountSetsId, Integer subjectId, Date accountDate, String subjectCode, Boolean showNumPrice, boolean details, Integer orgId) {
+    private List<VoucherDetailVo> summary(Integer accountSetsId, Integer subjectId, Date accountDate, String subjectCode, Boolean showNumPrice, boolean details) {
         Subject subject = subjectMapper.selectById(subjectId);
         LambdaQueryWrapper<Subject> sqw = Wrappers.lambdaQuery();
         sqw.likeRight(Subject::getCode, subjectCode);
@@ -857,8 +834,8 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
         List<Subject> subjects = subjectMapper.selectList(sqw);
         List<Integer> sids = subjects.stream().map(Subject::getId).collect(Collectors.toList());
 
-        List<VoucherDetailVo> initialBalance = baseMapper.selectAccountBookInitialBalance(accountSetsId, sids, DateUtil.getMonthBegin(accountDate), orgId);
-        List<VoucherDetailVo> statistical = baseMapper.selectAccountBookStatistical(accountSetsId, subjectId, sids, DateUtil.getMonthEnd(accountDate), orgId);
+        List<VoucherDetailVo> initialBalance = baseMapper.selectAccountBookInitialBalance(accountSetsId, sids, DateUtil.getMonthBegin(accountDate));
+        List<VoucherDetailVo> statistical = baseMapper.selectAccountBookStatistical(accountSetsId, subjectId, sids, DateUtil.getMonthEnd(accountDate));
 
         VoucherDetailVo init;
         //没有期初
@@ -881,7 +858,7 @@ public class VoucherServiceImpl extends ServiceImpl<VoucherMapper, Voucher> impl
             //初始数量余额
             pre.setNumBalance(pre.getNum());
 
-            List<VoucherDetailVo> list = baseMapper.selectAccountBookDetails(accountSetsId, sids, accountDate, orgId);
+            List<VoucherDetailVo> list = baseMapper.selectAccountBookDetails(accountSetsId, sids, accountDate);
             //计算余额
             for (int i = 0; i < list.size(); i++) {
                 if (i > 0) {

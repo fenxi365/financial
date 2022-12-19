@@ -28,7 +28,7 @@ public interface SubjectMapper extends BaseMapper<Subject> {
 
     List<Subject> selectNoChildrenSubject(@Param(Constants.WRAPPER) Wrapper wrapper);
 
-    List<Subject> selectAccountBookList(@Param("accountDate") Date accountDate, @Param("accountSetsId") Integer accountSetsId, @Param("showNumPrice") boolean showNumPrice,@Param("orgId") Integer orgId);
+    List<Subject> selectAccountBookList(@Param("accountDate") Date accountDate, @Param("accountSetsId") Integer accountSetsId, @Param("showNumPrice") boolean showNumPrice);
 
     List<SubjectVo> selectSubjectVo(@Param(Constants.WRAPPER) Wrapper queryWrapper);
 

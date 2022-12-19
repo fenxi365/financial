@@ -9,25 +9,14 @@ import cn.gson.financial.kernel.model.entity.VoucherDetails;
 import cn.gson.financial.kernel.model.vo.SubjectVo;
 import cn.gson.financial.kernel.service.SubjectService;
 import cn.gson.financial.kernel.service.VoucherDetailsService;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellType;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -61,13 +50,6 @@ public class SubjectController extends BaseCrudController<SubjectService, Subjec
         return JsonResult.successful(service.listVo(qw));
     }
 
-
-    @RequestMapping("select")
-    public JsonResult select(@RequestParam Map<String, String> params) {
-        QueryWrapper qw = new QueryWrapper<>();
-        this.setQwAccountSetsId(qw);
-        return JsonResult.successful(service.listVo(qw));
-    }
     /**
      * 凭证下拉数据
      *
@@ -141,7 +123,7 @@ public class SubjectController extends BaseCrudController<SubjectService, Subjec
 
         Set<String> codeSet = collect2.stream().collect(Collectors.mapping(subjectVo -> subjectVo.getCode(), Collectors.toSet()));
 
-        Map<String, VoucherDetails> aggregateAmount = voucherDetailsService.getAggregateAmount(this.accountSetsId.get(), codeSet, cal.getTime());
+        Map<String, VoucherDetails> aggregateAmount = voucherDetailsService.getAggregateAmount(this.accountSetsId, codeSet, cal.getTime());
 
         Map<String, Object> data = new HashMap<>(2);
         data.put("subject", collect2);
@@ -193,7 +175,7 @@ public class SubjectController extends BaseCrudController<SubjectService, Subjec
      */
     @GetMapping("balance")
     public JsonResult balance(Integer subjectId, Integer categoryId, Integer categoryDetailsId) {
-        Double balance = service.balance(this.accountSetsId.get(), subjectId, categoryId, categoryDetailsId, this.currentUser.get().getOrgId());
+        Double balance = service.balance(this.accountSetsId, subjectId, categoryId, categoryDetailsId);
         return JsonResult.successful(balance);
     }
 
@@ -206,8 +188,8 @@ public class SubjectController extends BaseCrudController<SubjectService, Subjec
     @PostMapping("/import")
     public JsonResult importVoucher(@RequestParam("file") MultipartFile multipartFile) {
         try {
-            List<SubjectVo> voucherList = excelUtils.readExcel(multipartFile.getOriginalFilename(), multipartFile.getInputStream(), this.currentUser.get());
-            this.service.importVoucher(voucherList, this.currentUser.get().getAccountSets());
+            List<SubjectVo> voucherList = excelUtils.readExcel(multipartFile.getOriginalFilename(), multipartFile.getInputStream(), this.currentUser);
+            this.service.importVoucher(voucherList, this.currentUser.getAccountSets());
             return JsonResult.successful();
         } catch (ServiceException e) {
             return JsonResult.failure(e.getMessage());
@@ -215,50 +197,5 @@ public class SubjectController extends BaseCrudController<SubjectService, Subjec
             log.error("导入失败", e);
             throw new ServiceException("导入失败~", e);
         }
-    }
-
-    @GetMapping("download")
-    public void downloadData(HttpServletResponse response) throws IOException {
-        String[] columns = ("科目编码,科目名称,类别,余额方向,数量核算,辅助核算").split(",");
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet = workbook.createSheet("科目信息");// 工作表对象
-        HSSFRow row = sheet.createRow(0);
-        for (int i = 0; i < columns.length; i++) {
-            HSSFCell codeCell = row.createCell(i);
-            codeCell.setCellValue(columns[i]);
-            codeCell.setCellType(CellType.STRING);
-        }
-
-        LambdaQueryWrapper<Subject> qwd = Wrappers.lambdaQuery();
-        qwd.eq(Subject::getAccountSetsId, this.accountSetsId.get());
-        qwd.orderByAsc(Subject::getCode);
-        // 明细数据
-        List<Subject> details = service.list(qwd);
-
-        for (int i = 0; i < details.size(); i++) {
-            Subject d = details.get(i);
-            HSSFRow dtRow = sheet.createRow(i + 1);
-            dtRow.createCell(0).setCellValue(d.getCode());
-            dtRow.createCell(1).setCellValue(d.getName());
-            dtRow.createCell(2).setCellValue(d.getType().toString());
-            dtRow.createCell(3).setCellValue(d.getBalanceDirection().toString());
-            dtRow.createCell(4).setCellValue(d.getUnit());
-            if (StringUtils.isNotEmpty(d.getAuxiliaryAccounting())) {
-                JSONArray auxiliaryAccounting = JSON.parseArray(d.getAuxiliaryAccounting());
-                Set<String> auxiliary = new LinkedHashSet<>();
-                for (int j = 0; j < auxiliaryAccounting.size(); j++) {
-                    auxiliary.add(JSON.parseObject(auxiliaryAccounting.get(j) + "").getString("name"));
-                }
-                if (auxiliary.size() > 0) {
-                    dtRow.createCell(5).setCellValue(auxiliary.stream().collect(Collectors.joining("/")));
-                }
-            }
-        }
-
-        String fileName = "科目信息.xls";
-        response.setContentType("application/vnd.ms-excel;");
-        response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes("utf-8"), "ISO8859-1"));
-        workbook.write(response.getOutputStream());
-        workbook.close();
     }
 }

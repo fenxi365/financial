@@ -16,11 +16,11 @@
     <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into fxy_financial_report_template
-        (`name`, account_sets_id, template_key, `type`,'is_default')
+        (`name`, account_sets_id, template_key, `type`)
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.name,jdbcType=VARCHAR}, #{item.accountSetsId,jdbcType=INTEGER}, #{item.templateKey,jdbcType=VARCHAR},
-            #{item.type,jdbcType=INTEGER}),#{item.isDefault,jdbcType=BIT})
+            #{item.type,jdbcType=INTEGER})
         </foreach>
     </insert>
 </mapper>

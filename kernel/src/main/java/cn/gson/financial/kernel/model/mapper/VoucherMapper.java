@@ -26,43 +26,39 @@ import java.util.*;
 public interface VoucherMapper extends BaseMapper<Voucher> {
     int batchInsert(@Param("list") List<Voucher> list);
 
-    Integer selectMaxCode(@Param("accountSetsId") Integer accountSetsId, @Param("word") String word, @Param("year") int year, @Param("month") int month, @Param("orgId") Integer orgId);
+    Integer selectMaxCode(@Param("accountSetsId") Integer accountSetsId, @Param("word") String word, @Param("year") int year, @Param("month") int month);
 
     List<Voucher> selectVoucher(@Param(Constants.WRAPPER) Wrapper wrapper);
 
     IPage<Voucher> selectVoucher(IPage<Voucher> page, @Param(Constants.WRAPPER) Wrapper wrapper);
 
-    List<VoucherDetailVo> selectAccountBookDetails(@Param("accountSetsId") Integer accountSetsId, @Param("subjectIds") List<Integer> subjectIds, @Param("accountDate") Date accountDate, @Param("orgId") Integer orgId);
+    List<VoucherDetailVo> selectAccountBookDetails(@Param("accountSetsId") Integer accountSetsId, @Param("subjectIds") List<Integer> subjectIds, @Param("accountDate") Date accountDate);
 
-    List<VoucherDetailVo> selectAccountBookStatistical(@Param("accountSetsId") Integer accountSetsId, @Param("subjectId") Integer subjectId, @Param("subjectIds") List<Integer> subjectIds, @Param("accountDate") Date accountDate, @Param("orgId") Integer orgId);
+    List<VoucherDetailVo> selectAccountBookStatistical(@Param("accountSetsId") Integer accountSetsId, @Param("subjectId") Integer subjectId, @Param("subjectIds") List<Integer> subjectIds, @Param("accountDate") Date accountDate);
 
-    List<VoucherDetailVo> selectAccountBookInitialBalance(@Param("accountSetsId") Integer accountSetsId, @Param("subjectIds") List<Integer> subjectIds, @Param("accountDate") Date accountDate, @Param("orgId") Integer orgId);
+    List<VoucherDetailVo> selectAccountBookInitialBalance(@Param("accountSetsId") Integer accountSetsId, @Param("subjectIds") List<Integer> subjectIds, @Param("accountDate") Date accountDate);
 
-    List<Map<String, Object>> selectBrokenData(@Param("accountSetsId") Integer accountSetsId, @Param("year") Integer year, @Param("month") Integer month, @Param("orgId") Integer orgId);
+    List<Map<String, Object>> selectBrokenData(@Param("accountSetsId") Integer accountSetsId, @Param("year") Integer year, @Param("month") Integer month);
 
-    List<VoucherDetailVo> selectReportStatistical(@Param("accountSetsId") Integer accountSetsId, @Param("codes") Collection<String> codes, @Param("accountDate") Date accountDate, @Param("orgId") Integer orgId);
+    List<VoucherDetailVo> selectReportStatistical(@Param("accountSetsId") Integer accountSetsId, @Param("codes") Collection<String> codes, @Param("accountDate") Date accountDate);
 
-    List<Map<String, Object>> selectHomeReport(@Param("accountSetsId") Integer accountSetsId, @Param("voucherYear") Integer year, @Param("orgId") Integer orgId);
+    List<Map<String, Object>> selectHomeReport(@Param("accountSetsId") Integer accountSetsId, @Param("voucherYear") Integer year);
 
-    List<Map<String, Object>> selectHomeCostReport(@Param("accountSetsId") Integer accountSetsId, @Param("voucherYear") Integer year, @Param("voucherMonth") Integer month, @Param("orgId") Integer orgId);
+    List<Map<String, Object>> selectHomeCostReport(@Param("accountSetsId") Integer accountSetsId, @Param("voucherYear") Integer year, @Param("voucherMonth") Integer month);
 
-    List<Map<String, Object>> selectHomeCashReport(@Param("accountSetsId") Integer accountSetsId, @Param("voucherYear") Integer year, @Param("voucherMonth") Integer month, @Param("orgId") Integer orgId);
+    List<Map<String, Object>> selectHomeCashReport(@Param("accountSetsId") Integer accountSetsId, @Param("voucherYear") Integer year, @Param("voucherMonth") Integer month);
 
-    Integer selectBeforeId(@Param("accountSetsId") Integer accountSetsId, @Param("currentId") Integer currentId, @Param("orgId") Integer orgId);
+    Integer selectBeforeId(@Param("accountSetsId") Integer accountSetsId, @Param("currentId") Integer currentId);
 
-    Integer selectNextId(@Param("accountSetsId") Integer accountSetsId, @Param("currentId") Integer currentId, @Param("orgId") Integer orgId);
+    Integer selectNextId(@Param("accountSetsId") Integer accountSetsId, @Param("currentId") Integer currentId);
 
     List<VoucherDetailVo> selectSubjectDetail(@Param("subjectIds") Set<Integer> subjectIds, @Param("accountSetsId") Integer accountSetsId, @Param("monthBegin") Date monthBegin, @Param("monthEnd") Date monthEnd, @Param("showNumPrice") boolean showNumPrice);
 
     Integer updateAudit(@Param(Constants.WRAPPER) Wrapper wrapper);
 
-    List<VoucherDetailVo> selectReportBalanceStatistical(@Param("accountSetsId") Integer accountSetsId, @Param("codes") List<String> codes, @Param("accountDate") Date accountDate, @Param("orgId") Integer orgId);
+    List<VoucherDetailVo> selectReportBalanceStatistical(@Param("accountSetsId") Integer accountSetsId, @Param("codes") List<String> codes, @Param("accountDate") Date accountDate);
 
-    List<VoucherDetailVo> selectReportInitBalance(@Param("accountSetsId") Integer accountSetsId, @Param("codes") List<String> codes, @Param("orgId") Integer orgId);
+    List<VoucherDetailVo> selectReportInitBalance(@Param("accountSetsId") Integer accountSetsId, @Param("codes") List<String> codes);
 
-    Date selectMaxVoucherDate(@Param("accountSetsId") Integer accountSetsId, @Param("orgId") Integer orgId);
-
-    List<VoucherDetailVo> selectYearReportStatistical(@Param("accountSetsId") Integer accountSetsId, @Param("codes") Collection<String> codes, @Param("year") String year, @Param("orgId") Integer orgId);
-
-    List<Voucher> exportVoucher(@Param(Constants.WRAPPER) Wrapper wrapper);
+    Date selectMaxVoucherDate(@Param("accountSetsId") Integer accountSetsId);
 }

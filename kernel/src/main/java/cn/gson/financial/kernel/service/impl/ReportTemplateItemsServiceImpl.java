@@ -8,7 +8,6 @@ import cn.gson.financial.kernel.service.ReportTemplateItemsService;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.AllArgsConstructor;
@@ -73,30 +72,6 @@ public class ReportTemplateItemsServiceImpl extends ServiceImpl<ReportTemplateIt
         if (formulas != null && formulas.size() > 0) {
             formulas.forEach(f -> f.setAccountSetsId(accountSetsId));
             formulaMapper.batchInsert(formulas);
-        }
-    }
-
-    @Override
-    @Transactional
-    public void resetLine(Integer templateId) {
-        LambdaQueryWrapper<ReportTemplateItems> qw = Wrappers.lambdaQuery();
-        qw.eq(ReportTemplateItems::getTemplateId, templateId);
-        qw.orderByAsc(ReportTemplateItems::getPos);
-        List<ReportTemplateItems> list = super.list(qw);
-        for (int i = 0; i < list.size(); i++) {
-            ReportTemplateItems item = list.get(i);
-            if (item.getIsClassified() != null && item.getIsClassified()) {
-                item.setLineNum(null);
-                item.setSources(null);
-                item.setType(null);
-            } else {
-                LambdaUpdateWrapper<ReportTemplateItems> updateWrapper = Wrappers.lambdaUpdate();
-                updateWrapper.eq(ReportTemplateItems::getId, item.getId());
-                ReportTemplateItems templateItems = new ReportTemplateItems();
-                templateItems.setLineNum(i + 1);
-                super.update(templateItems, updateWrapper);
-            }
-
         }
     }
 

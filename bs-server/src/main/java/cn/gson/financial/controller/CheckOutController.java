@@ -36,10 +36,10 @@ public class CheckOutController extends BaseCrudController<CheckoutService, Chec
      * @return
      */
     @GetMapping("initialCheck")
-    public JsonResult initialCheck(@RequestParam Integer year, @RequestParam Integer month, Integer orgId) {
+    public JsonResult initialCheck(@RequestParam Integer year, @RequestParam Integer month) {
         //判断是否是结转第一期，如果是第一期，则需要检查期初平衡
-        if (!df.format(this.currentUser.get().getAccountSets().getEnableDate()).equals(year + "" + month)) {
-            return JsonResult.instance(this.service.initialCheck(this.accountSetsId.get(), orgId));
+        if (!df.format(this.currentUser.getAccountSets().getEnableDate()).equals(year + "" + month)) {
+            return JsonResult.instance(this.service.initialCheck(this.accountSetsId));
         }
         return JsonResult.successful();
     }
@@ -52,8 +52,8 @@ public class CheckOutController extends BaseCrudController<CheckoutService, Chec
      * @return
      */
     @GetMapping("finalCheck")
-    public JsonResult finalCheck(@RequestParam Integer year, @RequestParam Integer month,@RequestParam Integer orgId) {
-        return JsonResult.instance(this.service.finalCheck(this.accountSetsId.get(), year, month, orgId));
+    public JsonResult finalCheck(@RequestParam Integer year, @RequestParam Integer month) {
+        return JsonResult.instance(this.service.finalCheck(this.accountSetsId, year, month));
     }
 
     /**
@@ -64,8 +64,8 @@ public class CheckOutController extends BaseCrudController<CheckoutService, Chec
      * @return
      */
     @GetMapping("reportCheck")
-    public JsonResult reportCheck(@RequestParam Integer year, @RequestParam Integer month,@RequestParam Integer orgId) {
-        return JsonResult.successful(this.service.reportCheck(this.accountSetsId.get(), year, month, orgId));
+    public JsonResult reportCheck(@RequestParam Integer year, @RequestParam Integer month) {
+        return JsonResult.successful(this.service.reportCheck(this.accountSetsId, year, month));
     }
 
     /**
@@ -76,8 +76,8 @@ public class CheckOutController extends BaseCrudController<CheckoutService, Chec
      * @return
      */
     @GetMapping("brokenCheck")
-    public JsonResult brokenCheck(@RequestParam Integer year, @RequestParam Integer month,@RequestParam Integer orgId) {
-        return JsonResult.instance(this.service.brokenCheck(this.accountSetsId.get(), year, month, orgId));
+    public JsonResult brokenCheck(@RequestParam Integer year, @RequestParam Integer month) {
+        return JsonResult.instance(this.service.brokenCheck(this.accountSetsId, year, month));
     }
 
     /**
@@ -88,8 +88,8 @@ public class CheckOutController extends BaseCrudController<CheckoutService, Chec
      * @return
      */
     @GetMapping("invoicing")
-    public JsonResult invoicing(@RequestParam Integer orgId, @RequestParam Integer year, @RequestParam Integer month) {
-        if (!this.service.invoicing(this.currentUser.get(), orgId, year, month)) {
+    public JsonResult invoicing(@RequestParam Integer year, @RequestParam Integer month) {
+        if (!this.service.invoicing(this.currentUser, year, month)) {
             return JsonResult.failure();
         }
         return JsonResult.successful();
@@ -103,8 +103,8 @@ public class CheckOutController extends BaseCrudController<CheckoutService, Chec
      * @return
      */
     @GetMapping("unCheck")
-    public JsonResult unCheck(@RequestParam Integer orgId, @RequestParam Integer year, @RequestParam Integer month) {
-        if (!this.service.unCheck(this.currentUser.get(), orgId, year, month)) {
+    public JsonResult unCheck(@RequestParam Integer year, @RequestParam Integer month) {
+        if (!this.service.unCheck(this.currentUser, year, month)) {
             return JsonResult.failure();
         }
         return JsonResult.successful();

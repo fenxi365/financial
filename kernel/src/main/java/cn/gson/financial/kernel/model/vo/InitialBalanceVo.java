@@ -50,19 +50,5 @@ public class InitialBalanceVo extends Subject {
 
     private boolean leaf;
 
-    private String  isAccounting;
-
-    //年初
-    private Double yearBalance;
-
-    private Double yearBalanceNum;
-    //辅助类别
-//    private String accountingCategory;
-    //辅助核算编码 /
-    private String accountingCategoryDetailsCode;
-    //辅助核算名称 /
-    private String accountingCategoryDetailsName;
-
     private List<InitialBalanceVo> children;
-
 }

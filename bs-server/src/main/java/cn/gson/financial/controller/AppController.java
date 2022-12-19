@@ -1,20 +1,12 @@
 package cn.gson.financial.controller;
 
-import cn.dev33.satoken.session.SaSession;
-import cn.dev33.satoken.stp.SaLoginModel;
-import cn.dev33.satoken.stp.SaTokenInfo;
-import cn.dev33.satoken.stp.StpUtil;
 import cn.gson.financial.annotation.IgnoresLogin;
-import cn.gson.financial.base.BaseController;
 import cn.gson.financial.kernel.aliyuncs.SmsService;
 import cn.gson.financial.kernel.controller.JsonResult;
-import cn.gson.financial.kernel.model.entity.Organization;
 import cn.gson.financial.kernel.model.entity.User;
 import cn.gson.financial.kernel.model.vo.UserVo;
-import cn.gson.financial.kernel.service.CheckoutService;
 import cn.gson.financial.kernel.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +15,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,14 +35,11 @@ import static cn.gson.financial.kernel.aliyuncs.SmsService.SmsBody;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class AppController extends BaseController {
-
+public class AppController {
 
     private final UserService userService;
 
     private final SmsService smsService;
-
-    private final CheckoutService checkoutService;
 
     @Value("${aliyun.sms.signature}")
     private String smsSignature;
@@ -71,21 +59,16 @@ public class AppController extends BaseController {
     /**
      * 检查登录状获取态和并返回登录信息
      *
+     * @param user
      * @return
      */
     @IgnoresLogin
     @GetMapping("/init")
-    public JsonResult init() {
-        try {
-            SaSession session = StpUtil.getTokenSession();
-            UserVo user = session.getModel("user", UserVo.class);
-            if (user == null) {
-                return JsonResult.failure();
-            }
-            return JsonResult.successful(user);
-        } catch (Exception e) {
+    public JsonResult init(@SessionAttribute(value = "user", required = false) UserVo user) {
+        if (user == null) {
             return JsonResult.failure();
         }
+        return JsonResult.successful(user);
     }
 
     /**
@@ -93,25 +76,14 @@ public class AppController extends BaseController {
      *
      * @param mobile
      * @param password
-     * @param forever  是否是永久登录
      * @return
      */
     @IgnoresLogin
     @PostMapping("/login")
-    public JsonResult login(String mobile, String password, @RequestParam(defaultValue = "false") Boolean forever, HttpServletResponse response) {
+    public JsonResult login(String mobile, String password, HttpSession session) {
         UserVo user = userService.login(mobile, password);
-        if (forever) {
-            StpUtil.login(user.getId(), SaLoginModel.create().setTimeout(-1));
-            SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
-            response.addHeader(tokenInfo.tokenName, tokenInfo.tokenValue);
-        } else {
-            StpUtil.login(user.getId());
-        }
-        SaSession session = StpUtil.getTokenSession();
-        if (user.getAccountSetsList().size() <= 0 || user.getAccountSetsList().size() == 1) {
-            session.set("user", user);
-        }
-        return JsonResult.successful(user);
+        session.setAttribute("user", user);
+        return JsonResult.successful();
     }
 
     /**
@@ -120,8 +92,8 @@ public class AppController extends BaseController {
      * @return
      */
     @GetMapping("/logout")
-    public JsonResult logout() {
-        StpUtil.logout();
+    public JsonResult logout(HttpSession session) {
+        session.invalidate();
         return JsonResult.successful();
     }
 
@@ -133,11 +105,11 @@ public class AppController extends BaseController {
      */
     @IgnoresLogin
     @GetMapping("/sendMsg/{mobile}")
-    public JsonResult sendMsg(@PathVariable String mobile) {
+    public JsonResult sendMsg(@PathVariable String mobile, HttpSession session) {
         String numeric = RandomStringUtils.randomNumeric(4);
         log.info("验证码：" + numeric);
         this.sendSmsCode(mobile, numeric);
-        this.session.get().set(mobile, numeric);
+        session.setAttribute(mobile, numeric);
         return JsonResult.successful();
     }
 
@@ -171,17 +143,16 @@ public class AppController extends BaseController {
      */
     @IgnoresLogin
     @PostMapping("/register")
-    public JsonResult register(String mobile, String code, HttpSession httpSession) {
-        SaSession session = StpUtil.getTokenSession();
+    public JsonResult register(String mobile, String code, HttpSession session) {
         LambdaQueryWrapper<User> qw = Wrappers.lambdaQuery();
         qw.eq(User::getMobile, mobile);
         if (this.userService.count(qw) > 0) {
             return JsonResult.failure("此手机号已被注册，请直接用这个手机号登录或者更换手机号注册！");
         }
-        if (!code.equals(httpSession.getAttribute(mobile))) {
+        if (!code.equals(session.getAttribute(mobile))) {
             return JsonResult.failure("验证码错误！");
         }
-        httpSession.removeAttribute(mobile);
+        session.removeAttribute(mobile);
 
         User user = new User();
         user.setMobile(mobile);
@@ -190,7 +161,7 @@ public class AppController extends BaseController {
         user.setPassword(DigestUtils.sha256Hex(user.getInitPassword()));
         this.userService.save(user);
 
-        session.set("user", this.userService.getUserVo(user.getId()));
+        session.setAttribute("user", this.userService.getUserVo(user.getId()));
         try {
             this.sendPasswordSms(user.getMobile(), user.getInitPassword());
         } catch (Exception e) {
@@ -206,13 +177,11 @@ public class AppController extends BaseController {
      * @return
      */
     @PostMapping("/updateUser")
-    public JsonResult updateUser(String realName, String email) {
-        SaSession session = StpUtil.getTokenSession();
-        UserVo user = session.getModel("user", UserVo.class);
+    public JsonResult updateUser(String realName, String email, @SessionAttribute(value = "user", required = false) UserVo user, HttpSession session) {
         user.setRealName(realName);
         user.setEmail(email);
         userService.updateById(user);
-        session.set("user", user);
+        session.setAttribute("user", user);
         return JsonResult.successful();
     }
 
@@ -223,6 +192,7 @@ public class AppController extends BaseController {
      * @param repeatPassword
      * @param mobile
      * @param code
+     * @param session
      * @return
      */
     @IgnoresLogin
@@ -230,11 +200,10 @@ public class AppController extends BaseController {
     public JsonResult resetPassword(@RequestParam String newPassword,
                                     @RequestParam String repeatPassword,
                                     @RequestParam String mobile,
-                                    @RequestParam String code, HttpSession httpSession) {
-        SaSession session = StpUtil.getTokenSession();
+                                    @RequestParam String code, HttpSession session) {
         JsonResult result = JsonResult.instance(true);
 
-        if (!code.equals(httpSession.getAttribute(mobile))) {
+        if (!code.equals(session.getAttribute(mobile))) {
             result = JsonResult.failure("验证码错误！");
         } else if (!newPassword.equals(repeatPassword)) {
             result = JsonResult.failure("密码设置错误！");
@@ -249,7 +218,7 @@ public class AppController extends BaseController {
                 user.setInitPassword("");
                 userService.updateById(user);
 
-                httpSession.removeAttribute(mobile);
+                session.removeAttribute(mobile);
             } else {
                 result = JsonResult.failure("用户不存在！");
             }
@@ -265,9 +234,7 @@ public class AppController extends BaseController {
      * @return
      */
     @PostMapping("/updatePwd")
-    public JsonResult updatePwd(String original, String newPassword) {
-        SaSession session = StpUtil.getTokenSession();
-        UserVo user = session.getModel("user", UserVo.class);
+    public JsonResult updatePwd(String original, String newPassword, @SessionAttribute(value = "user", required = false) UserVo user, HttpSession session) {
         //核对旧密码
         User u = userService.getById(user.getId());
         if (!DigestUtils.sha256Hex(original).equals(u.getPassword())) {
@@ -288,20 +255,16 @@ public class AppController extends BaseController {
      * @return
      */
     @PostMapping("/changePhoneNumber")
-    public JsonResult changePhoneNumber(String verificationCode, String mobile, HttpSession httpSession) {
-        SaSession session = StpUtil.getTokenSession();
+    public JsonResult changePhoneNumber(String verificationCode, String mobile, @SessionAttribute(value = "user", required = false) UserVo user, HttpSession session) {
         //Session里获取手机号对应验证码进行比对
-        if (!verificationCode.equals(httpSession.getAttribute(mobile))) {
+        if (!verificationCode.equals(session.getAttribute(mobile))) {
             return JsonResult.failure("验证码错误!");
         }
-
-        UserVo user = session.getModel("user", UserVo.class);
 
         //更新手机号
         user.setMobile(mobile);
         userService.updateById(user);
-
-        session.set("user", user);
+        session.setAttribute("user", user);
         return JsonResult.successful();
     }
 
@@ -309,50 +272,16 @@ public class AppController extends BaseController {
      * 变更默认账套
      *
      * @param accountSetsId
+     * @param user
+     * @param session
      * @return
      */
     @GetMapping("/changeAccountSets")
-    public JsonResult changeAccountSets(Integer accountSetsId) {
-        SaSession session = StpUtil.getTokenSession();
-        UserVo user = session.getModel("user", UserVo.class);
+    public JsonResult changeAccountSets(Integer accountSetsId, @SessionAttribute(value = "user", required = false) UserVo user, HttpSession session) {
         if (user.getAccountSetsList().stream().anyMatch(accountSets -> accountSets.getId().equals(accountSetsId))) {
             user.setAccountSetsId(accountSetsId);
             userService.updateById(user);
-
-            session.set("user", userService.getUserVo(user.getId()));
-        }
-        return JsonResult.successful();
-    }
-
-    @IgnoresLogin
-    @PostMapping("/selectAccountSets/{accountSetsId:\\d+}")
-    public JsonResult selectAccountSets(@PathVariable Integer accountSetsId, @RequestBody UserVo user) {
-        SaSession session = StpUtil.getTokenSession();
-        if (user.getAccountSetsList().stream().anyMatch(accountSets -> accountSets.getId().equals(accountSetsId))) {
-            user.setAccountSetsId(accountSetsId);
-            userService.updateById(user);
-            session.set("user", userService.getUserVo(user.getId()));
-        } else {
-            session.set("user", user);
-        }
-        return JsonResult.successful();
-    }
-
-    @PostMapping("/selectOrg")
-    public JsonResult selectOrg(@RequestBody Organization org) {
-        SaSession session = StpUtil.getTokenSession();
-        UserVo user = session.getModel("user", UserVo.class);
-        if (user.getOrgList().stream().anyMatch(organization -> organization.getId().equals(org.getId()))) {
-            user.setOrg(org);
-            //更新机构对应的结账日期
-            QueryWrapper query = Wrappers.query();
-            query.eq("account_sets_id", user.getAccountSetsId());
-            query.eq("org_id", user.getOrgId());
-            user.setCheckoutList(checkoutService.list(query));
-            userService.updateUserAccountSetsOrgId(user.getAccountSetsId(), user.getId(), user.getOrgId());
-            session.set("user", user);
-        } else {
-            session.set("user", user);
+            session.setAttribute("user", userService.getUserVo(user.getId()));
         }
         return JsonResult.successful();
     }

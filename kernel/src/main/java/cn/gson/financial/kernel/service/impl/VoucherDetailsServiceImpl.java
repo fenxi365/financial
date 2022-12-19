@@ -54,7 +54,6 @@ public class VoucherDetailsServiceImpl extends ServiceImpl<VoucherDetailsMapper,
         qw.eq(VoucherDetails::getAccountSetsId, entity.getAccountSetsId());
         qw.eq(VoucherDetails::getSubjectId, entity.getSubjectId());
         qw.eq(VoucherDetails::getSubjectCode, entity.getSubjectCode());
-        qw.eq(VoucherDetails::getOrgId, entity.getOrgId());
         qw.isNull(VoucherDetails::getVoucherId);
 
         if (this.baseMapper.selectCount(qw) > 0) {
@@ -71,8 +70,8 @@ public class VoucherDetailsServiceImpl extends ServiceImpl<VoucherDetailsMapper,
      * @return
      */
     @Override
-    public List<VoucherDetails> balanceList(Integer accountSetsId, String type, Integer orgId) {
-        return this.baseMapper.selectBalanceList(accountSetsId, type, orgId);
+    public List<VoucherDetails> balanceList(Integer accountSetsId, String type) {
+        return this.baseMapper.selectBalanceList(accountSetsId, type);
     }
 
     /**
@@ -82,9 +81,9 @@ public class VoucherDetailsServiceImpl extends ServiceImpl<VoucherDetailsMapper,
      * @return
      */
     @Override
-    public Map<String, Map<String, Double>> trialBalance(Integer accountSetsId, Integer orgId) {
-        Map<String, Double> beginningBalance = this.baseMapper.selectListInitialCheckData(accountSetsId, orgId);
-        List<Map> liabilities = this.baseMapper.selectBassetsAndLiabilities(accountSetsId, orgId);
+    public Map<String, Map<String, Double>> trialBalance(Integer accountSetsId) {
+        Map<String, Double> beginningBalance = this.baseMapper.selectListInitialCheckData(accountSetsId);
+        List<Map> liabilities = this.baseMapper.selectBassetsAndLiabilities(accountSetsId);
         Map<String, Double> bb = new HashMap<>();
         Map<String, Double> bl = new HashMap<>();
         bb.put("借", beginningBalance != null ? beginningBalance.get("debit_amount") : 0d);
@@ -117,7 +116,7 @@ public class VoucherDetailsServiceImpl extends ServiceImpl<VoucherDetailsMapper,
     }
 
     @Override
-    public void saveAuxiliary(Integer accountSetsId, Integer orgId, HashMap<String, Object> entity) {
+    public void saveAuxiliary(Integer accountSetsId, HashMap<String, Object> entity) {
         Integer subjectId = (Integer) entity.get("subjectId");
         JSONObject auxiliary = (JSONObject) entity.get("auxiliary");
         Subject subject = subjectMapper.selectById(subjectId);
@@ -134,7 +133,6 @@ public class VoucherDetailsServiceImpl extends ServiceImpl<VoucherDetailsMapper,
         LambdaQueryWrapper<VoucherDetails> qw = Wrappers.lambdaQuery();
         qw.eq(VoucherDetails::getAccountSetsId, accountSetsId);
         qw.eq(VoucherDetails::getSubjectId, subjectId);
-        qw.eq(VoucherDetails::getOrgId, orgId);
         qw.eq(VoucherDetails::getSubjectCode, subjectCode.toString());
         qw.isNull(VoucherDetails::getVoucherId);
 
@@ -173,8 +171,8 @@ public class VoucherDetailsServiceImpl extends ServiceImpl<VoucherDetailsMapper,
     }
 
     @Override
-    public List<VoucherDetails> auxiliaryList(Integer accountSetsId, String type, Integer orgId) {
-        return this.baseMapper.selectAuxiliaryList(accountSetsId, type, orgId);
+    public List<VoucherDetails> auxiliaryList(Integer accountSetsId, String type) {
+        return this.baseMapper.selectAuxiliaryList(accountSetsId, type);
     }
 
     /**

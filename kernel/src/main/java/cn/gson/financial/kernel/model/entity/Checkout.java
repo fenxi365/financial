@@ -41,11 +41,6 @@ public class Checkout implements Serializable {
     @TableField(value = "check_date", updateStrategy = FieldStrategy.IGNORED)
     private Date checkDate;
 
-    @TableField(value = "org_id")
-    private Integer orgId;
-
-
-
     private static final long serialVersionUID = 1L;
 
     public static final String COL_ID = "id";

@@ -1,12 +1,14 @@
 package cn.gson.financial.kernel.service.impl;
 
 import cn.gson.financial.kernel.exception.ServiceException;
-import cn.gson.financial.kernel.model.entity.Organization;
 import cn.gson.financial.kernel.model.entity.User;
 import cn.gson.financial.kernel.model.entity.UserAccountSets;
 import cn.gson.financial.kernel.model.mapper.UserMapper;
 import cn.gson.financial.kernel.model.vo.UserVo;
-import cn.gson.financial.kernel.service.*;
+import cn.gson.financial.kernel.service.AccountSetsService;
+import cn.gson.financial.kernel.service.CheckoutService;
+import cn.gson.financial.kernel.service.UserAccountSetsService;
+import cn.gson.financial.kernel.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -15,7 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,12 +36,8 @@ import java.util.List;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     private UserAccountSetsService userAccountSetsService;
-
     private AccountSetsService accountSetsService;
-
     private CheckoutService checkoutService;
-
-    private OrganizationService organizationService;
 
     @Override
     public int batchInsert(List<User> list) {
@@ -82,36 +79,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         UserVo userVo = new UserVo();
         if (user.getAccountSetsId() != null) {
             userVo.setAccountSets(accountSetsService.getById(user.getAccountSetsId()));
-
-            QueryWrapper oqw = Wrappers.query();
-            oqw.eq("account_sets_id", user.getAccountSetsId());
-            oqw.orderByAsc("code");
-            List<Organization> orgList = organizationService.list(oqw);
-            userVo.setOrgList(orgList);
-            if (orgList != null && orgList.size() > 0 && userAccountSets.getOrgId() == null) {
-                oqw = Wrappers.query();
-                oqw.eq("account_sets_id", user.getAccountSetsId());
-                oqw.eq("type", 0);
-                userVo.setOrg(organizationService.getBaseMapper().selectOne(oqw));
-                userAccountSets.setOrgId(userVo.getOrgId());
-                userAccountSetsService.update(userAccountSets, qw);
-            } else {
-                userVo.setOrg(organizationService.getById(userAccountSets.getOrgId()));
-            }
-
-            QueryWrapper cqw = Wrappers.query();
-            cqw.eq("account_sets_id", user.getAccountSetsId());
-            if (userVo.getOrgId() != null) {
-                cqw.eq("org_id", userVo.getOrgId());
-            }
-            userVo.setCheckoutList(checkoutService.list(cqw));
-            userVo.setAccountSetsList(accountSetsService.myAccountSets(user.getId()));
         }
 
         if (userAccountSets != null) {
             userVo.setRole(userAccountSets.getRoleType());
         }
 
+        QueryWrapper cqw = Wrappers.query();
+        cqw.eq("account_sets_id", user.getAccountSetsId());
+        userVo.setCheckoutList(checkoutService.list(cqw));
+        userVo.setAccountSetsList(accountSetsService.myAccountSets(user.getId()));
         userVo.setId(user.getId());
         userVo.setEmail(user.getEmail());
         userVo.setMobile(user.getMobile());
@@ -123,16 +100,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userVo.setAccountSetsId(user.getAccountSetsId());
         userVo.setCreateDate(user.getCreateDate());
         return userVo;
-    }
-
-    @Transactional
-    public void updateUserAccountSetsOrgId(Integer accountSetsId, Integer userId, Integer orgId) {
-        LambdaQueryWrapper<UserAccountSets> qw = Wrappers.lambdaQuery();
-        qw.eq(UserAccountSets::getAccountSetsId, accountSetsId);
-        qw.eq(UserAccountSets::getUserId, userId);
-        UserAccountSets accountSets = new UserAccountSets();
-        accountSets.setOrgId(orgId);
-        userAccountSetsService.update(accountSets, qw);
     }
 }
 

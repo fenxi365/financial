@@ -2,8 +2,6 @@ package cn.gson.financial.kernel.service;
 
 import cn.gson.financial.kernel.model.entity.ReportTemplate;
 import cn.gson.financial.kernel.model.vo.ReportDataVo;
-import cn.gson.financial.kernel.model.vo.ReportYearDataVo;
-import cn.gson.financial.kernel.model.vo.TemplateGrantOrgVo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.Date;
@@ -26,9 +24,5 @@ public interface ReportTemplateService extends IService<ReportTemplate> {
 
     int batchInsert(List<ReportTemplate> list);
 
-    Map<Integer, ReportDataVo> view(Integer accountSetsId, Long id, Date accountDate, Integer orgId);
-
-    Map<Integer, ReportYearDataVo> yearProfitStatement(Integer accountSetsId, Long id, String year, Integer orgId);
-
-    int grantOrg(TemplateGrantOrgVo grantOrgVo);
+    Map<Integer, ReportDataVo> view(Integer accountSetsId, Long id, Date accountDate);
 }

@@ -2,7 +2,6 @@ package cn.gson.financial.kernel.model.vo;
 
 import cn.gson.financial.kernel.model.entity.AccountSets;
 import cn.gson.financial.kernel.model.entity.Checkout;
-import cn.gson.financial.kernel.model.entity.Organization;
 import cn.gson.financial.kernel.model.entity.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,14 +30,4 @@ public class UserVo extends User {
     private List<AccountSets> accountSetsList;
 
     private List<Checkout> checkoutList;
-
-    //当前账套机构
-    private List<Organization> orgList;
-
-    //选择的账套
-    private Organization org;
-
-    public Integer getOrgId() {
-        return org != null ? org.getId() : null;
-    }
 }

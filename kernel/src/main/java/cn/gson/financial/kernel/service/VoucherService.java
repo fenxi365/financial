@@ -7,7 +7,6 @@ import cn.gson.financial.kernel.model.entity.VoucherDetails;
 import cn.gson.financial.kernel.model.vo.BalanceVo;
 import cn.gson.financial.kernel.model.vo.UserVo;
 import cn.gson.financial.kernel.model.vo.VoucherDetailVo;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.Date;
@@ -29,9 +28,9 @@ public interface VoucherService extends IService<Voucher> {
 
     int batchInsert(List<Voucher> list);
 
-    int loadCode(Integer accountSetsId, String word, Date currentAccountDate,Integer orgId);
+    int loadCode(Integer accountSetsId, String word, Date currentAccountDate);
 
-    List accountBookDetails(Integer accountSetsId, Integer subjectId, Date accountDate, String subjectCode, Boolean showNumPrice, Integer orgId);
+    List accountBookDetails(Integer accountSetsId, Integer subjectId, Date accountDate, String subjectCode, Boolean showNumPrice);
 
     /**
      * 总账
@@ -41,7 +40,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param showNumPrice
      * @return
      */
-    List accountGeneralLedger(Integer accountSetsId, Date accountDate, Boolean showNumPrice, Integer orgId);
+    List accountGeneralLedger(Integer accountSetsId, Date accountDate, Boolean showNumPrice);
 
     /**
      * 获取期间结转科目总和
@@ -52,7 +51,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param code
      * @return
      */
-    Map<String, VoucherDetails> carryForwardMoney(Integer accountSetsId, Integer years, Integer month, String[] code, Integer orgId);
+    Map<String, VoucherDetails> carryForwardMoney(Integer accountSetsId, Integer years, Integer month, String[] code);
 
     /**
      * 核算项目明细账
@@ -64,7 +63,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param showNumPrice
      * @return
      */
-    List<VoucherDetailVo> auxiliaryDetails(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Integer auxiliaryItemId, Boolean showNumPrice,Integer orgId);
+    List<VoucherDetailVo> auxiliaryDetails(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Integer auxiliaryItemId, Boolean showNumPrice);
 
     /**
      * 本期核算项目
@@ -73,7 +72,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param auxiliaryId
      * @return
      */
-    List<AccountingCategoryDetails> auxiliaryList(Integer accountSetsId, Integer auxiliaryId, Integer orgId);
+    List<AccountingCategoryDetails> auxiliaryList(Integer accountSetsId, Integer auxiliaryId);
 
     /**
      * 辅助核算项目余额
@@ -84,7 +83,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param showNumPrice
      * @return
      */
-    List<BalanceVo> auxiliaryBalance(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Boolean showNumPrice, Integer orgId);
+    List<BalanceVo> auxiliaryBalance(Integer accountSetsId, Integer auxiliaryId, Date accountDate, Boolean showNumPrice);
 
     /**
      * 首页收入利润图表数据
@@ -93,7 +92,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param year
      * @return
      */
-    List<Map<String, Object>> getHomeReport(Integer accountSetsId, Integer year, Integer orgId);
+    List<Map<String, Object>> getHomeReport(Integer accountSetsId, Integer year);
 
     /**
      * 首页费用数据
@@ -103,7 +102,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param month
      * @return
      */
-    List<Map<String, Object>> getCostReport(Integer accountSetsId, int year, int month, Integer orgId);
+    List<Map<String, Object>> getCostReport(Integer accountSetsId, int year, int month);
 
     /**
      * 首页现金数据
@@ -113,7 +112,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param month
      * @return
      */
-    List<Map<String, Object>> getCashReport(Integer accountSetsId, int year, int month, Integer orgId);
+    List<Map<String, Object>> getCashReport(Integer accountSetsId, int year, int month);
 
     /**
      * 断号整理
@@ -122,7 +121,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param year
      * @param month
      */
-    void finishingOffNo(Integer accountSetsId, Integer year, Integer month, Integer orgId);
+    void finishingOffNo(Integer accountSetsId, Integer year, Integer month);
 
     /**
      * 批量删除
@@ -130,7 +129,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param accountSetsId
      * @param checked
      */
-    void batchDelete(Integer accountSetsId, Integer[] checked, Integer year, Integer month, Integer orgId);
+    void batchDelete(Integer accountSetsId, Integer[] checked, Integer year, Integer month);
 
     /**
      * 根据当前 Id 获取上一条 ID
@@ -139,7 +138,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param currentId
      * @return
      */
-    Integer getBeforeId(Integer accountSetsId, Integer currentId, Integer orgId);
+    Integer getBeforeId(Integer accountSetsId, Integer currentId);
 
     /**
      * 根据当前 Id 获取下一条 ID
@@ -148,7 +147,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param currentId
      * @return
      */
-    Integer getNextId(Integer accountSetsId, Integer currentId, Integer orgId);
+    Integer getNextId(Integer accountSetsId, Integer currentId);
 
     /**
      * 获取最近使用的摘要
@@ -156,7 +155,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param accountSetsId
      * @return
      */
-    List<String> getTopSummary(Integer accountSetsId, Integer orgId);
+    List<String> getTopSummary(Integer accountSetsId);
 
     /**
      * 审核
@@ -164,7 +163,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param accountSetsId
      * @param checked
      */
-    void audit(Integer accountSetsId, Integer[] checked, UserVo currentUser, Integer year, Integer month, Integer orgId);
+    void audit(Integer accountSetsId, Integer[] checked, UserVo currentUser, Integer year, Integer month);
 
     /**
      * 反审核
@@ -172,7 +171,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param accountSetsId
      * @param checked
      */
-    void cancelAudit(Integer accountSetsId, Integer[] checked, UserVo currentUser, Integer year, Integer month, Integer orgId);
+    void cancelAudit(Integer accountSetsId, Integer[] checked, UserVo currentUser, Integer year, Integer month);
 
     /**
      * 批量导入凭证
@@ -180,15 +179,7 @@ public interface VoucherService extends IService<Voucher> {
      * @param voucherList
      * @return
      */
-    Date importVoucher(List<Voucher> voucherList, AccountSets accountSets, Integer orgId);
-
-    /**
-     * 导出凭证
-     *
-     * @param queryWrapper
-     * @return
-     */
-    List<Voucher> exportVoucher(Wrapper<Voucher> queryWrapper);
+    Date importVoucher(List<Voucher> voucherList, AccountSets accountSets);
 }
 
 

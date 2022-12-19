@@ -8,14 +8,11 @@ import cn.gson.financial.kernel.model.entity.Voucher;
 import cn.gson.financial.kernel.model.entity.VoucherDetails;
 import cn.gson.financial.kernel.service.UserService;
 import cn.gson.financial.kernel.service.VoucherService;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,8 +45,8 @@ public class VoucherController extends BaseCrudController<VoucherService, Vouche
     private VoucherExcelUtils excelUtils;
 
     @GetMapping("code")
-    public JsonResult loadCode(String word, Date currentAccountDate, Integer orgId) {
-        int code = this.service.loadCode(this.accountSetsId.get(), word, currentAccountDate, orgId);
+    public JsonResult loadCode(String word, Date currentAccountDate) {
+        int code = this.service.loadCode(this.accountSetsId, word, currentAccountDate);
         return JsonResult.successful(code);
     }
 
@@ -62,8 +59,8 @@ public class VoucherController extends BaseCrudController<VoucherService, Vouche
      * @return
      */
     @PostMapping("carryForwardMoney")
-    public JsonResult carryForwardMoney(Integer years, Integer month, String[] code, Integer orgId) {
-        Map<String, VoucherDetails> detailsMap = this.service.carryForwardMoney(this.accountSetsId.get(), years, month, code, orgId);
+    public JsonResult carryForwardMoney(Integer years, Integer month, String[] code) {
+        Map<String, VoucherDetails> detailsMap = this.service.carryForwardMoney(this.accountSetsId, years, month, code);
         return JsonResult.successful(detailsMap);
     }
 
@@ -75,8 +72,8 @@ public class VoucherController extends BaseCrudController<VoucherService, Vouche
      * @return
      */
     @GetMapping("finishingOffNo")
-    public JsonResult finishingOffNo(Integer year, Integer month, Integer orgId) {
-        this.service.finishingOffNo(this.accountSetsId.get(), year, month, orgId);
+    public JsonResult finishingOffNo(Integer year, Integer month) {
+        this.service.finishingOffNo(this.accountSetsId, year, month);
         return JsonResult.successful();
     }
 
@@ -87,8 +84,8 @@ public class VoucherController extends BaseCrudController<VoucherService, Vouche
      * @return
      */
     @PostMapping("batchDelete")
-    public JsonResult batchDelete(Integer[] checked, Integer year, Integer month, Integer orgId) {
-        this.service.batchDelete(this.accountSetsId.get(), checked, year, month, orgId);
+    public JsonResult batchDelete(Integer[] checked, Integer year, Integer month) {
+        this.service.batchDelete(this.accountSetsId, checked, year, month);
         return JsonResult.successful();
     }
 
@@ -99,8 +96,8 @@ public class VoucherController extends BaseCrudController<VoucherService, Vouche
      * @return
      */
     @PostMapping("audit")
-    public JsonResult audit(Integer[] checked, Integer year, Integer month, Integer orgId) {
-        this.service.audit(this.accountSetsId.get(), checked, this.currentUser.get(), year, month, orgId);
+    public JsonResult audit(Integer[] checked, Integer year, Integer month) {
+        this.service.audit(this.accountSetsId, checked, this.currentUser, year, month);
         return JsonResult.successful();
     }
 
@@ -111,8 +108,8 @@ public class VoucherController extends BaseCrudController<VoucherService, Vouche
      * @return
      */
     @PostMapping("cancelAudit")
-    public JsonResult cancelAudit(Integer[] checked, Integer year, Integer month, Integer orgId) {
-        this.service.cancelAudit(this.accountSetsId.get(), checked, this.currentUser.get(), year, month, orgId);
+    public JsonResult cancelAudit(Integer[] checked, Integer year, Integer month) {
+        this.service.cancelAudit(this.accountSetsId, checked, this.currentUser, year, month);
         return JsonResult.successful();
     }
 
@@ -123,8 +120,8 @@ public class VoucherController extends BaseCrudController<VoucherService, Vouche
      * @return
      */
     @GetMapping("beforeId")
-    public JsonResult beforeId(Integer currentId, Integer orgId) {
-        Integer id = this.service.getBeforeId(this.accountSetsId.get(), currentId, orgId);
+    public JsonResult beforeId(Integer currentId) {
+        Integer id = this.service.getBeforeId(this.accountSetsId, currentId);
         return JsonResult.successful(id);
     }
 
@@ -135,8 +132,8 @@ public class VoucherController extends BaseCrudController<VoucherService, Vouche
      * @return
      */
     @GetMapping("nextId")
-    public JsonResult nextId(Integer currentId, Integer orgId) {
-        Integer id = this.service.getNextId(this.accountSetsId.get(), currentId, orgId);
+    public JsonResult nextId(Integer currentId) {
+        Integer id = this.service.getNextId(this.accountSetsId, currentId);
         return JsonResult.successful(id);
     }
 
@@ -145,8 +142,8 @@ public class VoucherController extends BaseCrudController<VoucherService, Vouche
         JsonResult result = super.save(entity);
         if (result.isSuccess()) {
             DateFormat sdf = new SimpleDateFormat("yyyyMM");
-            if (!sdf.format(this.currentUser.get().getAccountSets().getCurrentAccountDate()).equals(entity.getVoucherDate())) {
-                this.session.get().set("user", this.userService.getUserVo(this.currentUser.get().getId()));
+            if (!sdf.format(this.currentUser.getAccountSets().getCurrentAccountDate()).equals(entity.getVoucherDate())) {
+                this.session.setAttribute("user", this.userService.getUserVo(this.currentUser.getId()));
             }
         }
         result.setData(entity);
@@ -155,7 +152,7 @@ public class VoucherController extends BaseCrudController<VoucherService, Vouche
 
     @GetMapping("summary")
     public JsonResult summary() {
-        List<String> summary = this.service.getTopSummary(this.accountSetsId.get(), this.currentUser.get().getOrgId());
+        List<String> summary = this.service.getTopSummary(this.accountSetsId);
         summary = summary.stream().map(String::trim).collect(Collectors.toList());
         for (String s : defaultSummary) {
             if (!summary.contains(s)) {
@@ -166,34 +163,17 @@ public class VoucherController extends BaseCrudController<VoucherService, Vouche
     }
 
     @PostMapping("/import")
-    public JsonResult importVoucher(@RequestParam("file") MultipartFile multipartFile, Integer orgId) {
+    public JsonResult importVoucher(@RequestParam("file") MultipartFile multipartFile) {
         try {
-            List<Voucher> voucherList = excelUtils.readExcel(multipartFile.getOriginalFilename(), multipartFile.getInputStream(), this.currentUser.get(), orgId);
-            Date date = this.service.importVoucher(voucherList, this.currentUser.get().getAccountSets(), orgId);
-            this.session.get().set("user", this.userService.getUserVo(this.currentUser.get().getId()));
+            List<Voucher> voucherList = excelUtils.readExcel(multipartFile.getOriginalFilename(), multipartFile.getInputStream(), this.currentUser);
+            Date date = this.service.importVoucher(voucherList, this.currentUser.getAccountSets());
+            this.session.setAttribute("user", this.userService.getUserVo(this.currentUser.getId()));
             return JsonResult.successful(date);
         } catch (ServiceException e) {
             return JsonResult.failure(e.getMessage());
         } catch (Exception e) {
             log.error("导入失败", e);
             throw new ServiceException("导入失败~", e);
-        }
-    }
-
-    @GetMapping("download")
-    public void exportVoucher(HttpServletResponse response, Integer orgId) {
-        try {
-            LambdaQueryWrapper<Voucher> qwd = Wrappers.lambdaQuery();
-            qwd.eq(Voucher::getAccountSetsId, this.accountSetsId.get());
-            qwd.eq(Voucher::getOrgId, orgId);
-            qwd.orderByAsc(Voucher::getVoucherDate);
-            List<Voucher> list = service.exportVoucher(qwd);
-            excelUtils.exportExcel(list, this.currentUser.get(), response);
-        } catch (ServiceException e) {
-            log.error("凭证导出失败", e);
-        } catch (Exception e) {
-            log.error("凭证导出失败", e);
-            throw new ServiceException("凭证导出失败~", e);
         }
     }
 }

@@ -43,9 +43,6 @@ public interface AccountSetsService extends IService<AccountSets> {
 
     void updateEncode(Integer accountSetsId, String encoding, String newEncoding);
 
-
-    void init(AccountSets accountSets);
-
 }
 
 
