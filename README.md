@@ -2,7 +2,9 @@
 
 ## 源码交流群
 
-![输入图片说明](qun.png)
+<div style="text-align: center">
+<img width="300px" src="qun.png" alt="输入图片说明">
+</div>
 
 #### 预览环境
 https://f.fenxi365.com/
