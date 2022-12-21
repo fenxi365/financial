@@ -37,7 +37,7 @@
 			value: [String],
 		},
 		computed: {
-			...mapState(['currentAccountSets', 'User','currentOrg']),
+			...mapState(['currentAccountSets', 'User']),
 			checkDateObject() {
 				let data = {};
 				this.User.checkoutList.forEach(item => {
@@ -95,7 +95,7 @@
 			},
 		},
 		mounted() {
-			this.accountDate = this.currentOrg.currentAccountDate;
+			this.accountDate = this.currentAccountSets.currentAccountDate;
 			this.selectedYear = this.years[0];
 		}
 	}

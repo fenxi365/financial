@@ -2,14 +2,10 @@
 	<div class="login-vue">
 		<div class="login-container">
 			<div class="login-content">
-        <div class="app-logo">
-          <span class="app-logo-icon"></span><span class="app-logo-text" style="color: #929292 ">纷析云财务软件</span>
-        </div>
-<!--				<div class="login-title">纷析云 - 财务</div>-->
+				<div class="login-title">纷析云 - 财务</div>
 				<component v-model="currentComponent" :is="currentComponent"></component>
 			</div>
 			<p class="copyright"> Copyright © 2019 纷析云</p>
-      <p class="copyright">技术支持：13456781004(微信)</p>
 		</div>
 	</div>
 </template>

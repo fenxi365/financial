@@ -12,8 +12,8 @@
 import Ajax from '../js/common/ajax';
 
 export default {
-	list(params) {
-		return Ajax.get("/checkout",params)
+	list() {
+		return Ajax.get("/checkout")
 	},
 	initialCheck(params) {
 		return Ajax.get("/checkout/initialCheck", params)

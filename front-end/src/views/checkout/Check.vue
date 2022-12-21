@@ -44,7 +44,7 @@
 			};
 		},
 		computed: {
-			...mapState(['currentAccountSets','currentOrgId']),
+			...mapState(['currentAccountSets']),
 			checked() {
 				return Object.values(this.checkList).every(value => !value.loading && !value.msg);
 			}
@@ -54,19 +54,19 @@
 		},
 		methods: {
 			init() {
-				this.$api.checkout.initialCheck({year: this.checkYear, month: this.checkMonth,orgId:this.currentOrgId}).catch(() => {
+				this.$api.checkout.initialCheck({year: this.checkYear, month: this.checkMonth}).catch(() => {
 					this.$set(this.checkList.期初检查, 'msg', "期初不平衡");
 				}).finally(() => {
 					this.$set(this.checkList.期初检查, 'loading', false);
 				});
 
-				this.$api.checkout.finalCheck({year: this.checkYear, month: this.checkMonth,orgId:this.currentOrgId}).finally(() => {
+				this.$api.checkout.finalCheck({year: this.checkYear, month: this.checkMonth}).finally(() => {
 					this.$set(this.checkList.期末检查, 'loading', false);
 				}).catch(() => {
 					this.$set(this.checkList.期末检查, 'msg', "期末不平衡");
 				});
 
-				this.$api.checkout.reportCheck({year: this.checkYear, month: this.checkMonth,orgId:this.currentOrgId}).then(({data}) => {
+				this.$api.checkout.reportCheck({year: this.checkYear, month: this.checkMonth}).then(({data}) => {
 					this.$set(this.checkList.报表检查, 'loading', false);
 					if (!data.result) {
 						let num = data.资产类 - data.负债类;
@@ -74,7 +74,7 @@
 					}
 				});
 
-				this.$api.checkout.brokenCheck({year: this.checkYear, month: this.checkMonth,orgId:this.currentOrgId}).finally(() => {
+				this.$api.checkout.brokenCheck({year: this.checkYear, month: this.checkMonth}).finally(() => {
 					this.$set(this.checkList.断号检查, 'loading', false);
 				}).catch(() => {
 					this.$set(this.checkList.断号检查, 'msg', "凭证号不连续");
@@ -82,7 +82,7 @@
 			},
 			invoicing() {
 				this.loading = true;
-				this.$api.checkout.invoicing({year: this.checkYear, month: this.checkMonth,orgId:this.currentOrgId}).then(() => {
+				this.$api.checkout.invoicing({year: this.checkYear, month: this.checkMonth}).then(() => {
 					this.$Message("结转成功！");
 					this.$store.dispatch('init');
 					this.$router.push({name: "CheckList"});

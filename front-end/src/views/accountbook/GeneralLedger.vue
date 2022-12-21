@@ -5,9 +5,6 @@
 		</div>
 		<div class="margin-right-left margin-top">
 			<account-date-choose v-model="accountDate"/>
-      核算组织：
-      <TreePicker :option="orgOption"  style="display: inline-block;min-width: 150px"
-                  ref="orgTreePicker" v-model="orgId"></TreePicker>
 			<div class="float-right">
 				<Checkbox v-model="showNumPrice">显示数量金额</Checkbox>
 			</div>
@@ -108,25 +105,12 @@
 </template>
 
 <script>
-	import {mapState} from "vuex";
-
-  export default {
+	export default {
 		name: 'GeneralLedger',
-    computed: {
-      ...mapState(['orgDatas', 'currentOrgId']),
-    },
 		data() {
 			return {
-        orgOption: {
-          keyName: 'id',
-          parentName: 'parentId',
-          titleName: 'title',
-          dataMode: 'list',
-          datas: []
-        },
 				loading: false,
 				accountDate: null,
-        orgId: null,
 				showNumPrice: false,
 				numPriceDisabled: true,
 				datalist: []
@@ -138,41 +122,24 @@
 			},
 			showNumPrice() {
 				this.loadList();
-			},
-      orgId() {
-				this.loadList();
 			}
 		},
 		methods: {
 			loadList() {
-			  if (this.accountDate && this.orgId){
-          this.loading = true;
-          this.$api.accountbook.loadGeneralLedger({
-            accountDate: this.accountDate,
-            orgId: this.orgId,
-            showNumPrice: this.showNumPrice
-          }).then(({data}) => {
-            this.datalist = data;
-            this.loading = false;
-          });
-        }
+				this.loading = true;
+				this.$api.accountbook.loadGeneralLedger({
+					accountDate: this.accountDate,
+					showNumPrice: this.showNumPrice
+				}).then(({data}) => {
+					this.datalist = data;
+					this.loading = false;
+				});
 			},
 			toggleSummary(item) {
 				this.$set(item, '_expand', !item._expand)
 			}
-		},
-    created() {
-		  if (this.currentOrgId){
-		    this.orgId = this.currentOrgId;
-      }
-      this.orgOption.datas = this.orgDatas.map(val => {
-        return {id: val.id, name:val.name, type: val.type, title: `[${val.code}]${val.name}`, parentId: val.parentId,currentAccountDate:val.currentAccountDate,enableDate:val.enableDate}
-      });
-      this.$nextTick(() => {
-        this.$refs.orgTreePicker.expandAll();
-      });
-    }
-  };
+		}
+	};
 </script>
 
 <style scoped lang="less">

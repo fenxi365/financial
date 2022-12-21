@@ -21,15 +21,7 @@ export default new Router({
 			name: 'Voucher',
 			component: () => import('./views/voucher/Index'),
 			meta: {
-				title: '凭证查询'
-			}
-		},
-		{
-			path: '/jxcVoucher',
-			name: 'JxcVoucher',
-			component: () => import('./views/voucher/JxcVoucher'),
-			meta: {
-				title: '凭证查询'
+				title: '凭证列表'
 			}
 		},
 		{
@@ -81,35 +73,11 @@ export default new Router({
 			]
 		},
 		{
-			path: '/jxcSetting',
-			name: 'JxcSetting',
-			component: () => import('./views/setting/JxcSetting'),
-			meta: {
-				title: '关联进销存'
-			}
-		},
-		{
-			path: '/bossApp',
-			name: 'BossApp',
-			component: () => import('./views/setting/BossApp'),
-			meta: {
-				title: '关联进销存'
-			}
-		},
-		{
 			path: '/account',
 			name: 'Account',
 			component: () => import('./views/setting/Account'),
 			meta: {
 				title: '账套'
-			}
-		},
-		{
-			path: '/organization',
-			name: 'Organization',
-			component: () => import('./views/setting/Organization'),
-			meta: {
-				title: '机构'
 			}
 		},
 		{
@@ -310,30 +278,6 @@ export default new Router({
 			}
 		},
 		{
-			path: '/report/profit',
-			name: 'ProfitStatement',
-			component: () => import('./views/report/ProfitStatement'),
-			meta: {
-				title: '利润表'
-			}
-		},
-		{
-			path: '/report/balance',
-			name: 'BalanceStatement',
-			component: () => import('./views/report/BalanceStatement'),
-			meta: {
-				title: '资产负债表'
-			}
-		},
-		{
-			path: '/report/cashFlow',
-			name: 'CashFlowStatement',
-			component: () => import('./views/report/CashFlowStatement'),
-			meta: {
-				title: '现金流量表'
-			}
-		},
-		{
 			path: '/report/template',
 			name: 'ReportTemplate',
 			component: () => import('./views/report/template/TemplateList'),
@@ -349,22 +293,6 @@ export default new Router({
 			meta: {
 				title: '模板编辑'
 			}
-		},
-		{
-			path: '/report/year/profit',
-			name: 'YearProfitStatement',
-			component: () => import('./views/report/YearProfitStatement'),
-			meta: {
-				title: '年度利润表'
-			}
-		},
-		{
-			path: '/report/org/profit',
-			name: 'OrgProfitStatement',
-			component: () => import('./views/report/OrgProfitStatement'),
-			meta: {
-				title: '多组织利润表'
-			}
-		},
+		}
 	]
 });

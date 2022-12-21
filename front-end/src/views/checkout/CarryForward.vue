@@ -29,7 +29,7 @@
 			checkMonth: [Number, String],
 		},
 		computed: {
-			...mapState(['currentAccountSets','currentOrgId']),
+			...mapState(['currentAccountSets']),
 			typeList() {
 				let isQy = this.currentAccountSets.accountingStandards === 0;
 				return [
@@ -102,7 +102,6 @@
 				this.$api.voucher.carryForwardMoney({
 					years: this.checkYear,
 					month: this.checkMonth,
-					orgId: this.currentOrgId,
 					code: this.typeList.map(val => val.code)
 				}).then(({data}) => {
 					this.money = data;

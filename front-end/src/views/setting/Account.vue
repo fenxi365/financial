@@ -18,8 +18,8 @@
 				<TableItem title="凭证审核" prop="voucherReviewed" dict="enableRadios" :width="100"></TableItem>
 				<TableItem title="操作" :width="100" align="center">
 					<div class="actions" slot-scope="{data}">
-						<span @click="edit(data)" >编辑</span>
-						<span @click="remove(data)" v-if="User.role === 'Manager' && data.id !== User.accountSetsId">删除</span>
+						<span @click="edit(data)">编辑</span>
+						<span @click="remove(data)" v-if="User.role === 'Manager'">删除</span>
 					</div>
 				</TableItem>
 			</Table>
@@ -86,22 +86,22 @@
 </template>
 
 <script>
-import {getTotalData} from '@/js/locations/district';
-import moment from 'moment';
-import {mapState} from 'vuex';
-import SmsVerificationCode from "../../components/SmsVerificationCode";
+	import {getTotalData} from '../../js/locations/district';
+	import moment from 'moment';
+	import {mapState} from 'vuex';
+	import SmsVerificationCode from "../../components/SmsVerificationCode";
 
-const emptyForm = {
-  "accountingStandards": "0",
-  "address": null,
-  "companyName": "",
-  "creditCode": "",
-  "enableDate": null,
-  "fixedAssetModule": "0",
-  "cashierModule": "0",
-  "voucherReviewed": "0",
-  "industry": "",
-  "vatType": "0"
+	const emptyForm = {
+		"accountingStandards": "0",
+		"address": null,
+		"companyName": "",
+		"creditCode": "",
+		"enableDate": null,
+		"fixedAssetModule": "0",
+		"cashierModule": "0",
+		"voucherReviewed": "0",
+		"industry": "",
+		"vatType": "0"
 	};
 
 	export default {

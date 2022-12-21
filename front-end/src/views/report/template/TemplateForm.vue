@@ -6,7 +6,6 @@
 		</div>
 		<div class="margin-top margin-left">
 			<Button color="primary" @click="showForm()">添加项目</Button>
-			<Button color="red" @click="resetLineNum()">行次重排</Button>
 		</div>
 		<div class="h-panel-body">
 			<Table :datas="templateItems" selectRow>
@@ -79,13 +78,6 @@
 					this.template = data;
 				});
 			},
-      resetLineNum(){
-        this.$Confirm("确认行次根据位置重新自动排序?").then(() => {
-          Api.report.template.items.resetLineNum(this.templateId).then(({data}) => {
-              this.$Message("重新排序成功~");
-          });
-        });
-      },
 			remove(data) {
 				this.$Confirm("确认删除?").then(() => {
 					Api.report.template.items.delete(data.id).then(() => {

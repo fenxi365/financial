@@ -10,7 +10,6 @@
 					<input ref="file" type="file" accept="application/vnd.ms-excel" style="display: none" @change="fileChange($event)">
 					导入
 				</Button>
-        <a :href="downloadUrl" class="h-btn">导出</a>
 			</div>
 		</div>
 		<div class="h-panel-body padding">
@@ -177,10 +176,7 @@
 			},
 			showAssistAccounting() {
 				return this.datas.find(value => !!value.auxiliaryAccounting)
-			},
-      downloadUrl() {
-        return Ajax.PREFIX + "/subject/download";
-      },
+			}
 		},
 		watch: {
 			type() {

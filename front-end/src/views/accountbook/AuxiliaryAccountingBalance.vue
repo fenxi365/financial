@@ -7,12 +7,7 @@
 			<Cell>
 				<account-date-choose v-model="accountDate"/>
 			</Cell>
-			<Cell class="label">核算组织：</Cell>
-			<Cell>
-        <TreePicker :option="orgOption"  style="display: inline-block;min-width: 150px"
-                    ref="orgTreePicker" v-model="orgId"></TreePicker>
-      </Cell>
-      <Cell class="label">辅助类别：</Cell>
+			<Cell class="label">辅助类别：</Cell>
 			<Cell>
 				<Select type="object" v-model="auxiliary" :deletable="false" style="min-width: 100px" :datas="auxiliaryType" keyName="id" titleName="name"/>
 			</Cell>
@@ -65,33 +60,20 @@
 </template>
 
 <script>
-	import {mapState} from "vuex";
-
-  export default {
+	export default {
 		name: "AuxiliaryAccountingBalance",
 		data() {
 			return {
 				dataList: [],
-        orgOption: {
-          keyName: 'id',
-          parentName: 'parentId',
-          titleName: 'title',
-          dataMode: 'list',
-          datas: []
-        },
 				showNumPrice: false,
 				loading: false,
 				accountDate: null,
-				orgId: null,
 				auxiliary: null,
 				auxiliaryItem: {},
 				auxiliaryType: [],
 				auxiliaryList: []
 			}
 		},
-    computed: {
-      ...mapState(['orgDatas', 'currentOrgId']),
-    },
 		methods: {
 			loadAuxiliaryType() {
 				this.$api.setting.accountingCategory.list().then(({data}) => {
@@ -106,7 +88,6 @@
 					this.loading = true;
 					this.$api.accountbook.loadAuxiliaryBalance({
 						accountDate: this.accountDate,
-            orgId: this.orgId,
 						auxiliaryId: this.auxiliary.id
 					}).then(({data}) => {
 						this.dataList = data;
@@ -121,15 +102,6 @@
 			}
 		},
 		mounted() {
-      if (this.currentOrgId) {
-        this.orgId = this.currentOrgId;
-      }
-      this.orgOption.datas = this.orgDatas.map(val => {
-        return {id: val.id, name:val.name, type: val.type, title: `[${val.code}]${val.name}`, parentId: val.parentId,currentAccountDate:val.currentAccountDate,enableDate:val.enableDate}
-      });
-      this.$nextTick(() => {
-        this.$refs.orgTreePicker.expandAll();
-      });
 			this.loadAuxiliaryType();
 		}
 	}

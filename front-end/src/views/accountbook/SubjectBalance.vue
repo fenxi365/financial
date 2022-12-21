@@ -5,10 +5,7 @@
 		</div>
 		<div class="margin-right-left margin-top">
 			<account-date-choose v-model="accountDate"/>
-      核算组织：
-      <TreePicker :option="orgOption"  style="display: inline-block;min-width: 150px"
-                  ref="orgTreePicker" v-model="orgId"></TreePicker>
-      <div class="float-right">
+			<div class="float-right">
 				<Checkbox v-model="showNumPrice">显示数量金额</Checkbox>
 			</div>
 		</div>
@@ -100,66 +97,36 @@
 </template>
 
 <script>
-	import {mapState} from "vuex";
-
-  export default {
+	export default {
 		name: "SubjectBalance",
 		data() {
 			return {
-        orgOption: {
-          keyName: 'id',
-          parentName: 'parentId',
-          titleName: 'title',
-          dataMode: 'list',
-          datas: []
-        },
 				dataList: [],
 				accountDate: null,
-        orgId: null,
 				showNumPrice: false,
 				loading: false
 			}
 		},
-    computed: {
-      ...mapState(['orgDatas', 'currentOrgId']),
-    },
 		watch: {
 			accountDate() {
 				this.loadList();
 			},
 			showNumPrice() {
 				this.loadList();
-			},
-      orgId() {
-				this.loadList();
 			}
 		},
 		methods: {
 			loadList() {
-			  if (this.accountDate){
-          this.loading = true;
-          this.$api.accountbook.loadSubjectBalance({
-            accountDate: this.accountDate,
-            orgId: this.orgId,
-            showNumPrice: this.showNumPrice
-          }).then(({data}) => {
-            this.dataList = data;
-            this.loading = false;
-          });
-        }
+				this.loading = true;
+				this.$api.accountbook.loadSubjectBalance({
+					accountDate: this.accountDate,
+					showNumPrice: this.showNumPrice
+				}).then(({data}) => {
+					this.dataList = data;
+					this.loading = false;
+				});
 			}
-		},
-    created() {
-      if (this.currentOrgId){
-        this.orgId = this.currentOrgId;
-      }
-      this.orgOption.datas = this.orgDatas.map(val => {
-        return {id: val.id, name:val.name, type: val.type, title: `[${val.code}]${val.name}`, parentId: val.parentId,currentAccountDate:val.currentAccountDate,enableDate:val.enableDate}
-      });
-      this.$nextTick(() => {
-        this.$refs.orgTreePicker.expandAll();
-      });
-    }
+		}
 	}
 </script>
 

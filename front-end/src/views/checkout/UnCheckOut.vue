@@ -16,9 +16,7 @@
 </template>
 
 <script>
-	import {mapState} from "vuex";
-
-  export default {
+	export default {
 		name: "UnCheckOut",
 		data() {
 			return {
@@ -26,14 +24,13 @@
 			}
 		},
 		computed: {
-      ...mapState(['currentOrgId']),
 			years() {
 				return Object.keys(this.dataList).sort((a, b) => b - a);
 			}
 		},
 		methods: {
 			loadList() {
-				this.$api.checkout.list({org_id:this.currentOrgId}).then(({data}) => {
+				this.$api.checkout.list().then(({data}) => {
 					let checkData = {};
 					data.forEach(val => {
 						if (val.status == 2) {
@@ -50,7 +47,7 @@
 			unCheck(data) {
 				this.$Confirm("确定进行反结账 ?", "反结账操作").then(() => {
 					this.$Loading("正在反结账中...");
-					this.$api.checkout.unCheck({year: data.checkYear, month: data.checkMonth,orgId:this.currentOrgId}).then(() => {
+					this.$api.checkout.unCheck({year: data.checkYear, month: data.checkMonth}).then(() => {
 						this.loadList();
 					}).finally(() => {
 						this.$Loading.close();

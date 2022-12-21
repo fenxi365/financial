@@ -8,11 +8,6 @@
 			<Cell>
 				<account-date-choose v-model="accountDate"/>
 			</Cell>
-      <Cell class="label">核算组织：</Cell>
-      <Cell>
-        <TreePicker :option="orgOption"  style="display: inline-block;min-width: 150px"
-                    ref="orgTreePicker" v-model="orgId"></TreePicker>
-      </Cell>
 			<Cell class="label">辅助类别：</Cell>
 			<Cell>
 				<Select type="object" v-model="auxiliary" :deletable="false" style="min-width: 100px" :datas="auxiliaryType" keyName="id" titleName="name"/>
@@ -62,19 +57,10 @@
 </template>
 
 <script>
-	import {mapState} from "vuex";
-
-  export default {
+	export default {
 		name: "AuxiliaryAccountingDetail",
 		data() {
 			return {
-        orgOption: {
-          keyName: 'id',
-          parentName: 'parentId',
-          titleName: 'title',
-          dataMode: 'list',
-          datas: []
-        },
 				dataList: [],
 				loading: false,
 				showNumPrice: false,
@@ -86,15 +72,11 @@
 					datas: []
 				},
 				accountDate: null,
-				orgId: null,
 				auxiliary: null,
 				auxiliaryItem: null,
 				auxiliaryType: []
 			}
 		},
-    computed: {
-      ...mapState(['orgDatas', 'currentOrgId']),
-    },
 		methods: {
 			loadAuxiliaryType() {
 				this.$api.setting.accountingCategory.list().then(({data}) => {
@@ -105,7 +87,6 @@
 				this.loading = true;
 				this.$api.accountbook.loadAuxiliaryDetails({
 					accountDate: this.accountDate,
-          orgId: this.orgId,
 					auxiliaryId: this.auxiliary.id,
 					auxiliaryItemId: this.auxiliaryItem.id,
 				}).then(({data}) => {
@@ -117,8 +98,7 @@
 			loadAuxiliaryList() {
 				this.dataList = [];
 				this.$api.accountbook.loadAuxiliaryList({
-					auxiliaryId: this.auxiliary.id,
-          orgId: this.orgId
+					auxiliaryId: this.auxiliary.id
 				}).then(({data}) => {
 					data.forEach(val => val.name = val.code + " " + val.name);
 					data = data.sort((a, b) => a.code.localeCompare(b.code));
@@ -141,17 +121,8 @@
 			}
 		},
 		mounted() {
-      if (this.currentOrgId) {
-        this.orgId = this.currentOrgId;
-      }
-      this.orgOption.datas = this.orgDatas.map(val => {
-        return {id: val.id, name:val.name, type: val.type, title: `[${val.code}]${val.name}`, parentId: val.parentId,currentAccountDate:val.currentAccountDate,enableDate:val.enableDate}
-      });
-      this.$nextTick(() => {
-        this.$refs.orgTreePicker.expandAll();
-      });
-      this.loadAuxiliaryType();
-    }
+			this.loadAuxiliaryType();
+		}
 	}
 </script>
 

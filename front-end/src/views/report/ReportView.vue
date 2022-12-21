@@ -6,7 +6,7 @@
 			<Button class="float-right" @click="$router.back()">返回</Button>
 		</div>
 		<div class="margin-top margin-left margin-right">
-      <span class="dark4-color">*提示：按 Ctrl + F 键并输入称可以查找科目。</span>
+			<account-date-choose v-model="accountDate"/>
 			<router-link tag="button" class="h-btn float-right" v-if="User.role!=='View'" :to="{name:'TemplateForm',params:{templateId:reportId}}">编辑数据项</router-link>
 		</div>
 		<div class="h-panel-body">
@@ -85,12 +85,11 @@
 				report: {},
 				reportData: {},
 				accountDate: null,
-        orgId: null,
 				loading: false
 			}
 		},
 		computed: {
-			...mapState(['User','orgDatas', 'currentOrgId']),
+			...mapState(['User']),
 			templateItems() {
 				return this.report ? this.report.items : [];
 			},
@@ -121,9 +120,6 @@
 			accountDate() {
 				this.loadReport();
 			},
-      orgId() {
-				this.loadReport();
-			},
 			reportId() {
 				this.loadReport();
 			}
@@ -132,24 +128,17 @@
 			loadReport() {
 				Api.report.template.load(this.reportId).then(({data}) => {
 					this.report = data;
-					// this.$nextTick(this.loadReportData);
+					this.$nextTick(this.loadReportData);
 				});
 			},
 			loadReportData() {
-				if (this.accountDate){
-          this.loading = true;
-          Api.report.view(this.reportId, {accountDate: this.accountDate,orgId:this.orgId}).then(({data}) => {
-            this.reportData = data;
-          }).finally(() => this.loading = false);
-        }
+				this.loading = true;
+				Api.report.view(this.reportId, {accountDate: this.accountDate}).then(({data}) => {
+					this.reportData = data;
+				}).finally(() => this.loading = false);
 			}
-		},
-    mounted() {
-      if (this.currentOrgId) {
-        this.orgId = this.currentOrgId;
-      }
-    }
-  }
+		}
+	}
 </script>
 
 <style scoped>

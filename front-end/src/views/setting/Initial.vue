@@ -2,8 +2,6 @@
 	<app-content class="h-panel">
 		<Tabs :datas="tabDatas" v-model="selected" @change="change"></Tabs>
 		<div class="padding-top padding-right text-right">
-      <Button @click="showImportModal=true">导入</Button>
-      <a :href="downTemplateUrl" class="h-btn">导出</a>
 			<Button @click="trialBalance">试算平衡</Button>
 		</div>
 		<div class="h-panel-body padding">
@@ -156,20 +154,6 @@
 				<Button @click="showDetailModal=false">取消</Button>
 			</div>
 		</Modal>
-    <Modal v-model="showImportModal" :closeOnMask="false">
-      <div slot="header">导入数据</div>
-      <div v-width="350">
-        <p>第一步： 请点击下面的链接下载Excel模板，并按照模板填写信息</p>
-        <a class="blue-color text-hover" :href="downTemplateUrl">下载模板</a>
-        <p>第二步： 导入Excel模板文件</p>
-        <span class="blue-color text-hover" @click="$refs.file.click()">选取文件</span><span class="margin-left" v-if="fileName">已选：{{fileName}}</span>
-        <input type="file" style="visibility: hidden;" @change="fileChange($event)" ref="file">
-      </div>
-      <div class="text-center">
-        <Button color="green" @click="importData" :disabled="!fileName" :loading="loading">导入</Button>
-        <Button @click="showImportModal=false" :loading="loading">取消</Button>
-      </div>
-    </Modal>
 	</app-content>
 </template>
 
@@ -222,27 +206,16 @@
 				auxiliaryAccountingData: {},
 				beginningBalance: {借: 0, 贷: 0},
 				liabilities: {权益: 0, 资产: 0},
-        showImportModal:false,
-        file: null,
 			};
 		},
 		computed: {
-			...mapState(['currentAccountSets', 'currentOrgId']),
+			...mapState(['currentAccountSets']),
 			isUnit() {
 				return this.datas.filter(value => value.unit).length > 0;
 			},
 			auxiliarys() {
 				return this.datas.filter(value => value.auxiliaryAccounting)
-			},
-      fileName() {
-        if (this.file) {
-          return this.file.name;
-        }
-        return '';
-      },
-      downTemplateUrl(){
-        return Ajax.PREFIX + "/initial-balance/download";
-      }
+			}
 		},
 		watch: {
 			type() {
@@ -267,7 +240,7 @@
 			},
 			loadList() {
 				this.loading = true;
-				this.$api.setting.initialBalance.list(this.type,this.currentOrgId).then(({data}) => {
+				this.$api.setting.initialBalance.list(this.type).then(({data}) => {
 					this.datas = data;
 					this.loading = false;
 
@@ -346,28 +319,7 @@
 						this.loading = false;
 					});
 				}
-			},
-      fileChange() {
-        this.file = this.$refs.file.files[0];
-      },
-      importData() {
-        if (this.file) {
-          let formData = new FormData();
-          formData.append('file', this.file);
-          formData.append('categoryId', this.id);
-          this.loading = true;
-          this.$api.setting.accountingCategory.import(formData).then(({data}) => {
-            this.$Message(`本次导入数据共:${data.total}行。其中更新${data.updated}行，新增${data.inserted}行。`);
-            this.pageInfo.page = 1;
-            this.showImportModal = false;
-            this.loadList();
-          }).finally(() => {
-            this.loading = false;
-          });
-          this.file = null;
-          this.$refs.file.value = "";
-        }
-      }
+			}
 		},
 		mounted() {
 			if (this.currentAccountSets.accountingStandards !== 0) {

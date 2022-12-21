@@ -6,7 +6,7 @@
  * <li>Version     : 1.0</li>
  * <li>Creation    : 2019年08月02日</li>
  * <li>@author     : ____′↘夏悸</li>
- * </ul>,3:"自定义报表"
+ * </ul>
  * <p>****************************************************************************</p>
  */
 HeyUI.initDict({
@@ -14,14 +14,11 @@ HeyUI.initDict({
 	defaultRadios: {1: "是", 0: "否"},
 	statusRadios: {1: "正常", 0: "不可用"},
 	enableRadios: {1: "启用", 0: "不启用"},
-	organizationType: {0: "总公司", 1: "门店", 2: "部门"},
 	needRadios: {1: "需要", 0: "不需要"},
-	reportTemplateType: {0: "利润表", 1: "资产报表",2:"现金流量表"},
+	reportTemplateType: {0: "普通报表", 1: "资产报表"},
 	reportTemplateItemType: {0: "资产", 1: "负债", 2: "所有者权益"},
 	accessRules0: {0: " 净发生额", 1: "借方发生额", 2: "贷方发生额"},
 	accessRules1: {3: "余额", 4: "借方余额", 5: "贷方余额"},
-	accessRules2: {0: " 净发生额", 1: "借方发生额", 2: "贷方发生额"},
-	accessRules3: {0: " 净发生额", 1: "借方发生额", 2: "贷方发生额",3: "余额", 4: "借方余额", 5: "贷方余额"},
 	operation: {'+': " +", '-': "-"},
 	reportTemplateItemSources: {0: "表外公式", 1: "表内公式"},
 	vatRadios: {0: "小规模纳税人", 1: "一般纳税人"},

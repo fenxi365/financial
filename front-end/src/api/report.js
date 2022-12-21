@@ -13,8 +13,8 @@ import Ajax from '../js/common/ajax';
 
 export default {
 	template: {
-		list(params = {}) {
-			return Ajax.get("/report/template",params)
+		list() {
+			return Ajax.get("/report/template")
 		},
 		load(id) {
 			return Ajax.get(`/report/template/${id}`)
@@ -28,9 +28,6 @@ export default {
 		update(params = {}) {
 			return Ajax.put(`/report/template`, params)
 		},
-		grant(params = {}){
-			return Ajax.post(`/report/template/grant`, params)
-		},
 		items: {
 			save(params = {}) {
 				return Ajax.post(`/report/template/items`, params)
@@ -43,16 +40,10 @@ export default {
 			},
 			formula(params) {
 				return Ajax.post(`/report/template/items/formula`, params)
-			},
-			resetLineNum(id){
-				return Ajax.get(`/report/template/items/reset/line/${id}`)
-			},
+			}
 		}
 	},
 	view(id, params = {}) {
 		return Ajax.get(`/report/template/view/${id}`, params)
-	},
-	yearProfit(id, params = {}){
-		return Ajax.get(`/report/template/year/profit/${id}`, params)
 	}
 }

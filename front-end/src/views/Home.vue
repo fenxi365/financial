@@ -5,7 +5,7 @@
 				<Cell width="8">
 					<div class="h-panel" style="height: 235px">
 						<div class="h-panel-bar">
-							<div class="h-panel-title">{{currentOrg.currentAccountDate|fqFormat}}</div>
+							<div class="h-panel-title">{{currentAccountSets.currentAccountDate|fqFormat}}</div>
 							<div class="h-panel-right"><span class="gray-color">当期有</span><i class="h-split"></i><span class="font20 primary-color">{{voucherCount}}</span><i class="h-split"></i><span class="gray-color">张凭证</span></div>
 						</div>
 						<div class="text-hover h-panel-body progress-div home-part-body" align="center" @click="addVouch">
@@ -92,22 +92,22 @@
 	</app-content>
 </template>
 <script>
-import revenueProfit from '@/js/data/revenueProfit';
-import {getTotalData} from '@/js/locations/district';
-import {mapState} from 'vuex';
-import moment from "moment";
+	import revenueProfit from '../js/data/revenueProfit';
+	import {getTotalData} from '../js/locations/district';
+	import {mapState} from 'vuex';
+	import moment from "moment";
 
-const emptyForm = {
-  "accountingStandards": "0",
-  "address": null,
-  "companyName": "",
-  "creditCode": "",
-  "enableDate": null,
-  "fixedAssetModule": "0",
-  "cashierModule": "0",
-  "voucherReviewed": "0",
-  "industry": "",
-  "vatType": "0"
+	const emptyForm = {
+		"accountingStandards": "0",
+		"address": null,
+		"companyName": "",
+		"creditCode": "",
+		"enableDate": null,
+		"fixedAssetModule": "0",
+		"cashierModule": "0",
+		"voucherReviewed": "0",
+		"industry": "",
+		"vatType": "0"
 	};
 
 
@@ -136,7 +136,7 @@ const emptyForm = {
 			};
 		},
 		computed: {
-			...mapState(['currentAccountSets','currentOrg']),
+			...mapState(['currentAccountSets']),
 			costTotal() {
 				let total = 0;
 				this.costData.forEach(item => {
@@ -165,14 +165,15 @@ const emptyForm = {
 					this.loading = true;
 					this.form.enableDate = moment(this.form.enableDate).format("YYYY-MM-DD");
 					this.$api.setting.accountSets[this.form.id ? 'update' : 'save'](this.form).then(() => {
-            window.location.replace("/");
+						this.loading = false;
+						this.$store.dispatch("init");
 					}).catch(() => {
 						this.loading = false;
 					})
 				}
 			},
 			init() {
-				if (this.currentAccountSets && this.currentOrg) {
+				if (this.currentAccountSets) {
 					Promise.all([
 						Api.home.voucherCount(),
 						Api.home.chart.revenueProfit(),

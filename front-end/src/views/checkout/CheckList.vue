@@ -17,9 +17,7 @@
 </template>
 
 <script>
-	import {mapState} from "vuex";
-
-  export default {
+	export default {
 		name: "CheckList",
 		data() {
 			return {
@@ -27,14 +25,13 @@
 			}
 		},
 		computed: {
-        ...mapState(['currentOrgId']),
 			years() {
 				return Object.keys(this.dataList).sort((a, b) => b - a);
 			}
 		},
 		methods: {
 			loadList() {
-				this.$api.checkout.list({org_id:this.currentOrgId}).then(({data}) => {
+				this.$api.checkout.list().then(({data}) => {
 					let disable = false;
 					for (let i = data.length - 1; i >= 0; i--) {
 						data[i].disable = disable;

@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import App from './views/App.vue';
 import Login from './views/Login.vue';
-import SelectAccountSet from './views/login/SelectAccountSet.vue';
 import router from './router';
 import store from './store';
 import api from './api';
@@ -12,10 +11,6 @@ import Chart from './views/app/chart/echarts';
 
 import './js/config/dict';
 import './js/common/filters';
-import 'xe-utils'
-import VXETable from 'vxe-table'
-import 'vxe-table/lib/style.css'
-
 
 if (process.env.NODE_ENV !== 'development') {
 	require('./reporter');
@@ -25,7 +20,6 @@ require('font-awesome/css/font-awesome.css');
 require('./styles/app.less');
 
 Vue.use(HeyUI);
-Vue.use(VXETable)
 Vue.prototype.$api = api;
 
 Vue.component("app-content", AppContent);
@@ -39,20 +33,14 @@ const VueConfig = {
 	router,
 	store,
 };
-if (localStorage.getItem("user") != null){
-	new Vue(Object.assign(VueConfig, {
-		render: h => h(SelectAccountSet)
-	})).$mount('#app');
-}else {
-	store.dispatch("init").then(() => {
-		//实例化界面
-		new Vue(Object.assign(VueConfig, {
-			render: h => h(App)
-		})).$mount('#app');
-	}).catch(() => {
-		new Vue(Object.assign(VueConfig, {
-			render: h => h(Login)
-		})).$mount('#app');
-	});
-}
 
+store.dispatch("init").then(() => {
+	//实例化界面
+	new Vue(Object.assign(VueConfig, {
+		render: h => h(App)
+	})).$mount('#app');
+}).catch(() => {
+	new Vue(Object.assign(VueConfig, {
+		render: h => h(Login)
+	})).$mount('#app');
+});
