@@ -43,7 +43,10 @@
 </script>
 <style lang='less'>
 	.app-header-message-vue {
+    height: 59px;
+    width: 300px;
 		float: left;
+    border: #dadada solid 1px;
 		margin-right: 15px;
 
 		.h-dropdowncustom-show {

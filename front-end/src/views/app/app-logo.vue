@@ -1,6 +1,6 @@
 <template>
 	<div class="app-logo">
-		<router-link to="/"><span class="app-logo-icon"></span><span class="app-logo-text">纷析云</span></router-link>
+		<router-link to="/"><span class="app-logo-icon"></span></router-link>
 	</div>
 </template>
 <script>
@@ -29,8 +29,8 @@
 		.app-logo-icon {
 			background: url(../../assets/logo.png);
 			background-size: contain;
-			height: 26px;
-			width: 26px;
+			height: 40px;
+			width: 80px;
 			display: inline-block;
 			margin-right: 10px;
 			transition: .3s;

@@ -58,7 +58,7 @@
 </script>
 <style lang="less">
 	.echarts-vue {
-		height: 400px;
+		height: 360px;
 		overflow: hidden;
 	}
 </style>

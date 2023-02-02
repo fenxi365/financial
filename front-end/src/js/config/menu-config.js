@@ -2,12 +2,12 @@ const Manager = [
 	{
 		title: '主页',
 		key: 'Home',
-		icon: 'icon-monitor'
+		icon: 'h-icon-home'
 	},
 	{
 		title: '凭证',
 		key: 'vouchers',
-		icon: 'icon-grid-2',
+		icon: 'h-icon-star',
 		children: [
 			{
 				title: '新增凭证',
@@ -22,12 +22,12 @@ const Manager = [
 	{
 		title: '结账',
 		key: 'CheckList',
-		icon: 'icon-disc',
+		icon: 'h-icon-complete',
 	},
 	{
 		title: '帐薄',
 		key: 'AccountBooks',
-		icon: 'icon-paper',
+		icon: 'h-icon-task',
 		children: [
 			{
 				title: '明细账',
@@ -58,12 +58,12 @@ const Manager = [
 	{
 		title: '报表',
 		key: 'ReportList',
-		icon: 'icon-bar-graph-2'
+		icon: 'h-icon-search'
 	},
 	{
 		title: '设置',
 		key: 'Setting',
-		icon: 'icon-cog',
+		icon: 'h-icon-setting',
 		children: [
 			{
 				title: '账套',
