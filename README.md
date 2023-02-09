@@ -43,6 +43,9 @@ https://f.fenxi365.com/
 4、版权说明
 
 可以免费使用，不可用于商业销售
+商业版演示地址
+f2.fenxi365.com
+账号：13456781004 / 密码：123456
 
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2022/0802/163610_1feaef92_82.png "1.png")
