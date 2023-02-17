@@ -3,7 +3,7 @@
 ## 源码交流群
 
 <div style="text-align: center">
-![源码咨询](code.jpeg)
+<img src="code.jpeg" width="200px"/>
 </div>
 
 #### 预览环境
