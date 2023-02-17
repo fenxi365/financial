@@ -3,7 +3,7 @@
 ## 源码交流群
 
 <div style="text-align: center">
-<img width="300px" src="qun.png" alt="输入图片说明">
+![源码咨询](code.jpeg)
 </div>
 
 #### 预览环境
