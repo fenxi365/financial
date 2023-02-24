@@ -9,11 +9,9 @@
  * </ul>
  * <p>****************************************************************************</p>
  */
-import wpkReporter from 'wpk-reporter'; // 导入基础sdk
-const __wpk = new wpkReporter({
-	bid: 'rok2nfw7-qkyd2ulc', // 新建应用时确定
-	spa: true,  // 单页应用开启后，可更准确地采集PV
-	plugins: []
+import {Monitor} from './js/common/js-sdk-perf.esm.min.js';
+
+new Monitor().init({
+	id: "Jyy3ZiYIVUGkPqpv", sendSpaPv: true,
 });
 
-__wpk.installAll(); // 初始化sdk 必须调用
