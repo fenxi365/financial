@@ -3,6 +3,7 @@
 ## 源码交流群
 
 <div style="text-align: center">
+![输入图片说明](123.png)
 ![企业微信](123.png)
 ![企业微信](123.png)
 </div>
