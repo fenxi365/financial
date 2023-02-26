@@ -3,7 +3,7 @@
 ## 源码交流群
 
 <div style="text-align: center">
-<img src="code.jpeg" width="200px"/>
+![输入图片说明](123.png)
 </div>
 
 #### 预览环境
